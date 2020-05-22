@@ -6,19 +6,20 @@ public class GameController : MonoBehaviour
 {
     public GameObject player;
     
-    public 
-
-
-    
-
     void Update()
     {
         
         
     }
 
+    public void TurnEnd()
+    {
+        //TODO: Передача хода монстрам
+        //возврат хода игроку, восстановление энергнии
+    }
 
-    
 
-    
+
+
+
 }

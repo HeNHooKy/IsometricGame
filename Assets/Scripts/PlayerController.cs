@@ -13,23 +13,40 @@ public class PlayerController : MonoBehaviour
     public string floorTag = "Floor";
     public float energy = 1f;
     public float speed = 1f;
+    public float height = 0.5f;
 
 
-    private Transform turnObj;
-    private Material turnFloorMateraial;
-    private GameObject turnFloor = null;
-    private Color prevColor;
+    Transform turnObj;
+    Material turnFloorMateraial;
+    GameObject turnFloor = null;
+    Animator pAnimator;
+    Color prevColor;
+    bool isWalking = false;
+    bool isMyTurn = true;
+    bool beingStep = false;
 
+    void Start()
+    {
+        pAnimator = GetComponent<Animator>();
+    }
 
     void Update()
     {
+        
         //получаем объект, на который кликнул пользователь
         turnObj = Touch();
-        if (turnObj != null)
+
+        if(isMyTurn)
         {
-            if (turnObj.tag == floorTag)
-                TurnFloor(turnObj);
+            if (turnObj != null)
+            {
+                if (turnObj.tag == floorTag)
+                    TurnFloor(turnObj);
+            }
         }
+
+        //выполняется независимо от блокировок
+        Walking();
     }
 
 
@@ -38,7 +55,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void TurnFloor(Transform obj)
     {
-        if (turnFloor == obj.gameObject)
+        if (turnFloor == obj.gameObject || beingStep)
             return;
 
         if (turnFloor != null)
@@ -50,7 +67,7 @@ public class PlayerController : MonoBehaviour
         }
 
         float distance = Math.Abs((GetPosition(obj) - GetPosition(transform)).magnitude);
-        if (distance > energy || distance < 0.01)
+        if (distance > 1 || distance < 0.01)
         {   //выполняется, если был выбран floor на растоянии привышающем максимальную дистанцию шага
 
             //ИЗМЕНИТЬ НА ТЕКСТУРУ
@@ -86,11 +103,15 @@ public class PlayerController : MonoBehaviour
             return hit.transform;
         }
         else
-        {
+        {   //тач отжат
             if(turnFloor != null)
             {
-                //Сдлеай шаг!
-                DoStep();
+                if(!beingStep)
+                {
+                    //Сдлеай шаг!
+                    beingStep = true;
+                    DoStep();
+                }
             }
         }
         return null;
@@ -100,18 +121,58 @@ public class PlayerController : MonoBehaviour
     {
         //этот метод выполняет любое взаимодействие с окружением
         //проверим свободна ли ячейка
-        RaycastHit[] allColliders = Physics.BoxCastAll(turnFloor.transform.position, new Vector3(0.25f, 0.25f, 0.25f), Vector3.up, transform.rotation, 5); //строим луч
-        if(allColliders.Length <= 1)
-        {
-            //Тут свободно. Можно идти                                                  ТУТ МОЖНО МЕНЯТЬ ВЫСОТУ
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, (Vector3.up * 0.15f) + turnFloor.transform.position, 0.1f);
+        int layerMask = ~(1 << 10 | 1 << 8); // ~(1 << 10 | 1 << 8)
+
+        //пускаем луч и собираем данные
+        RaycastHit hit;
+        Physics.Raycast(turnFloor.transform.position, Vector3.up, out hit, 1f, layerMask, QueryTriggerInteraction.Ignore);
+
+        if (RaycastHit.Equals(hit.collider, null))
+        {   //клетка пуста
+            //Тут свободно. Можно идти
+            isWalking = true;
+            pAnimator.SetBool("IsWalking", true);
+            //забираем энергию за ход
+            energy--;
         }
         else
         {
-            //Кажется занято. Идти нельзя, нужно попробовать другое действие
+            //Кажется тут занято. Идти нельзя, нужно попробовать другое действие
         }
         turnFloorMateraial.color = prevColor;
+
+        if(energy < 1f)
+        {   //энергия кончилась. Конец хода
+            TurnEnd();
+        }
+    }
+
+
+    void Walking() 
+    {   //вызывается только если персонаж находится в движении
+        if(turnFloor == null)
+        {   //если пол не выбран - метод не выполняется
+            return;
+        }
+        if (isWalking)
+        {
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.localPosition, (Vector3.up * height) + turnFloor.transform.position, step);
+        }
+
+        if(GetPosition(turnFloor.transform) == GetPosition(transform))
+        {   //сбрасываем флажок ходьбы, когда цель достигнута
+            pAnimator.SetBool("IsWalking", false);
+            beingStep = false;
+            isWalking = false;
+            turnFloor = null;
+        }
+    }
+
+    void TurnEnd()
+    {
+        isMyTurn = false;
+        gameController.TurnEnd();
     }
 
     /// <summary>
