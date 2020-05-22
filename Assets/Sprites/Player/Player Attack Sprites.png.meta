@@ -126,13 +126,13 @@ TextureImporter:
       name: Player Attack Sprites_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 37
-        width: 26
-        height: 26
+        x: 0
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 11, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -148,12 +148,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 37
-        width: 26
-        height: 26
+        y: 32
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 2, y: 0, z: 10, w: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -168,13 +168,13 @@ TextureImporter:
       name: Player Attack Sprites_2
       rect:
         serializedVersion: 2
-        x: 3
-        y: 7
-        width: 26
-        height: 26
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 1, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -190,12 +190,12 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 7
-        width: 26
-        height: 26
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 8, w: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
