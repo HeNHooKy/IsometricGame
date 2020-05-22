@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +10,8 @@ public class PlayerController : MonoBehaviour
 {
     public bool isCanDo = true;
     public GameController gameController;
+    public GameObject FreeFloor;
+    public GameObject SelectFloor;
     public Color turnColor = Color.red;
     public string floorTag = "Floor";
     public float energy = 1f;
@@ -21,6 +24,7 @@ public class PlayerController : MonoBehaviour
     GameObject turnFloor = null;
     Animator pAnimator;
     Color prevColor;
+    GameObject selected;
     bool isWalking = false;
     bool isMyTurn = true;
     bool beingStep = false;
@@ -63,29 +67,24 @@ public class PlayerController : MonoBehaviour
             //или указатель не был смещен на неактивную область
 
             //ИЗМЕНИТЬ НА ТЕКСТУРУ
-            turnFloorMateraial.color = prevColor; //смена цвета больее не выбранного объекта на предыдущий цвет
+            Destroy(selected);
         }
 
         float distance = Math.Abs((GetPosition(obj) - GetPosition(transform)).magnitude);
         if (distance > 1 || distance < 0.01)
         {   //выполняется, если был выбран floor на растоянии привышающем максимальную дистанцию шага
 
-            //ИЗМЕНИТЬ НА ТЕКСТУРУ
-            if(turnFloor != null)
-                turnFloorMateraial.color = prevColor;
-
-            turnFloorMateraial = null;
+            Destroy(selected);
             turnFloor = null;
             return;
         }
 
         turnFloor = obj.gameObject; //сохранение выбранного игроком объекта
-        turnFloorMateraial = turnFloor.GetComponent<MeshRenderer>().material; //доступ к материалу
 
 
         //ИЗМЕНИТЬ НА ТЕКСТУРУ
-        prevColor = turnFloorMateraial.color; //сохранение обычного цвета
-        turnFloorMateraial.color = turnColor; //смена цвета
+        selected = Instantiate(SelectFloor);
+        selected.transform.position = turnFloor.transform.position + (Vector3.up * 0.21f);
     }
 
     /// <summary>
@@ -139,7 +138,7 @@ public class PlayerController : MonoBehaviour
         {
             //Кажется тут занято. Идти нельзя, нужно попробовать другое действие
         }
-        turnFloorMateraial.color = prevColor;
+        Destroy(selected);
 
         if(energy < 1f)
         {   //энергия кончилась. Конец хода
