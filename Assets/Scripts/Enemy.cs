@@ -1,57 +1,97 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using System.Drawing;
+using System.IO;
+using UnityEditor.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
-    public float AttackPower = 1f;
-    public float RangeMeasure = 2f;
-    public float Health = 2f;
-    public float Energy = 1f;
-    public float EnergyReload = 1f;
-    public float MoveSpeed = 1f;
-    public float DieTime = 3f;
-    public float FarVision = 5f;
-    public GameObject ball;
-    public string PlayerTag = "Player";
-    public string FloorTag = "Floor";
-    public string ItemTag = "Item";
+    
+    public static bool isEnemiesTurn = false;
 
-    private Animator eAnimation;
-    private bool isAlive = true;
-    private PlayerController player;
+    public float DamageAnimationShift = 2;
+    public float DamageAnimationSpeedShift = 0.095f;
 
-    void Start()
-    {
-        eAnimation = GetComponent<Animator>();
-    }
+    public float AttackPower = 1f;  //количество урона, который получит игрок от атаки этого монстра
+    public float RangeMeasure = 2f; //делить дальних атак. Уменьшает-увеличивает урон от дальних атак
+    public float Health = 2f; //здоровье противника
+    public float Energy = 1f;   //количество действий за ход
+    public float EnergyReload = 1f; //количество восполняемой в ход энергии
+    public float MoveSpeed = 1f; //скорость анимирования передвижения
+    public float DieTime = 3f;  //время, спустя которое противник пропадет после смерти
+    public int FarVision = 1; //зона видимости (использует сложные алгоритмы поиска - высокая нагрузка)
+    public GameObject Ball; //снаряд для дальней атаки
+    public string PlayerTag = "Player"; //тег игрока
+    public string FloorTag = "Floor"; //тег пола
+    public string ItemTag = "Item"; //тег предметов, чтобы они не считались стеной
 
-    private void Update()
-    {
-        FindPath();
-    }
+    protected Animator eAnimator;    //указатель на аниматор (У каждого enemy должен быть animator
+    protected bool isAlive = true; //отображает способность двигаться, наносить урон(жить)
+    protected PlayerController player; //здесь окажется игрок, если будет обнаружен
+    protected List<Vector3> PathToPlayer = null; //после вызова FindPath путь будет храниться в этой перменной
 
     //поиск пути к персонажу
-    Vector3[] FindPath()
+    void FindPath()
     {
-        GetMap(new Vector3(transform.position.x, transform.position.z), 1);
+        int[,] map = GetMap(new Vector3(transform.position.x, transform.position.z), FarVision);
+        Point PlayerPoint;
 
-        return null;
+        for(int i = 0; i < 2 * FarVision + 1; i++)
+        {
+            for(int j = 0; j < 2 * FarVision + 1; j++)
+            {
+                if (map[i, j] == 2)
+                {
+                    map[i, j] = 0;
+                    PlayerPoint = new Point(i, j);
+                    goto end;   //выход из циклов
+                }
+            }
+        }
+        end:        //ВОТ ТУТ ВОТ GOTO
+
+        if (PlayerPoint == null)
+        {   //игрок за пределами видимости
+            return;
+        }
+
+        //получаем путь до игрока(если он есть)
+        PathToPlayer = ConvertToVector3(FindClosePath.FindPath(map, new Point((FarVision / 2) + 1, (FarVision / 2) + 1), PlayerPoint),
+            new Vector2(transform.position.x, transform.position.z));
+    }
+
+    List<Vector3> ConvertToVector3(List<Point> path, Vector2 sPos)
+    {
+        if(path == null)
+        {   //no way
+            return null;
+        }
+
+        List<Vector3> newPath = new List<Vector3>();
+        //возможно стоит добавить в newPath точку начала?
+        //вычисляем смещение
+        float dx = Math.Abs((float) path[0].X -  sPos.x);
+        float dy = Math.Abs((float)path[0].Y - sPos.y);
+        for(int i = 0; i < path.Count; i++)
+        {   //формируем вектор
+            newPath.Add(new Vector3(path[i].X - dx, 0f, path[i].Y - dy));
+        }
+        return newPath;
     }
 
     //построение integer карты перемещений
     int[,] GetMap(Vector2 sPos, int n)
     {
         int[,] map = new int[2 * n + 1, 2 * n + 1];
-        for(int i = 0; i < 2*n+1; i++)
+        for(int i = 0; i < 2 * n + 1; i++)
         {
-            string s = "";
             for(int j = 0; j < 2*n+1; j++)
             {
-                map[i, j] = GetCell(new Vector3(sPos.x - n + i, 0f, sPos.y - n + j));
-                s += map[i, j];
+                map[i, j] = GetCell(new Vector3(sPos.x - n + i, -0.2f, sPos.y - n + j));
             }
-            Debug.Log(s);
         }
         return map;
     }
@@ -59,37 +99,44 @@ public class Enemy : MonoBehaviour
     //определение допустимости движения по блоку
     int GetCell(Vector3 pos)
     {
-        RaycastHit[] hit = Physics.RaycastAll(pos, Vector3.up * 1f, 1f);
+        RaycastHit[] hit = Physics.RaycastAll(pos, Vector3.up * 2f, 2f);
+        Debug.DrawRay(pos, Vector3.up * 2f, UnityEngine.Color.red, 1f);
 
         foreach(RaycastHit h in hit)
         {
-            if (h.transform.name == PlayerTag)
+            if(h.transform == transform)
+            {
+                return 0; //тут я
+            }
+            if (h.collider.tag == PlayerTag)
             {
                 return 2;   //тут игрок!
             }
-            if(h.transform.name == FloorTag && hit.Length == 1)
+            if(h.collider.tag == FloorTag && hit.Length == 1)
             {
-                return 1;   //ходить можно
+                return 0;   //ходить можно
             }
-            if(h.transform.name == ItemTag && hit.Length == 2)
+            if(h.collider.tag == ItemTag && hit.Length == 2)
             {
-                return 1;   //тут лежит какой-то предмет, но ходить можно
+                return 0;   //тут лежит какой-то предмет, но ходить можно
             }
         }
-        return 0;   //в остальных случаях, ходить нельзя
+        return -1;   //в остальных случаях, ходить нельзя
     }
 
     //двигаться
     void Move(Vector3 tPos)
     {
+        if (!isAlive) return;
         Vector3 sPos = transform.position;
-        eAnimation.SetBool("IsWalking", true);
+        eAnimator.SetBool("IsWalking", true);
         StartCoroutine(_Move(sPos, tPos));
     }
 
     //ударить в ближнем бою
     void CloseAttack(Vector3 direct)
     {
+        if (!isAlive) return;
         int layerMask = (1 << 10); //ищем только игрока
         //пускаем луч и собираем данные
         RaycastHit hit;
@@ -103,7 +150,7 @@ public class Enemy : MonoBehaviour
             if(player != null)
             {   //точно попався
                 player.Damaged(AttackPower);
-                eAnimation.SetBool("IsAttack", true);
+                eAnimator.SetBool("IsAttack", true);
             }
         }
     }
@@ -111,20 +158,23 @@ public class Enemy : MonoBehaviour
     //запустить стрелу
     void RangeAttack(Vector3 direct)
     {
-        eAnimation.SetBool("IsRangeAttack", true);
-        GameObject arrow = Instantiate(ball); //вызов стрелы
+        if (!isAlive) return;
+        eAnimator.SetBool("IsRangeAttack", true);
+        GameObject arrow = Instantiate(Ball); //вызов стрелы
         arrow.transform.position = direct;  //определяем новое положение стрелы
         arrow.transform.rotation = Quaternion.Euler(0f, Vector3.Angle(transform.position, direct), 0f); //поворот стрелы
     }
     
     //получение урона
-    void Damaged(float damage)
+    public void Damaged(float damage, Vector3 pPos)
     {
-        eAnimation.SetBool("IsDamaged", true);
+        if (!isAlive) return;
+        StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
         Health -= damage;
-        if(Health < 0f)
+        if(Health <= 0f)
         {   //если здоровье упало слишком низко наступает смерть
-            eAnimation.SetBool("IsDie", true);
+            //eAnimator.SetBool("IsDie", true);
+            this.GetComponent<Collider>().enabled = false;
             Invoke("Die", DieTime);
         }
     }
@@ -132,7 +182,9 @@ public class Enemy : MonoBehaviour
     //смерть
     void Die()
     {
+        if (!isAlive) return;   //То, что мертво, умереть не может
         Destroy(this.gameObject);
+        isAlive = false;
     }
 
 
@@ -145,7 +197,57 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
         transform.position = tPos;
-        eAnimation.SetBool("IsWalking", false);
+        eAnimator.SetBool("IsWalking", false);
     }
 
+    public void EnemiesTurn()
+    {
+        isEnemiesTurn = true;
+    }
+
+    IEnumerator DamageAnimation(Vector3 tPos)
+    {
+        eAnimator.Play("Damaged");
+        Transform sprite = transform.Find("Character");
+        Vector3 sPos = sprite.position;
+        tPos -= (tPos - sPos) / DamageAnimationShift;
+        tPos.y = sPos.y;
+        
+        for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift)
+        {
+            sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
+            yield return null;
+        }
+        for (float i = 0.4f; i < 1; i += DamageAnimationSpeedShift)
+        {
+            sprite.position = Vector3.Lerp(tPos, sPos, easeInOutQuad(i));
+            yield return null;
+        }
+        sprite.position = sPos;
+    }
+
+    float easeOutExpo(float x)
+    {
+        return (float)(x == 1f ? 1f : 1f - Math.Pow(2f, -10f * x));
+    }
+    float easeInOutQuad(float x)
+    {
+        return (float) (x < 0.5 ? 2 * x * x : 1 - Math.Pow(-2 * x + 2, 2) / 2);
+    }
+    
+
 }
+
+
+/*  отображение поиска пути
+ * FindPath();
+        if(PathToPlayer != null)
+        {
+            Vector3 prev = PathToPlayer[0];
+            for (int i = 1; i < PathToPlayer.Count; i++)
+            {
+                Debug.DrawLine(prev + Vector3.up * 1, PathToPlayer[i] + Vector3.up * 1, UnityEngine.Color.green, 1f);
+                prev = PathToPlayer[i];
+            }
+        }
+*/
