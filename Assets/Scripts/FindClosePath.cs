@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Drawing;
 
 public class FindClosePath
 {
-    public static List<Point> FindPath(int[,] field, Point start, Point goal)
+    public static List<System.Drawing.Point> FindPath(int[,] field, System.Drawing.Point start, System.Drawing.Point goal)
     {
         return PathNode.FindPath(field, start, goal);
     }
@@ -14,7 +13,7 @@ public class FindClosePath
     public class PathNode
     {
         // Координаты точки на карте.
-        public Point Position { get; set; }
+        public System.Drawing.Point Position { get; set; }
         // Длина пути от старта (G).
         public int PathLengthFromStart { get; set; }
         // Точка, из которой пришли в эту точку.
@@ -30,7 +29,7 @@ public class FindClosePath
             }
         }
 
-        public static List<Point> FindPath(int[,] field, Point start, Point goal)
+        public static List<System.Drawing.Point> FindPath(int[,] field, System.Drawing.Point start, System.Drawing.Point goal)
         {
             // Шаг 1.
             var closedSet = new Collection<PathNode>();
@@ -84,22 +83,22 @@ public class FindClosePath
             return 1;
         }
 
-        private static int GetHeuristicPathLength(Point from, Point to)
+        private static int GetHeuristicPathLength(System.Drawing.Point from, System.Drawing.Point to)
         {
             return Math.Abs(from.X - to.X) + Math.Abs(from.Y - to.Y);
         }
 
         private static Collection<PathNode> GetNeighbours(PathNode pathNode,
-  Point goal, int[,] field)
+  System.Drawing.Point goal, int[,] field)
         {
             var result = new Collection<PathNode>();
 
             // Соседними точками являются соседние по стороне клетки.
-            Point[] neighbourPoints = new Point[4];
-            neighbourPoints[0] = new Point(pathNode.Position.X + 1, pathNode.Position.Y);
-            neighbourPoints[1] = new Point(pathNode.Position.X - 1, pathNode.Position.Y);
-            neighbourPoints[2] = new Point(pathNode.Position.X, pathNode.Position.Y + 1);
-            neighbourPoints[3] = new Point(pathNode.Position.X, pathNode.Position.Y - 1);
+            System.Drawing.Point[] neighbourPoints = new System.Drawing.Point[4];
+            neighbourPoints[0] = new System.Drawing.Point(pathNode.Position.X + 1, pathNode.Position.Y);
+            neighbourPoints[1] = new System.Drawing.Point(pathNode.Position.X - 1, pathNode.Position.Y);
+            neighbourPoints[2] = new System.Drawing.Point(pathNode.Position.X, pathNode.Position.Y + 1);
+            neighbourPoints[3] = new System.Drawing.Point(pathNode.Position.X, pathNode.Position.Y - 1);
 
             foreach (var point in neighbourPoints)
             {
@@ -125,9 +124,9 @@ public class FindClosePath
             return result;
         }
 
-        private static List<Point> GetPathForNode(PathNode pathNode)
+        private static List<System.Drawing.Point> GetPathForNode(PathNode pathNode)
         {
-            var result = new List<Point>();
+            var result = new List<System.Drawing.Point>();
             var currentNode = pathNode;
             while (currentNode != null)
             {
