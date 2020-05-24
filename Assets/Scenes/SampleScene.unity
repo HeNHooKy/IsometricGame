@@ -2173,6 +2173,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6504096957838447488, guid: 697d8c99ea89b4648acc98d6e809b677,
+        type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504096957838447488, guid: 697d8c99ea89b4648acc98d6e809b677,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504096957838447488, guid: 697d8c99ea89b4648acc98d6e809b677,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6504096957838447488, guid: 697d8c99ea89b4648acc98d6e809b677,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6719190542622249018, guid: 697d8c99ea89b4648acc98d6e809b677,
         type: 3}
       propertyPath: DieTime

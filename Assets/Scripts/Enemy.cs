@@ -205,10 +205,12 @@ public class Enemy : MonoBehaviour
         isEnemiesTurn = true;
     }
 
+    //плавно Анимация получения урона
     IEnumerator DamageAnimation(Vector3 tPos)
     {
         eAnimator.Play("Damaged");
         Transform sprite = transform.Find("Character");
+        SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
         Vector3 sPos = sprite.position;
         tPos -= (tPos - sPos) / DamageAnimationShift;
         tPos.y = sPos.y;
