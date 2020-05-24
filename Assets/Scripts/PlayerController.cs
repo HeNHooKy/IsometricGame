@@ -9,8 +9,9 @@ public class PlayerController : MonoBehaviour
     public float AttackAnimationShift = 2f;
 
     public float Health = 4f;
-    public float Energy = 2f;
+    public float Energy = 0f;
     public float EnergyReload = 2f;
+    public float DieTime = 1f;
     public float AttackPower = 1f; //сила атаки
     public float MoveSpeed = 1f;
     public GameController GameController;
@@ -29,13 +30,28 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer pSprite;
     GameObject selected;
     GameObject[] freeLocs;
-    bool isMyTurn = true;
-    bool beingStep = false;
-    bool isAlive = true;
+    private bool isMyTurn = false;
+    private bool beingStep = false;
+    private bool isAlive = true;
+
+    //смерть
+    private void Die()
+    {
+        if (!isAlive) return;   //То, что мертво, умереть не может!
+        Destroy(this.gameObject);
+        isAlive = false;
+        //вызов окна конца игры
+    }
 
     public void Damaged(float damage)
     {
-        //TODO: получение урона
+        if (!isAlive) return;
+        Health -= damage;
+        if (Health <= 0f)
+        {   //если здоровье упало слишком низко наступает смерть
+            //eAnimator.SetBool("IsDie", true);
+            Invoke("Die", DieTime);
+        }
     }
 
     public void TurnStart()
@@ -53,7 +69,7 @@ public class PlayerController : MonoBehaviour
         pAnimator = GetComponentInChildren<Animator>();
         pSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
         freeLocs = new GameObject[4];
-        GetFreeLoc(true);
+        TurnStart();
     }
 
     void Update()
@@ -61,7 +77,6 @@ public class PlayerController : MonoBehaviour
 
         //получаем объект, на который кликнул пользователь
         turnObj = Touch();
-
         if (isMyTurn)
         {
             if (turnObj != null)
@@ -189,6 +204,8 @@ public class PlayerController : MonoBehaviour
         GetFreeLoc();
     }
 
+    
+
     void Attack(GameObject e)
     {
         ClearFreeLoc();
@@ -205,7 +222,7 @@ public class PlayerController : MonoBehaviour
         isMyTurn = false;
         Debug.Log("Игрок завершил ход. Передача управления");
         ClearFreeLoc();
-        GameController.TurnEnd();
+        GameController.PlayerTurnEnd();
     }
 
     //началао хода - вызывается из GameController

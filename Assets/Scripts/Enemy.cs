@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    
     public static bool isEnemiesTurn = false;
 
     public GameController controller; //указатель на управляющий игрой компонент
@@ -16,7 +15,7 @@ public class Enemy : MonoBehaviour
     public float AttackPower = 1f;  //количество урона, который получит игрок от атаки этого монстра
     public float RangeMeasure = 2f; //делить дальних атак. Уменьшает-увеличивает урон от дальних атак
     public float Health = 2f; //здоровье противника
-    public float Energy = 1f;   //количество действий за ход
+    public float Energy = 0f;   //количество действий за ход
     public float EnergyReload = 1f; //количество восполняемой в ход энергии
     public float MoveSpeed = 1f; //скорость анимирования передвижения
     public float DieTime = 3f;  //время, спустя которое противник пропадет после смерти
@@ -26,14 +25,16 @@ public class Enemy : MonoBehaviour
     public string FloorTag = "Floor"; //тег пола
     public string ItemTag = "Item"; //тег предметов, чтобы они не считались стеной
 
+    protected bool turnCatch = false;
     protected bool isMyTurn = false;
     protected Animator eAnimator;    //указатель на аниматор (У каждого enemy должен быть animator
     protected bool isAlive = true; //отображает способность двигаться, наносить урон(жить)
     protected PlayerController player; //здесь окажется игрок, если будет обнаружен
     protected List<Vector3> PathToPlayer = null; //после вызова FindPath путь будет храниться в этой перменной
+    protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
 
     //поиск пути к персонажу
-    void FindPath()
+    protected void FindPath()
     {
         int[,] map = GetMap(new Vector3(transform.position.x, transform.position.z), FarVision);
         System.Drawing.Point PlayerPoint = System.Drawing.Point.Empty;
@@ -96,10 +97,10 @@ public class Enemy : MonoBehaviour
     }
 
     //определение допустимости движения по блоку
-    int GetCell(Vector3 pos)
+    protected int GetCell(Vector3 pos)
     {
+        pos.y = -0.2f;
         RaycastHit[] hit = Physics.RaycastAll(pos, Vector3.up * 2f, 2f);
-        Debug.DrawRay(pos, Vector3.up * 2f, UnityEngine.Color.red, 1f);
 
         foreach(RaycastHit h in hit)
         {
@@ -124,24 +125,29 @@ public class Enemy : MonoBehaviour
     }
 
     //двигаться
-    void Move(Vector3 tPos)
+    protected void Move(Vector3 tPos)
     {
-        if (!isAlive) return;
+
+        if (!isAlive && isBeingStep) return;
+        isBeingStep = true;
         Vector3 sPos = transform.position;
-        eAnimator.SetBool("IsWalking", true);
+        //eAnimator.SetBool("IsWalking", true);
         StartCoroutine(_Move(sPos, tPos));
     }
 
     //ударить в ближнем бою
-    void CloseAttack(Vector3 direct)
+    protected void CloseAttack(Vector3 direct)
     {
         if (!isAlive) return;
         int layerMask = (1 << 10); //ищем только игрока
         //пускаем луч и собираем данные
         RaycastHit hit;
-        bool isHit = Physics.Raycast(transform.position, direct, out hit, 1f, layerMask);
+        bool isHit = Physics.Raycast(direct, Vector3.up, out hit, 1f, layerMask);
+        Debug.DrawRay(direct, Vector3.up, Color.yellow, 1f);
         //в мире только один игрок
         PlayerController player;
+
+        Debug.Log(isHit);
 
         if (isHit)
         {   //попався
@@ -149,13 +155,13 @@ public class Enemy : MonoBehaviour
             if(player != null)
             {   //точно попався
                 player.Damaged(AttackPower);
-                eAnimator.SetBool("IsAttack", true);
+                //eAnimator.SetBool("IsAttack", true);
             }
         }
     }
 
     //запустить стрелу
-    void RangeAttack(Vector3 direct)
+    protected void RangeAttack(Vector3 direct)
     {
         if (!isAlive) return;
         eAnimator.SetBool("IsRangeAttack", true);
@@ -168,6 +174,7 @@ public class Enemy : MonoBehaviour
     public void Damaged(float damage, Vector3 pPos)
     {
         if (!isAlive) return;
+        isAlive = false;
         StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
         Health -= damage;
         if(Health <= 0f)
@@ -179,28 +186,26 @@ public class Enemy : MonoBehaviour
     }
 
     //смерть
-    void Die()
+    protected void Die()
     {
         if (!isAlive) return;   //То, что мертво, умереть не может
+        controller.EnemyTurnEnd();  //кажется это конец хода :(
         Destroy(this.gameObject);
-        isAlive = false;
     }
 
     //перемещение
     IEnumerator _Move(Vector3 sPos, Vector3 tPos)
     {
+        
         for (float i = 0; i < 1; i += Time.deltaTime * MoveSpeed)
         {
             transform.position = Vector3.Lerp(sPos, tPos, i);
             yield return null;
         }
         transform.position = tPos;
-        eAnimator.SetBool("IsWalking", false);
-    }
-
-    public void EnemiesTurn()
-    {
-        isEnemiesTurn = true;
+        //eAnimator.SetBool("IsWalking", false);
+        Energy--;
+        isBeingStep = false;
     }
 
     //плавно Анимация получения урона
