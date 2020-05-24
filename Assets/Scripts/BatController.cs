@@ -1,19 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEngine;
 
 public class BatController : Enemy
 {
     void Start()
     {
         eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
+        controller = transform.Find("/GameController").GetComponent<GameController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isEnemiesTurn)
+
+        if(isMyTurn)
         {
             //EnemiesStillTurn();
         }

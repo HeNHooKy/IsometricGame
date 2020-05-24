@@ -2,15 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using System.Drawing;
-using System.IO;
-using UnityEditor.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
     
     public static bool isEnemiesTurn = false;
+
+    public GameController controller; //указатель на управляющий игрой компонент
 
     public float DamageAnimationShift = 2;
     public float DamageAnimationSpeedShift = 0.095f;
@@ -28,6 +26,7 @@ public class Enemy : MonoBehaviour
     public string FloorTag = "Floor"; //тег пола
     public string ItemTag = "Item"; //тег предметов, чтобы они не считались стеной
 
+    protected bool isMyTurn = false;
     protected Animator eAnimator;    //указатель на аниматор (У каждого enemy должен быть animator
     protected bool isAlive = true; //отображает способность двигаться, наносить урон(жить)
     protected PlayerController player; //здесь окажется игрок, если будет обнаружен
@@ -37,7 +36,7 @@ public class Enemy : MonoBehaviour
     void FindPath()
     {
         int[,] map = GetMap(new Vector3(transform.position.x, transform.position.z), FarVision);
-        Point PlayerPoint;
+        System.Drawing.Point PlayerPoint = System.Drawing.Point.Empty;
 
         for(int i = 0; i < 2 * FarVision + 1; i++)
         {
@@ -46,24 +45,24 @@ public class Enemy : MonoBehaviour
                 if (map[i, j] == 2)
                 {
                     map[i, j] = 0;
-                    PlayerPoint = new Point(i, j);
+                    PlayerPoint = new System.Drawing.Point(i, j);
                     goto end;   //выход из циклов
                 }
             }
         }
         end:        //ВОТ ТУТ ВОТ GOTO
 
-        if (PlayerPoint == null)
+        if (PlayerPoint == System.Drawing.Point.Empty)
         {   //игрок за пределами видимости
             return;
         }
 
         //получаем путь до игрока(если он есть)
-        PathToPlayer = ConvertToVector3(FindClosePath.FindPath(map, new Point((FarVision / 2) + 1, (FarVision / 2) + 1), PlayerPoint),
+        PathToPlayer = ConvertToVector3(FindClosePath.FindPath(map, new System.Drawing.Point((FarVision / 2) + 1, (FarVision / 2) + 1), PlayerPoint),
             new Vector2(transform.position.x, transform.position.z));
     }
 
-    List<Vector3> ConvertToVector3(List<Point> path, Vector2 sPos)
+    private List<Vector3> ConvertToVector3(List<System.Drawing.Point> path, Vector2 sPos)
     {
         if(path == null)
         {   //no way
@@ -187,7 +186,6 @@ public class Enemy : MonoBehaviour
         isAlive = false;
     }
 
-
     //перемещение
     IEnumerator _Move(Vector3 sPos, Vector3 tPos)
     {
@@ -208,15 +206,23 @@ public class Enemy : MonoBehaviour
     //плавно Анимация получения урона
     IEnumerator DamageAnimation(Vector3 tPos)
     {
-        eAnimator.Play("Damaged");
-        Transform sprite = transform.Find("Character");
+        eAnimator.Play("Damaged");//проиграть анимацию в аниматоре
+        Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
+
+        
         SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
-        Vector3 sPos = sprite.position;
-        tPos -= (tPos - sPos) / DamageAnimationShift;
+        
+
+
+        Vector3 sPos = sprite.position;//получим позицию спрата
+        //поворот спрайта
+        sp.flipX = (sPos - tPos).x < 0 || (tPos - sPos).z > 0;
+
+        tPos -= (tPos - sPos) / DamageAnimationShift; 
         tPos.y = sPos.y;
         
         for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift)
-        {
+        {   //анимация
             sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
             yield return null;
         }
