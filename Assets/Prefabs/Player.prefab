@@ -93,7 +93,7 @@ Animator:
   m_GameObject: {fileID: 3269655436770863868}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: cc18da039920e2f41a1b096ecb471589, type: 2}
+  m_Controller: {fileID: 9100000, guid: 653283905b32a8749b5a6c8b8494aa8b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 7062535856666193754}
   - component: {fileID: 4382225206860840401}
   m_Layer: 10
-  m_Name: Player 1
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,6 +241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c300c2e898e50c849b2b390439f1e69c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamageAnimationShift: 2
+  DamageAnimationSpeedShift: 2
   AttackAnimationSpeedShift: 0.095
   AttackAnimationShift: 2
   Health: 80

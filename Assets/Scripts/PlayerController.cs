@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    /*The players health*/
+    public float DamageAnimationShift = 2;  //сдвиг анимации при получении урона
+    public float DamageAnimationSpeedShift = 2f;//скорость сдвига анимации при получении урона
+
     public float AttackAnimationSpeedShift = 0.1f;
     public float AttackAnimationShift = 2f;
 
@@ -34,36 +36,6 @@ public class PlayerController : MonoBehaviour
     private bool beingStep = false;
     private bool isAlive = true;
 
-    //смерть
-    private void Die()
-    {
-        if (!isAlive) return;   //То, что мертво, умереть не может!
-        Destroy(this.gameObject);
-        isAlive = false;
-        //вызов окна конца игры
-    }
-
-    public void Damaged(float damage)
-    {
-        if (!isAlive) return;
-        Health -= damage;
-        if (Health <= 0f)
-        {   //если здоровье упало слишком низко наступает смерть
-            //eAnimator.SetBool("IsDie", true);
-            Invoke("Die", DieTime);
-        }
-    }
-
-    public void TurnStart()
-    {
-        ClearFreeLoc();
-        Energy += EnergyReload;
-        isMyTurn = true;
-        Debug.Log("Ход вернулся к игроку");
-        GetFreeLoc();
-    }
-
-
     void Start()
     {
         pAnimator = GetComponentInChildren<Animator>();
@@ -90,6 +62,36 @@ public class PlayerController : MonoBehaviour
                 TurnEnd();
             }
         }
+    }
+
+    public void Damaged(float damage, Vector3 pPos)
+    {
+        if (!isAlive) return;
+        Health -= damage;
+        StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
+        if (Health <= 0f)
+        {   //если здоровье упало слишком низко наступает смерть
+            //pAnimator.Play("Die");
+            Invoke("Die", DieTime);
+        }
+    }
+
+    public void TurnStart()
+    {
+        ClearFreeLoc();
+        Energy += EnergyReload;
+        isMyTurn = true;
+        Debug.Log("Ход вернулся к игроку");
+        GetFreeLoc();
+    }
+
+    //смерть
+    private void Die()
+    {
+        if (!isAlive) return;   //То, что мертво, умереть не может!
+        Destroy(this.gameObject);
+        isAlive = false;
+        //вызов окна конца игры
     }
 
 
@@ -382,16 +384,16 @@ public class PlayerController : MonoBehaviour
         Vector3 tPos = e.position;
         tPos -= (e.position - sPos) / AttackAnimationShift;
         tPos.y = sPos.y;
-        for(float i = 0; i < 1f; i += AttackAnimationSpeedShift)
+        for(float i = 0; i < 1f; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
             sprite.position = Vector3.Lerp(sPos, tPos, easeInOutQuart(i));
             yield return null;
         }
 
         Enemy enemy = e.GetComponent<Enemy>();
-        enemy.Damaged(AttackPower, transform.position);
+        enemy.Damaged(AttackPower, transform.position); //нанесение урона
 
-        for (float i = 0; i < 1; i += AttackAnimationSpeedShift)
+        for (float i = 0; i < 1; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
             sprite.position = Vector3.Lerp(tPos, sPos, easeOutQuint(i));
             yield return null;
@@ -403,6 +405,42 @@ public class PlayerController : MonoBehaviour
         GetFreeLoc();
     }
 
+    //плавно Анимация получения урона
+    IEnumerator DamageAnimation(Vector3 tPos)
+    {
+        //pAnimator.Play("Damaged");//проиграть анимацию в аниматоре
+        Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
+
+        SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
+
+        Vector3 sPos = sprite.position;//получим позицию спрата
+        //поворот спрайта
+        sp.flipX = (sPos - tPos).x < 0 || (tPos - sPos).z > 0;
+
+        tPos -= (tPos - sPos) / DamageAnimationShift;
+        tPos.y = sPos.y;
+
+        for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
+        {   //анимация
+            sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
+            yield return null;
+        }
+        for (float i = 0.4f; i < 1; i += DamageAnimationSpeedShift * Time.deltaTime)
+        {
+            sprite.position = Vector3.Lerp(tPos, sPos, easeInOutQuad(i));
+            yield return null;
+        }
+        sprite.position = sPos;
+    }
+
+    float easeOutExpo(float x)
+    {
+        return (float)(x == 1f ? 1f : 1f - Math.Pow(2f, -10f * x));
+    }
+    float easeInOutQuad(float x)
+    {
+        return (float)(x < 0.5 ? 2 * x * x : 1 - Math.Pow(-2 * x + 2, 2) / 2);
+    }
     float easeInOutQuart(float x) {
         return  x< 0.5 ? (float) (8 * x* x* x* x) : (float) (1 - Math.Pow(-2 * x + 2, 4) / 2);
     }

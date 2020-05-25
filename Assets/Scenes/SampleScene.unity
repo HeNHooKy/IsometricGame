@@ -2344,6 +2344,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6303534549805085157, guid: 8775bd7375fcd904ab9f9f7df76c6dda,
+        type: 3}
+      propertyPath: Health
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6303534549805085157, guid: 8775bd7375fcd904ab9f9f7df76c6dda,
+        type: 3}
+      propertyPath: controller
+      value: 
+      objectReference: {fileID: 207577315}
+    - target: {fileID: 6303534549805085157, guid: 8775bd7375fcd904ab9f9f7df76c6dda,
+        type: 3}
+      propertyPath: DamageAnimationSpeedShift
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6303534549805085157, guid: 8775bd7375fcd904ab9f9f7df76c6dda,
+        type: 3}
+      propertyPath: AttackAnimationSpeedShift
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7294889382465819446, guid: 8775bd7375fcd904ab9f9f7df76c6dda,
         type: 3}
       propertyPath: m_Name
@@ -2378,7 +2398,17 @@ PrefabInstance:
     - target: {fileID: 4382225206860840401, guid: 7a24eac4d971d9e41aa53540dbf46eba,
         type: 3}
       propertyPath: EnergyReload
-      value: 4
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4382225206860840401, guid: 7a24eac4d971d9e41aa53540dbf46eba,
+        type: 3}
+      propertyPath: AttackAnimationSpeedShift
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4382225206860840401, guid: 7a24eac4d971d9e41aa53540dbf46eba,
+        type: 3}
+      propertyPath: DamageAnimationSpeedShift
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 7062535856666193764, guid: 7a24eac4d971d9e41aa53540dbf46eba,
         type: 3}

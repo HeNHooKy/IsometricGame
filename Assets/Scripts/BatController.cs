@@ -7,6 +7,7 @@ public class BatController : Enemy
     {
         eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
         controller = transform.Find("/GameController").GetComponent<GameController>();
+        eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame

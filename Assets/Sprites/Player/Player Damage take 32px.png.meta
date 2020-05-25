@@ -1,19 +1,16 @@
 fileFormatVersion: 2
-guid: 551370c1b82147a42a972c4d24e23339
+guid: e50be90fd94ecc747b43b508f66f2db1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7884156784548158355
-    second: smile idle animation 32px_0
+      213: 8720496452304594684
+    second: Player Damage take 32px_0
   - first:
-      213: 6358852582297301334
-    second: smile idle animation 32px_1
+      213: 8228660211993443648
+    second: Player Damage take 32px_1
   - first:
-      213: -1287421721372082131
-    second: smile idle animation 32px_2
-  - first:
-      213: 7700731755645030756
-    second: smile idle animation 32px_3
+      213: 6914577608394115199
+    second: Player Damage take 32px_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -43,7 +40,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 0
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -69,14 +66,14 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -88,7 +85,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +97,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -111,7 +108,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: smile idle animation 32px_0
+      name: Player Damage take 32px_0
       rect:
         serializedVersion: 2
         x: 0
@@ -125,14 +122,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 39b9a70d2d62a6d60800000000000000
-      internalID: 7884156784548158355
+      spriteID: cf66ba8f15d650970800000000000000
+      internalID: 8720496452304594684
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: smile idle animation 32px_1
+      name: Player Damage take 32px_1
       rect:
         serializedVersion: 2
         x: 32
@@ -146,14 +143,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 651f7e2abbe2f3850800000000000000
-      internalID: 6358852582297301334
+      spriteID: 04d72419dd2123270800000000000000
+      internalID: 8228660211993443648
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: smile idle animation 32px_2
+      name: Player Damage take 32px_2
       rect:
         serializedVersion: 2
         x: 0
@@ -167,29 +164,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d20ce75f3c8222ee0800000000000000
-      internalID: -1287421721372082131
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: smile idle animation 32px_3
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 461dac54bbe7eda60800000000000000
-      internalID: 7700731755645030756
+      spriteID: f78833823b385ff50800000000000000
+      internalID: 6914577608394115199
       vertices: []
       indices: 
       edges: []
@@ -197,7 +173,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 392cff0744c49cf47a463ff54952abe5
     internalID: 0
     vertices: []
     indices: 

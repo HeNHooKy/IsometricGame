@@ -7,10 +7,13 @@ public class Enemy : MonoBehaviour
 {
     public static bool isEnemiesTurn = false;
 
-    public GameController controller; //указатель на управляющий игрой компонент
+    
 
-    public float DamageAnimationShift = 2;
-    public float DamageAnimationSpeedShift = 0.095f;
+    public float DamageAnimationShift = 2;  //сдвиг анимации при получении урона
+    public float DamageAnimationSpeedShift = 2f;//скорость сдвига анимации при получении урона
+
+    public float AttackAnimationSpeedShift = 2f; //скорость сдвига анимации при нанесении урона
+    public float AttackAnimationShift = 2f; //сдвиг анимации при нанесении урона
 
     public float AttackPower = 1f;  //количество урона, который получит игрок от атаки этого монстра
     public float RangeMeasure = 2f; //делить дальних атак. Уменьшает-увеличивает урон от дальних атак
@@ -25,6 +28,9 @@ public class Enemy : MonoBehaviour
     public string FloorTag = "Floor"; //тег пола
     public string ItemTag = "Item"; //тег предметов, чтобы они не считались стеной
 
+
+    protected SpriteRenderer eSprite;
+    protected GameController controller; //указатель на управляющий игрой компонент
     protected bool turnCatch = false;
     protected bool isMyTurn = false;
     protected Animator eAnimator;    //указатель на аниматор (У каждого enemy должен быть animator
@@ -130,6 +136,7 @@ public class Enemy : MonoBehaviour
 
         if (!isAlive && isBeingStep) return;
         isBeingStep = true;
+        eSprite.flipX = (tPos - transform.position).x < 0 || (tPos - transform.position).z < 0;
         Vector3 sPos = transform.position;
         //eAnimator.SetBool("IsWalking", true);
         StartCoroutine(_Move(sPos, tPos));
@@ -147,15 +154,15 @@ public class Enemy : MonoBehaviour
         //в мире только один игрок
         PlayerController player;
 
-        Debug.Log(isHit);
-
         if (isHit)
         {   //попався
             player = hit.transform.gameObject.GetComponent<PlayerController>();
             if(player != null)
             {   //точно попався
-                player.Damaged(AttackPower);
-                //eAnimator.SetBool("IsAttack", true);
+                eSprite.flipX = (hit.transform.position - transform.position).x < 0 || (hit.transform.position - transform.position).z < 0;
+                isBeingStep = true;
+                StartCoroutine(CloseAttackAnimation(player.transform));
+
             }
         }
     }
@@ -174,12 +181,13 @@ public class Enemy : MonoBehaviour
     public void Damaged(float damage, Vector3 pPos)
     {
         if (!isAlive) return;
-        isAlive = false;
         StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
         Health -= damage;
         if(Health <= 0f)
-        {   //если здоровье упало слишком низко наступает смерть
-            //eAnimator.SetBool("IsDie", true);
+        {
+            isAlive = false;
+            //если здоровье упало слишком низко наступает смерть
+            eAnimator.Play("Die");
             this.GetComponent<Collider>().enabled = false;
             Invoke("Die", DieTime);
         }
@@ -196,7 +204,6 @@ public class Enemy : MonoBehaviour
     //перемещение
     IEnumerator _Move(Vector3 sPos, Vector3 tPos)
     {
-        
         for (float i = 0; i < 1; i += Time.deltaTime * MoveSpeed)
         {
             transform.position = Vector3.Lerp(sPos, tPos, i);
@@ -208,17 +215,44 @@ public class Enemy : MonoBehaviour
         isBeingStep = false;
     }
 
+    //Анимация ближней атаки
+    IEnumerator CloseAttackAnimation(Transform p)
+    {
+        //eAnimator.SetBool("IsAttack", true);
+        Transform sprite = transform.Find("Character");
+        Vector3 sPos = sprite.position;
+        Vector3 tPos = p.position;
+        tPos -= (p.position - sPos) / AttackAnimationShift;
+        tPos.y = sPos.y;
+        for (float i = 0; i < 1f; i += AttackAnimationSpeedShift * Time.deltaTime)
+        {
+            sprite.position = Vector3.Lerp(sPos, tPos, easeInOutQuart(i));
+            yield return null;
+        }
+
+        PlayerController player = p.GetComponent<PlayerController>();
+        player.Damaged(AttackPower, transform.position); //нанесение урона
+
+        for (float i = 0; i < 1; i += AttackAnimationSpeedShift * Time.deltaTime)
+        {
+            sprite.position = Vector3.Lerp(tPos, sPos, easeOutQuint(i));
+            yield return null;
+        }
+
+        sprite.position = sPos;
+        isBeingStep = false;
+        Energy--;
+    }
+
+
     //плавно Анимация получения урона
     IEnumerator DamageAnimation(Vector3 tPos)
     {
         eAnimator.Play("Damaged");//проиграть анимацию в аниматоре
         Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
 
-        
         SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
         
-
-
         Vector3 sPos = sprite.position;//получим позицию спрата
         //поворот спрайта
         sp.flipX = (sPos - tPos).x < 0 || (tPos - sPos).z > 0;
@@ -226,12 +260,12 @@ public class Enemy : MonoBehaviour
         tPos -= (tPos - sPos) / DamageAnimationShift; 
         tPos.y = sPos.y;
         
-        for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift)
+        for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
         {   //анимация
             sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
             yield return null;
         }
-        for (float i = 0.4f; i < 1; i += DamageAnimationSpeedShift)
+        for (float i = 0.4f; i < 1; i += DamageAnimationSpeedShift * Time.deltaTime)
         {
             sprite.position = Vector3.Lerp(tPos, sPos, easeInOutQuad(i));
             yield return null;
@@ -247,7 +281,17 @@ public class Enemy : MonoBehaviour
     {
         return (float) (x < 0.5 ? 2 * x * x : 1 - Math.Pow(-2 * x + 2, 2) / 2);
     }
-    
+
+    float easeInOutQuart(float x)
+    {
+        return x < 0.5 ? (float)(8 * x * x * x * x) : (float)(1 - Math.Pow(-2 * x + 2, 4) / 2);
+    }
+
+    float easeOutQuint(float x)
+    {
+        return (float)(1 - Math.Pow(1 - x, 5));
+    }
+
 
 }
 
