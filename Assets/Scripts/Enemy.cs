@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Boo.Lang.Runtime.DynamicDispatching;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,7 @@ public class Enemy : MonoBehaviour
     public float DieTime = 3f;  //время, спустя которое противник пропадет после смерти
     public int FarVision = 1; //зона видимости (использует сложные алгоритмы поиска - высокая нагрузка)
     public GameObject Ball; //снаряд для дальней атаки
+    public GameObject MoveBlock; //GameObject with colider wich block move other enemies
     public string PlayerTag = "Player"; //тег игрока
     public string FloorTag = "Floor"; //тег пола
     public string ItemTag = "Item"; //тег предметов, чтобы они не считались стеной
@@ -37,17 +39,27 @@ public class Enemy : MonoBehaviour
     protected bool isAlive = true; //отображает способность двигаться, наносить урон(жить)
     protected PlayerController player; //здесь окажется игрок, если будет обнаружен
     protected List<Vector3> PathToPlayer = null; //после вызова FindPath путь будет храниться в этой перменной
+    
+    
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
+    private GameObject LastMoveBlock; //указатель на блокировку хода
+    static object locker = new object();//локер потоков
 
     //поиск пути к персонажу
-    protected void FindPath()
+    protected void FindPath(int x = Int32.MaxValue, int y = Int32.MaxValue)
     {
         int[,] map = GetMap(new Vector3(transform.position.x, transform.position.z), FarVision);
         System.Drawing.Point PlayerPoint = System.Drawing.Point.Empty;
 
-        for(int i = 0; i < 2 * FarVision + 1; i++)
+        if(x != Int32.MaxValue && y != Int32.MaxValue)
+        {   //заменяем точку перед юнитом на -1, тем самым сообщаем, что тут ходить нельзя
+            map[(int)(FarVision - transform.position.x + x), 
+                (int)(FarVision - transform.position.z + y)] = -1;
+        }
+
+        for(int i = 0; i < (2 * FarVision) + 1; i++)
         {
-            for(int j = 0; j < 2 * FarVision + 1; j++)
+            for(int j = 0; j < (2 * FarVision) + 1; j++)
             {
                 if (map[i, j] == 2)
                 {
@@ -59,13 +71,14 @@ public class Enemy : MonoBehaviour
         }
         end:        //ВОТ ТУТ ВОТ GOTO
 
+
         if (PlayerPoint == System.Drawing.Point.Empty)
         {   //игрок за пределами видимости
             return;
         }
 
         //получаем путь до игрока(если он есть)
-        PathToPlayer = ConvertToVector3(FindClosePath.FindPath(map, new System.Drawing.Point((FarVision / 2) + 1, (FarVision / 2) + 1), PlayerPoint),
+        PathToPlayer = ConvertToVector3(FindClosePath.FindPath(map, new System.Drawing.Point(FarVision, FarVision), PlayerPoint),
             new Vector2(transform.position.x, transform.position.z));
     }
 
@@ -79,8 +92,9 @@ public class Enemy : MonoBehaviour
         List<Vector3> newPath = new List<Vector3>();
         //возможно стоит добавить в newPath точку начала?
         //вычисляем смещение
-        float dx = Math.Abs((float) path[0].X -  sPos.x);
-        float dy = Math.Abs((float)path[0].Y - sPos.y);
+        float dx = (float) path[0].X - sPos.x;
+        float dy = (float)path[0].Y - sPos.y;
+
         for(int i = 0; i < path.Count; i++)
         {   //формируем вектор
             newPath.Add(new Vector3(path[i].X - dx, 0f, path[i].Y - dy));
@@ -91,10 +105,10 @@ public class Enemy : MonoBehaviour
     //построение integer карты перемещений
     int[,] GetMap(Vector2 sPos, int n)
     {
-        int[,] map = new int[2 * n + 1, 2 * n + 1];
-        for(int i = 0; i < 2 * n + 1; i++)
+        int[,] map = new int[(2 * n) + 1, (2 * n) + 1];
+        for(int i = 0; i < (2 * n) + 1; i++)
         {
-            for(int j = 0; j < 2*n+1; j++)
+            for(int j = 0; j < (2 * n) + 1; j++)
             {
                 map[i, j] = GetCell(new Vector3(sPos.x - n + i, -0.2f, sPos.y - n + j));
             }
@@ -131,15 +145,55 @@ public class Enemy : MonoBehaviour
     }
 
     //двигаться
-    protected void Move(Vector3 tPos)
+    protected bool Move(Vector3 tPos)
     {
+        if (!isAlive && isBeingStep) return true;
 
-        if (!isAlive && isBeingStep) return;
+        //вектор перемещения
+        Vector3 M = transform.position - tPos;
+        //точка напротив юнита
+        Vector3 E3 = M + transform.position;
+        Vector3 E2, E4; //точки слева и справа от точки назначения
+        if(Math.Abs(M.x) > 0)
+        {
+            E2 = M + new Vector3(0, 0, -1);
+            E4 = M = new Vector3(0, 0, 1);
+        }
+        else 
+        {
+            E2 = M + new Vector3(-1, 0, 0);
+            E4 = M + new Vector3(1, 0, 0);
+        }
+        //все точки найдены
+        if(EnemyPresence(E2, tPos) || EnemyPresence(E3, tPos) || EnemyPresence(E3, tPos))
+        {
+            return false;
+        }
+
         isBeingStep = true;
         eSprite.flipX = (tPos - transform.position).x < 0 || (tPos - transform.position).z < 0;
         Vector3 sPos = transform.position;
         //eAnimator.SetBool("IsWalking", true);
         StartCoroutine(_Move(sPos, tPos));
+        return true;
+    }
+
+    private bool EnemyPresence(Vector3 E, Vector3 tPos)
+    {
+        //пустим лучи и проверим есть ли там другие Enemy
+        int enemyLayer = (1 << 11);
+        RaycastHit hit; Enemy unit;
+        if (Physics.Raycast(E, Vector3.up, out hit, 2f, enemyLayer))
+        {   //в точке E2 есть юнит
+            //проверим второй путь юнита E2
+            unit = hit.collider.GetComponent<Enemy>();
+            if (unit.PathToPlayer != null && unit.PathToPlayer[1] == tPos)
+            {   //сюда идти нельзя необходимо сгенерировать новый путь
+                return true;
+            }
+        }
+        //все впорядке
+        return false;
     }
 
     //ударить в ближнем бою
@@ -166,6 +220,8 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    
 
     //запустить стрелу
     protected void RangeAttack(Vector3 direct)
@@ -211,6 +267,7 @@ public class Enemy : MonoBehaviour
         }
         transform.position = tPos;
         //eAnimator.SetBool("IsWalking", false);
+        Destroy(LastMoveBlock);
         Energy--;
         isBeingStep = false;
     }

@@ -29,11 +29,11 @@ public class GameController : MonoBehaviour
     //раздача флагов действий монстрам
     IEnumerator SetEnemiesTurn()
     {
-        Enemy.isEnemiesTurn = true;//даем флажок для всех enemy
+        Enemy.isEnemiesTurn = true; //даем флажок для всех enemy
         isEnemiesTurn = true;   //считаем, что сейчас ход противника
         yield return new WaitForSeconds(flagTimer); //ждём
         isEnemiesTurn = false;  //считаем, что ход противника как бы кончился, но если есть живые противники, они выставят флаг заново
-        Enemy.isEnemiesTurn = false;//забираем флажок у всех enemy - за это время каждый enemy должен успеть взять свой флаг
+        Enemy.isEnemiesTurn = false; //забираем флажок у всех enemy - за это время каждый enemy должен успеть взять свой флаг
         StartCoroutine(ReturnToPlayer()); //начинаем слушать
     }
 

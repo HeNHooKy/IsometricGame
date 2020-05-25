@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive) return;
         Health -= damage;
+
         StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
         if (Health <= 0f)
         {   //если здоровье упало слишком низко наступает смерть
@@ -408,14 +409,14 @@ public class PlayerController : MonoBehaviour
     //плавно Анимация получения урона
     IEnumerator DamageAnimation(Vector3 tPos)
     {
-        //pAnimator.Play("Damaged");//проиграть анимацию в аниматоре
+        pAnimator.Play("Damaged");//проиграть анимацию в аниматоре
         Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
 
         SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
 
-        Vector3 sPos = sprite.position;//получим позицию спрата
+        Vector3 sPos = sprite.position;//получим позицию спрайта
         //поворот спрайта
-        sp.flipX = (sPos - tPos).x < 0 || (tPos - sPos).z > 0;
+        sp.flipX = (transform.position - tPos).x < 0 || (tPos - transform.position).z > 0;
 
         tPos -= (tPos - sPos) / DamageAnimationShift;
         tPos.y = sPos.y;

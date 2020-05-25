@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BatController : Enemy
 {
+
+    
     void Start()
     {
         eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
@@ -22,12 +24,20 @@ public class BatController : Enemy
         }
 
         if(isMyTurn)
-        {   //каждый фрейм сообщаем контроллеру, что наш ход еще не окончен
+        {
+            if (Energy < 1f)
+            {   //конец хода
+                isMyTurn = false;
+                turnCatch = false;
+                controller.EnemyTurnEnd();
+                return;
+            }
+            //каждый фрейм сообщаем контроллеру, что наш ход еще не окончен
             controller.EnemyTurnIsNotEnd();
         }
 
         if (isMyTurn && !isBeingStep)
-        {   
+        {
             //релизуем AI
             FindPath(); //ищем путь до игрока
             if (PathToPlayer != null)
@@ -39,18 +49,25 @@ public class BatController : Enemy
                     Debug.DrawLine(prev + Vector3.up * 1, PathToPlayer[i] + Vector3.up * 1, Color.green, 1f);
                     prev = PathToPlayer[i];
                 }
-                
+
                 PathToPlayer.Remove(PathToPlayer.First()); //стираем позицию монстра
                 if (GetCell(PathToPlayer.First()) == 0)
                 {   //тут нет игрока и можно ходить
-                    Move(PathToPlayer.First()); //достаем, делаем ход
+                    Move(PathToPlayer.First());
                 }
-                else if(GetCell(PathToPlayer.First()) == 2)
+                else if (GetCell(PathToPlayer.First()) == 2)
                 {   //тут игрок, в атаку!
                     CloseAttack(PathToPlayer.First());
                 }
-                
             }
+            else
+            {
+                isMyTurn = false;
+                turnCatch = false;
+                Energy = 0;
+                controller.EnemyTurnEnd();
+            }
+             
         }
     }
 }
