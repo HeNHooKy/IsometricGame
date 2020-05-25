@@ -2350,7 +2350,6 @@ PrefabInstance:
       value: Bat
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-<<<<<<< HEAD
   m_SourcePrefab: {fileID: 100100000, guid: 8775bd7375fcd904ab9f9f7df76c6dda, type: 3}
 --- !u!114 &6833051809686773098 stripped
 MonoBehaviour:
@@ -2365,37 +2364,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &7062535857177862331
-=======
-  m_SourcePrefab: {fileID: 100100000, guid: 697d8c99ea89b4648acc98d6e809b677, type: 3}
---- !u!1 &6719190542672284984 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7746739824600395474, guid: 697d8c99ea89b4648acc98d6e809b677,
-    type: 3}
-  m_PrefabInstance: {fileID: 6719190542672284983}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6719190542672284985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6719190542672284984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab2fd0b11cfb2fb4ca4ed47adfcc3b26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Shader: {fileID: 15312, guid: 0000000000000000f000000000000000, type: 0}
-  LookupTexture: {fileID: 2800000, guid: 67bcbd8d45971ca44b476ef311be067e, type: 3}
-  Amount: 1
-  TintColor: {r: 1, g: 1, b: 1, a: 1}
-  Hue: 0
-  Saturation: 0
-  Brightness: 0
-  Contrast: 0
-  Sharpness: 0
---- !u!1001 &8458121962391773470
->>>>>>> 15a4c20f0757d83ef4d4c17bb1334e622415e0ff
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
