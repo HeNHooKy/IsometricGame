@@ -15,41 +15,31 @@ public class BatController : Enemy
     // Update is called once per frame
     void Update()
     {
-        if(isEnemiesTurn && !turnCatch && isAlive)
-        {
-            isMyTurn = true;
-            turnCatch = true;
-            
-            Energy += EnergyReload; //восполняем энергию
-        }
-
         if(isMyTurn)
-        {
+        {   //проверка на конец хода
             if (Energy < 1f)
             {   //конец хода
                 isMyTurn = false;
-                turnCatch = false;
-                controller.EnemyTurnEnd();
                 return;
             }
-            //каждый фрейм сообщаем контроллеру, что наш ход еще не окончен
-            controller.EnemyTurnIsNotEnd();
         }
 
         if (isMyTurn && !isBeingStep)
         {
+            PathToPlayer = null;    //сбрасываем путь (на всякий случай)
             //релизуем AI
             FindPath(); //ищем путь до игрока
+            
             if (PathToPlayer != null)
             {
+                /*
                 //рисуем путь
                 Vector3 prev = PathToPlayer[0];
                 for (int i = 1; i < PathToPlayer.Count; i++)
                 {
                     Debug.DrawLine(prev + Vector3.up * 1, PathToPlayer[i] + Vector3.up * 1, Color.green, 1f);
                     prev = PathToPlayer[i];
-                }
-
+                }*/
                 PathToPlayer.Remove(PathToPlayer.First()); //стираем позицию монстра
                 if (GetCell(PathToPlayer.First()) == 0)
                 {   //тут нет игрока и можно ходить
@@ -61,11 +51,9 @@ public class BatController : Enemy
                 }
             }
             else
-            {
+            {   //пути до игрока не существует. Конец хода
                 isMyTurn = false;
-                turnCatch = false;
                 Energy = 0;
-                controller.EnemyTurnEnd();
             }
              
         }

@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
     private bool beingStep = false;
     private bool isAlive = true;
 
+    private bool isDamaged = false;
+
     void Start()
     {
         pAnimator = GetComponentInChildren<Animator>();
@@ -46,27 +48,28 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
         //получаем объект, на который кликнул пользователь
         turnObj = Touch();
-        if (isMyTurn)
+        if (isMyTurn && !beingStep)
         {
+            if (Energy < 1f)
+            {   //энергия кончилась. Конец хода
+                TurnEnd();
+            }
+
             if (turnObj != null)
             {
                 if (turnObj.tag == FloorTag)
                     TurnFloor(turnObj);
-            }
-
-            if (Energy < 1f)
-            {   //энергия кончилась. Конец хода
-                TurnEnd();
             }
         }
     }
 
     public void Damaged(float damage, Vector3 pPos)
     {
-        if (!isAlive) return;
+        if (!isAlive || isDamaged) return;
+        isDamaged = true;   //сейчас персонаж уже получает урон (исключение необратимых сдвигов спрайта)
+
         Health -= damage;
 
         StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
@@ -90,6 +93,7 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         if (!isAlive) return;   //То, что мертво, умереть не может!
+        ClearFreeLoc(); //очищаем все свободные пути
         Destroy(this.gameObject);
         isAlive = false;
         //вызов окна конца игры
@@ -130,25 +134,28 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     Transform Touch()
     {
-        RaycastHit hit;
-        int layerMask = (1 << 8);
-        if (Input.touchCount > 0)
+        if(isMyTurn && !beingStep)
         {
-            Touch touch = Input.GetTouch(0);
-            Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, layerMask);
-            if (hit.transform == null)
-                return null;
-            return hit.transform;
-        }
-        else
-        {   //тач отжат
-            if (turnFloor != null)
+            RaycastHit hit;
+            int layerMask = (1 << 8);
+            if (Input.touchCount > 0)
             {
-                if (!beingStep)
+                Touch touch = Input.GetTouch(0);
+                Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, layerMask);
+                if (hit.transform == null)
+                    return null;
+                return hit.transform;
+            }
+            else
+            {   //тач отжат
+                if (turnFloor != null)
                 {
-                    //Сдлеай шаг!
-                    beingStep = true;
-                    DoStep();
+                    if (!beingStep)
+                    {
+                        //Сдлеай шаг!
+                        beingStep = true;
+                        DoStep();
+                    }
                 }
             }
         }
@@ -157,6 +164,7 @@ public class PlayerController : MonoBehaviour
 
     void DoStep()
     {
+        if (!isAlive) return;
         //этот метод выполняет любое взаимодействие с окружением
         //проверим свободна ли ячейка
         int layerMask = ~(1 << 10 | 1 << 8); // ~(1 << 10 | 1 << 8)
@@ -409,6 +417,7 @@ public class PlayerController : MonoBehaviour
     //плавно Анимация получения урона
     IEnumerator DamageAnimation(Vector3 tPos)
     {
+        
         pAnimator.Play("Damaged");//проиграть анимацию в аниматоре
         Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
 
@@ -432,6 +441,7 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         sprite.position = sPos;
+        isDamaged = false;
     }
 
     float easeOutExpo(float x)

@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public static bool isEnemiesTurn = false;
-
-    
-
     public float DamageAnimationShift = 2;  //сдвиг анимации при получении урона
     public float DamageAnimationSpeedShift = 2f;//скорость сдвига анимации при получении урона
 
@@ -42,19 +38,12 @@ public class Enemy : MonoBehaviour
     
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
     private GameObject LastMoveBlock; //указатель на блокировку хода
-    static object locker = new object();//локер потоков
 
     //поиск пути к персонажу
-    protected void FindPath(int x = Int32.MaxValue, int y = Int32.MaxValue)
+    protected void FindPath()
     {
         int[,] map = GetMap(new Vector3(transform.position.x, transform.position.z), FarVision);
         System.Drawing.Point PlayerPoint = System.Drawing.Point.Empty;
-
-        if(x != Int32.MaxValue && y != Int32.MaxValue)
-        {   //заменяем точку перед юнитом на -1, тем самым сообщаем, что тут ходить нельзя
-            map[(int)(FarVision - transform.position.x + x), 
-                (int)(FarVision - transform.position.z + y)] = -1;
-        }
 
         for(int i = 0; i < (2 * FarVision) + 1; i++)
         {
@@ -105,11 +94,22 @@ public class Enemy : MonoBehaviour
     int[,] GetMap(Vector2 sPos, int n)
     {
         int[,] map = new int[(2 * n) + 1, (2 * n) + 1];
+        for(int i = 0; i < (2*n)+1; i++)
+        {
+            for(int j = 0; j < (2*n)+1; j++)
+            {
+                map[i, j] = -1;
+            }
+        }
+
         for(int i = 0; i < (2 * n) + 1; i++)
         {
             for(int j = 0; j < (2 * n) + 1; j++)
             {
-                map[i, j] = GetCell(new Vector3(sPos.x - n + i, -0.2f, sPos.y - n + j));
+                if(FarVision >= (new Vector2(FarVision - i, FarVision - j).magnitude))
+                {
+                    map[i, j] = GetCell(new Vector3(sPos.x - n + i, -0.2f, sPos.y - n + j));
+                }
             }
         }
         return map;
@@ -146,17 +146,17 @@ public class Enemy : MonoBehaviour
     //двигаться
     protected void Move(Vector3 tPos)
     {
-        lock (locker)
-        {
+        if (!isAlive && isBeingStep) return;
 
-            if (!isAlive && isBeingStep) return;
+        //создаем стоп-блок
+        LastMoveBlock = Instantiate(MoveBlock);
+        LastMoveBlock.transform.position = tPos;
 
-            isBeingStep = true;
-            eSprite.flipX = (tPos - transform.position).x < 0 || (tPos - transform.position).z < 0;
-            Vector3 sPos = transform.position;
-            //eAnimator.SetBool("IsWalking", true);
-            StartCoroutine(_Move(sPos, tPos));
-        }
+        isBeingStep = true;
+        eSprite.flipX = (tPos - transform.position).x < 0 || (tPos - transform.position).z < 0;
+        Vector3 sPos = transform.position;
+        //eAnimator.SetBool("IsWalking", true);
+        StartCoroutine(_Move(sPos, tPos));
     }
 
     //ударить в ближнем бою
@@ -216,8 +216,20 @@ public class Enemy : MonoBehaviour
     protected void Die()
     {
         if (!isAlive) return;   //То, что мертво, умереть не может
-        controller.EnemyTurnEnd();  //кажется это конец хода :(
+        isMyTurn = false;
         Destroy(this.gameObject);
+    }
+
+    //получение разрешения на ход
+    public void TurnAllowed()
+    {   //начало хода
+        this.isMyTurn = true;
+        Energy += EnergyReload;
+    }
+
+    public bool GetTurnFlag()
+    {
+        return isMyTurn;
     }
 
     //перемещение
@@ -230,7 +242,7 @@ public class Enemy : MonoBehaviour
         }
         transform.position = tPos;
         //eAnimator.SetBool("IsWalking", false);
-        Destroy(LastMoveBlock);
+        Destroy(LastMoveBlock); //удаляем MoveBlock
         Energy--;
         isBeingStep = false;
     }
