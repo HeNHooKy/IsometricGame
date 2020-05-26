@@ -11,16 +11,10 @@ GameObject:
   - component: {fileID: 5171394297600423814}
   - component: {fileID: 5585795308554609493}
   - component: {fileID: 3793748273247653797}
-<<<<<<< HEAD
   - component: {fileID: 7419804347709938635}
   m_Layer: 8
   m_Name: Tile_stone
   m_TagString: Floor
-=======
-  m_Layer: 0
-  m_Name: Tile_stone
-  m_TagString: Untagged
->>>>>>> ca458e8fc06510bd3775acdcd2ff61a412b897ea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5331618809479983920}
-  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5585795308554609493
 MeshFilter:
   m_ObjectHideFlags: 0
