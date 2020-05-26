@@ -39,6 +39,12 @@ public class Enemy : MonoBehaviour
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
     private GameObject LastMoveBlock; //указатель на блокировку хода
 
+    public bool GetAlive()
+    {
+        return isAlive;
+    }
+
+
     //поиск пути к персонажу
     protected void FindPath()
     {

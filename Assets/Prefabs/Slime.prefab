@@ -9,9 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7564421714842974883}
-  m_Layer: 0
+  - component: {fileID: 5010877753196488635}
+  - component: {fileID: 6518312775990876105}
+  m_Layer: 11
   m_Name: Slime
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27,9 +29,83 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 3596594476341409879}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5010877753196488635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3129145072204800656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6f534337b1884d4c881045739d2cf12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamageAnimationShift: 2
+  DamageAnimationSpeedShift: 2
+  AttackAnimationSpeedShift: 2
+  AttackAnimationShift: 2
+  AttackPower: 1
+  RangeMeasure: 2
+  Health: 2
+  Energy: 0
+  EnergyReload: 1
+  MoveSpeed: 1
+  DieTime: 3
+  FarVision: 1
+  Ball: {fileID: 0}
+  MoveBlock: {fileID: 7959823956800075077, guid: 35cac99570036024c9b3ab1c82ea8024,
+    type: 3}
+  PlayerTag: Player
+  FloorTag: Floor
+  ItemTag: Item
+--- !u!65 &6518312775990876105
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3129145072204800656}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0.2, z: 0.2}
+  m_Center: {x: 0, y: 0.4, z: 0}
+--- !u!1 &7125540521222410816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3596594476341409879}
+  m_Layer: 11
+  m_Name: Character
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3596594476341409879
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125540521222410816}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
   - {fileID: 418802439314617057}
   - {fileID: 7074160002319633496}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 7564421714842974883}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8138492627089046912
@@ -42,7 +118,8 @@ GameObject:
   m_Component:
   - component: {fileID: 418802439314617057}
   - component: {fileID: 9167595579266031297}
-  m_Layer: 0
+  - component: {fileID: 8524389342512756949}
+  m_Layer: 11
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,10 +134,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8138492627089046912}
   m_LocalRotation: {x: 0.4964001, y: -0.32275194, z: 0.20561564, w: 0.77919215}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 1.278, z: 0}
+  m_LocalScale: {x: 4.0625005, y: 4.0625005, z: 1}
   m_Children: []
-  m_Father: {fileID: 7564421714842974883}
+  m_Father: {fileID: 3596594476341409879}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 65, y: -45, z: 0}
 --- !u!212 &9167595579266031297
@@ -102,24 +179,43 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7884156784548158355, guid: 551370c1b82147a42a972c4d24e23339,
+  m_Sprite: {fileID: 1201656658933447364, guid: cb3fc9da03dd4404fae0d384c027f73e,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 1
-  m_Size: {x: 1.2, y: 1.2}
+  m_DrawMode: 0
+  m_Size: {x: 1.3, y: 1.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8524389342512756949
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138492627089046912}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8b75324e34ec3864084a1aaab1d573df, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &7774127886946254269
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 7564421714842974883}
+    m_TransformParent: {fileID: 3596594476341409879}
     m_Modifications:
     - target: {fileID: 706844231555772901, guid: 25a7361115eefbf4f80391b4bb9c6623,
         type: 3}
@@ -144,12 +240,12 @@ PrefabInstance:
     - target: {fileID: 706844231555772901, guid: 25a7361115eefbf4f80391b4bb9c6623,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 706844231555772901, guid: 25a7361115eefbf4f80391b4bb9c6623,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 706844231555772901, guid: 25a7361115eefbf4f80391b4bb9c6623,
         type: 3}
@@ -180,6 +276,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Shadow
+      objectReference: {fileID: 0}
+    - target: {fileID: 7734193761201900112, guid: 25a7361115eefbf4f80391b4bb9c6623,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25a7361115eefbf4f80391b4bb9c6623, type: 3}

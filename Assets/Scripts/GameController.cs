@@ -31,9 +31,13 @@ public class GameController : MonoBehaviour
         //сообщаем каждому мобу по очереди разрешение на ход
         foreach (GameObject e in Enemies)
         {
-            e.GetComponent<Enemy>().TurnAllowed();
-            yield return null;  //пропускаем два фрейма
-            yield return null;
+            Enemy enemy = e.GetComponent<Enemy>();
+            if (enemy.GetAlive())
+            {
+                e.GetComponent<Enemy>().TurnAllowed();
+                yield return null;  //пропускаем два фрейма
+                yield return null;
+            }
         }
 
         StartCoroutine(ReturnToPlayer());

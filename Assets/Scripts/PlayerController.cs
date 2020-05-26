@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         if (Health <= 0f)
         {   //если здоровье упало слишком низко наступает смерть
             //тут показываем анимацию смерти
-            //pAnimator.Play("Die");
+            StartCoroutine(DieAnimation(transform.position + (transform.position - pPos)));
             ClearFreeLoc(); //очищаем все свободные пути
             isAlive = false;
             Invoke("Die", DieTime);
@@ -90,7 +90,6 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive)
             return; //смерть. Ход не возвращается
-
         ClearFreeLoc();
         Energy += EnergyReload;
         isMyTurn = true;
@@ -391,7 +390,26 @@ public class PlayerController : MonoBehaviour
         sp.color = color;
     }
 
-    
+    IEnumerator DieAnimation(Vector3 tPos)
+    {
+        pAnimator.Play("Die");
+        Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
+        SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
+
+        Vector3 sPos = sprite.position;//получим позицию спрайта
+        //поворот спрайта
+        sp.flipX = (transform.position - tPos).x < 0 || (tPos - transform.position).z > 0;
+
+        tPos -= (tPos - sPos) / DamageAnimationShift;
+        tPos.y = sPos.y;
+
+        for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
+        {   //анимация
+            sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
+            yield return null;
+        }
+    }
+
     IEnumerator AttackAnimation(Transform e)
     {
         pAnimator.Play("PlayerAttack");
