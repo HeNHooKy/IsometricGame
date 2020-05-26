@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float Health = 4f;
     public float Energy = 0f;
     public float EnergyReload = 2f;
-    public float DieTime = 1f;
+    public float DieTime = 10f;
     public float AttackPower = 1f; //сила атаки
     public float MoveSpeed = 1f;
     public GameController GameController;
@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!isAlive)
+            return; //мертвый персонаж больше не обрабатывается 
         //получаем объект, на который кликнул пользователь
         turnObj = Touch();
         if (isMyTurn && !beingStep)
@@ -69,19 +71,26 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive || isDamaged) return;
         isDamaged = true;   //сейчас персонаж уже получает урон (исключение необратимых сдвигов спрайта)
-
         Health -= damage;
-
-        StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
+        if(Health > 0f)
+        {   //показвыаем анимацию получения урона
+            StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
+        }
         if (Health <= 0f)
         {   //если здоровье упало слишком низко наступает смерть
+            //тут показываем анимацию смерти
             //pAnimator.Play("Die");
+            ClearFreeLoc(); //очищаем все свободные пути
+            isAlive = false;
             Invoke("Die", DieTime);
         }
     }
 
     public void TurnStart()
     {
+        if (!isAlive)
+            return; //смерть. Ход не возвращается
+
         ClearFreeLoc();
         Energy += EnergyReload;
         isMyTurn = true;
@@ -93,9 +102,8 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         if (!isAlive) return;   //То, что мертво, умереть не может!
-        ClearFreeLoc(); //очищаем все свободные пути
+        
         Destroy(this.gameObject);
-        isAlive = false;
         //вызов окна конца игры
     }
 
