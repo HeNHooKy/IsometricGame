@@ -1,11 +1,30 @@
-﻿using System.Collections;
+﻿using Boo.Lang;
+using System.Collections;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    
     public PlayerController player;
     public static bool isEnemiesTurn = false;   //монстры могут менять эту перменную
     public float flagTimer = 0.5f;  //время на которое становится доступен флаг хода монстра
+    public float length = 100f; //длина игрового поля
+    public float witdh = 100f; //ширина игрового поля
+
+    private List<Enemy> AllEnemies;  //все монстры на карте
+
+    private void Start()
+    {
+        RaycastHit[] allHits;
+        int enemiesLayer = (1 << 11);
+        //собираем всех мобов, которые есть на карте
+        allHits = Physics.BoxCastAll(new Vector3(0, 0, 0), new Vector3(length, 3f, witdh), Vector3.up * 3f, Quaternion.identity, 3f, enemiesLayer);
+        foreach(RaycastHit h in allHits)
+        {
+            Enemy e = h.collider.GetComponent<Enemy>();
+            AllEnemies.Add(e);
+        }
+    }
 
     //ход противника закончился
     public void EnemyTurnEnd()

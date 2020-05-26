@@ -67,7 +67,7 @@ MonoBehaviour:
   Health: 50
   Energy: 0
   EnergyReload: 2
-  MoveSpeed: 1
+  MoveSpeed: 3
   DieTime: 10
   FarVision: 2
   Ball: {fileID: 0}

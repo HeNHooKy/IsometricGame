@@ -1,5 +1,4 @@
-﻿using Boo.Lang.Runtime.DynamicDispatching;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -145,55 +144,19 @@ public class Enemy : MonoBehaviour
     }
 
     //двигаться
-    protected bool Move(Vector3 tPos)
+    protected void Move(Vector3 tPos)
     {
-        if (!isAlive && isBeingStep) return true;
-
-        //вектор перемещения
-        Vector3 M = transform.position - tPos;
-        //точка напротив юнита
-        Vector3 E3 = M + transform.position;
-        Vector3 E2, E4; //точки слева и справа от точки назначения
-        if(Math.Abs(M.x) > 0)
+        lock (locker)
         {
-            E2 = M + new Vector3(0, 0, -1);
-            E4 = M = new Vector3(0, 0, 1);
-        }
-        else 
-        {
-            E2 = M + new Vector3(-1, 0, 0);
-            E4 = M + new Vector3(1, 0, 0);
-        }
-        //все точки найдены
-        if(EnemyPresence(E2, tPos) || EnemyPresence(E3, tPos) || EnemyPresence(E3, tPos))
-        {
-            return false;
-        }
 
-        isBeingStep = true;
-        eSprite.flipX = (tPos - transform.position).x < 0 || (tPos - transform.position).z < 0;
-        Vector3 sPos = transform.position;
-        //eAnimator.SetBool("IsWalking", true);
-        StartCoroutine(_Move(sPos, tPos));
-        return true;
-    }
+            if (!isAlive && isBeingStep) return;
 
-    private bool EnemyPresence(Vector3 E, Vector3 tPos)
-    {
-        //пустим лучи и проверим есть ли там другие Enemy
-        int enemyLayer = (1 << 11);
-        RaycastHit hit; Enemy unit;
-        if (Physics.Raycast(E, Vector3.up, out hit, 2f, enemyLayer))
-        {   //в точке E2 есть юнит
-            //проверим второй путь юнита E2
-            unit = hit.collider.GetComponent<Enemy>();
-            if (unit.PathToPlayer != null && unit.PathToPlayer[1] == tPos)
-            {   //сюда идти нельзя необходимо сгенерировать новый путь
-                return true;
-            }
+            isBeingStep = true;
+            eSprite.flipX = (tPos - transform.position).x < 0 || (tPos - transform.position).z < 0;
+            Vector3 sPos = transform.position;
+            //eAnimator.SetBool("IsWalking", true);
+            StartCoroutine(_Move(sPos, tPos));
         }
-        //все впорядке
-        return false;
     }
 
     //ударить в ближнем бою
@@ -281,6 +244,7 @@ public class Enemy : MonoBehaviour
         Vector3 tPos = p.position;
         tPos -= (p.position - sPos) / AttackAnimationShift;
         tPos.y = sPos.y;
+
         for (float i = 0; i < 1f; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
             sprite.position = Vector3.Lerp(sPos, tPos, easeInOutQuart(i));
