@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour
     
     public PlayerController player;
     public static bool isEnemiesTurn = false;   //монстры могут менять эту перменную
+    public string EnemyTag = "Enemy";
     public float flagTimer = 0.5f;  //время на которое становится доступен флаг хода монстра
     public float length = 100f; //длина игрового поля
     public float witdh = 100f; //ширина игрового поля
@@ -15,14 +16,12 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        RaycastHit[] allHits;
-        int enemiesLayer = (1 << 11);
-        //собираем всех мобов, которые есть на карте
-        allHits = Physics.BoxCastAll(new Vector3(0, 0, 0), new Vector3(length, 3f, witdh), Vector3.up * 3f, Quaternion.identity, 3f, enemiesLayer);
-        foreach(RaycastHit h in allHits)
+        GameObject[] enemiesGameObject = GameObject.FindGameObjectsWithTag(EnemyTag);
+
+        foreach(GameObject go in enemiesGameObject)
         {
-            Enemy e = h.collider.GetComponent<Enemy>();
-            AllEnemies.Add(e);
+            AllEnemies.Add(go.GetComponent<Enemy>());
+            Debug.Log(go.name);
         }
     }
 

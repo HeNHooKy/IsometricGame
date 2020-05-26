@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: d7704f0f6ef59d5489b471b25bf36bee
+=======
+guid: 9b51a0d60ce17c546b143de3413df1ad
+>>>>>>> refs/remotes/IsometricGame1/master
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 0552a938a849e05448b2ecbf3598fe2b
+=======
+guid: b759dd1cbdd11e641bbcec0ce2b8586f
+>>>>>>> refs/remotes/IsometricGame1/master
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
