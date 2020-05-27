@@ -10,11 +10,16 @@ public class PlayerController : MonoBehaviour
     public float AttackAnimationSpeedShift = 0.1f;
     public float AttackAnimationShift = 2f;
 
-    public float Health = 4f;
-    public float Energy = 0f;
-    public float EnergyReload = 2f;
-    public float DieTime = 10f;
+    public float Health = 4f;   //здоровье
+    public float EnergyReload = 2f; //количество действий за ход
     public float AttackPower = 1f; //сила атаки
+    public float AttackChance = 0.5f;   //шанс урона
+    public float CriticalChance = 0.15f;    //шанс крита
+    public float CriticalMultiply = 1.5f; //множитель критического удара
+    public float BiasChance = 0.15f; //шанс уклона
+
+
+    public float DieTime = 10f;
     public float MoveSpeed = 1f;
     public GameController GameController;
     public GameObject FreeFloor;
@@ -35,8 +40,10 @@ public class PlayerController : MonoBehaviour
     private bool isMyTurn = false;
     private bool beingStep = false;
     private bool isAlive = true;
-
+    private float Energy = 0f;
     private bool isDamaged = false;
+
+    private System.Random random = new System.Random();
 
     void Start()
     {
@@ -67,11 +74,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Damaged(float damage, Vector3 pPos)
+    /// <summary>
+    /// Register damage to player
+    /// </summary>
+    /// <param name="damage">Attack Power</param>
+    /// <param name="AC">Attack Chance</param>
+    /// <param name="pPos">My position</param>
+    public void Damaged(float damage, float AC, Vector3 pPos)
     {
-        if (!isAlive || isDamaged) return;
+        if (!isAlive) return;
+        //пересчет шанса урона, уклонения
+        float chance = (float)random.NextDouble();
+        if (chance > (AC - BiasChance))
+        {   //промах!
+            return;
+        }
+
+        Health -= damage; //сначала снимаем HP потом проверяем
+
+        if (isDamaged) return;  //игрок уже получает урон. Анимирование невозможно
+
         isDamaged = true;   //сейчас персонаж уже получает урон (исключение необратимых сдвигов спрайта)
-        Health -= damage;
         if(Health > 0f)
         {   //показвыаем анимацию получения урона
             StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
@@ -419,6 +442,7 @@ public class PlayerController : MonoBehaviour
         Vector3 tPos = e.position;
         tPos -= (e.position - sPos) / AttackAnimationShift;
         tPos.y = sPos.y;
+
         for(float i = 0; i < 1f; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
             sprite.position = Vector3.Lerp(sPos, tPos, easeInOutQuart(i));
@@ -426,7 +450,21 @@ public class PlayerController : MonoBehaviour
         }
 
         Enemy enemy = e.GetComponent<Enemy>();
-        enemy.Damaged(AttackPower, transform.position); //нанесение урона
+
+        //крит
+        float CC = (float) random.NextDouble();
+        float attack = AttackPower;
+        bool trueSight = false;
+
+        if (CC <= CriticalChance)
+        {   //произошел крит. Вызываем анимацию крита и сообщаем противнику повышенный урон
+            trueSight = true;
+            attack = AttackPower * CriticalMultiply;
+            transform.Find("Character").Find("CRIT").Find("Text").GetComponent<Animator>().Play("Text");
+        }
+        
+
+        enemy.Damaged(attack, AttackChance, transform.position, trueSight); //нанесение урона
 
         for (float i = 0; i < 1; i += AttackAnimationSpeedShift * Time.deltaTime)
         {

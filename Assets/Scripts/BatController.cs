@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class BatController : Enemy
 {
-
-    
+    private HealthBar hp;
     void Start()
     {
+        StartHP = Health;
+        hp = transform.Find("Character").Find("HealthBar").GetComponent<HealthBar>();
         eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
         controller = transform.Find("/GameController").GetComponent<GameController>();
         eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
@@ -15,7 +16,9 @@ public class BatController : Enemy
     // Update is called once per frame
     void Update()
     {
-        if(isMyTurn)
+        hp.Set(Health / StartHP);
+
+        if (isMyTurn)
         {   //проверка на конец хода
             if (Energy < 1f)
             {   //конец хода

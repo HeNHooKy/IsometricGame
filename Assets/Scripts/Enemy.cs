@@ -1,20 +1,33 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour
 {
+    //анимация
     public float DamageAnimationShift = 2;  //сдвиг анимации при получении урона
     public float DamageAnimationSpeedShift = 2f;//скорость сдвига анимации при получении урона
 
     public float AttackAnimationSpeedShift = 2f; //скорость сдвига анимации при нанесении урона
     public float AttackAnimationShift = 2f; //сдвиг анимации при нанесении урона
 
-    public float AttackPower = 1f;  //количество урона, который получит игрок от атаки этого монстра
+    public float TextMoveSpeed = 1f;
+
+    //атрибуты
     public float RangeMeasure = 2f; //делить дальних атак. Уменьшает-увеличивает урон от дальних атак
+
+    public float AttackPower = 1f;  //количество урона, который получит игрок от атаки этого монстра
     public float Health = 2f; //здоровье противника
     public float Energy = 0f;   //количество действий за ход
+    public float AttackChance = 0.5f;   //шанс урона
+    public float CriticalChance = 0.15f;    //шанс крита
+    public float CriticalMultiply = 1.5f; //множитель критического удара
+    public float BiasChance = 0.15f; //шанс уклона
+
+    public int Score = 500; //количество 
+
     public float EnergyReload = 1f; //количество восполняемой в ход энергии
     public float MoveSpeed = 1f; //скорость анимирования передвижения
     public float DieTime = 3f;  //время, спустя которое противник пропадет после смерти
@@ -25,7 +38,6 @@ public class Enemy : MonoBehaviour
     public string FloorTag = "Floor"; //тег пола
     public string ItemTag = "Item"; //тег предметов, чтобы они не считались стеной
 
-
     protected SpriteRenderer eSprite;
     protected GameController controller; //указатель на управляющий игрой компонент
     protected bool turnCatch = false;
@@ -34,16 +46,17 @@ public class Enemy : MonoBehaviour
     protected bool isAlive = true; //отображает способность двигаться, наносить урон(жить)
     protected PlayerController player; //здесь окажется игрок, если будет обнаружен
     protected List<Vector3> PathToPlayer = null; //после вызова FindPath путь будет храниться в этой перменной
-    
-    
+    protected float StartHP; //стартовое количество здоровья (полная шкала здоровья)
+
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
     private GameObject LastMoveBlock; //указатель на блокировку хода
+    private System.Random random = new System.Random();
+    
 
     public bool GetAlive()
     {
         return isAlive;
     }
-
 
     //поиск пути к персонажу
     protected void FindPath()
@@ -202,14 +215,28 @@ public class Enemy : MonoBehaviour
         arrow.transform.rotation = Quaternion.Euler(0f, Vector3.Angle(transform.position, direct), 0f); //поворот стрелы
     }
     
-    //получение урона
-    public void Damaged(float damage, Vector3 pPos)
-    {
+    /// <summary>
+    /// Register damage to enemy
+    /// </summary>
+    /// <param name="damage">Attack Power</param>
+    /// <param name="AC">Attack Chance</param>
+    /// <param name="pPos">My position</param>
+    public void Damaged(float damage, float AC, Vector3 pPos, bool trueSight = false)
+    {   //AC - AttackChance
         if (!isAlive) return;
+        //пересчет шанса урона, уклонения
+        float chance = !trueSight ? (float) random.NextDouble() : 0;
+        
+        if (chance > (AC - BiasChance))
+        {   //промах!
+            return;
+        }
+
         StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
         Health -= damage;
         if(Health <= 0f)
         {
+            controller.AddScore(Score); //дать игроку заработанные очки
             isAlive = false;
             //если здоровье упало слишком низко наступает смерть
             eAnimator.Play("Die");
@@ -269,8 +296,12 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
 
+        //крит
+        float CC = (float)random.NextDouble();
+        float attack = CC <= CriticalChance ? AttackPower * CriticalMultiply : AttackPower;
+
         PlayerController player = p.GetComponent<PlayerController>();
-        player.Damaged(AttackPower, transform.position); //нанесение урона
+        player.Damaged(attack, AttackChance, transform.position); //нанесение урона
 
         for (float i = 0; i < 1; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
@@ -291,14 +322,14 @@ public class Enemy : MonoBehaviour
         Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
 
         SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
-        
+
         Vector3 sPos = sprite.position;//получим позицию спрата
         //поворот спрайта
         sp.flipX = (sPos - tPos).x < 0 || (tPos - sPos).z > 0;
 
-        tPos -= (tPos - sPos) / DamageAnimationShift; 
+        tPos -= (tPos - sPos) / DamageAnimationShift;
         tPos.y = sPos.y;
-        
+
         for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
         {   //анимация
             sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
@@ -311,6 +342,7 @@ public class Enemy : MonoBehaviour
         }
         sprite.position = sPos;
     }
+
 
     float easeOutExpo(float x)
     {
@@ -330,7 +362,6 @@ public class Enemy : MonoBehaviour
     {
         return (float)(1 - Math.Pow(1 - x, 5));
     }
-
 
 }
 

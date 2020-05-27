@@ -6,9 +6,10 @@ public class GameController : MonoBehaviour
     
     public PlayerController player;
     public string EnemyTag = "Enemy";
-    public float flagTimer = 0.5f;  //время на которое становится доступен флаг хода монстра
-    public float length = 100f; //длина игрового поля
-    public float witdh = 100f; //ширина игрового поля
+    public float FlagTimer = 0.5f;  //время на которое становится доступен флаг хода монстра
+    public float Length = 100f; //длина игрового поля
+    public float Witdh = 100f; //ширина игрового поля
+    public long Score = 0;
 
     private GameObject[] Enemies;  //все монстры на карте
 
@@ -17,7 +18,11 @@ public class GameController : MonoBehaviour
         Enemies = GameObject.FindGameObjectsWithTag(EnemyTag);
     }
 
-    //пока все противники не скажут, что их ход закончился - переменная в конечном итоге будет оставаться true
+    public void AddScore(int score)
+    {
+        this.Score += score;
+    }
+
 
     public void PlayerTurnEnd()
     {
@@ -27,7 +32,6 @@ public class GameController : MonoBehaviour
     //раздача флагов действий монстрам
     IEnumerator SetEnemiesTurn()
     {
-        Debug.Log("EnemiesTurn");
         //сообщаем каждому мобу по очереди разрешение на ход
         foreach (GameObject e in Enemies)
         {
@@ -60,7 +64,6 @@ public class GameController : MonoBehaviour
             isEnemiesTurn = false;
             foreach (GameObject e in Enemies)
             {
-                Debug.Log(isEnemiesTurn);
                 if (e.GetComponent<Enemy>().GetTurnFlag())
                 {   //если хотя бы у одного моба включен флаг ->
                     isEnemiesTurn = true;
