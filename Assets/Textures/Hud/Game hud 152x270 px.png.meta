@@ -1,0 +1,554 @@
+fileFormatVersion: 2
+guid: be821a4d1768fb04584b08f8a9040e86
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4441902110363371484
+    second: Game hud 152x270 px_0
+  - first:
+      213: 2181912781484320641
+    second: Game hud 152x270 px_1
+  - first:
+      213: -8589525661676836082
+    second: Game hud 152x270 px_2
+  - first:
+      213: -381784649826586126
+    second: Game hud 152x270 px_3
+  - first:
+      213: 1804079178403746842
+    second: Game hud 152x270 px_4
+  - first:
+      213: -8467770931043058357
+    second: Game hud 152x270 px_5
+  - first:
+      213: -4348107539531001173
+    second: Game hud 152x270 px_6
+  - first:
+      213: -3433982299939652824
+    second: Game hud 152x270 px_7
+  - first:
+      213: 822273850138051388
+    second: Game hud 152x270 px_8
+  - first:
+      213: -8768154366755993187
+    second: Game hud 152x270 px_9
+  - first:
+      213: -6038178967475894059
+    second: Game hud 152x270 px_10
+  - first:
+      213: -7753036846973692897
+    second: Game hud 152x270 px_11
+  - first:
+      213: 3760937109473075651
+    second: Game hud 152x270 px_12
+  - first:
+      213: 8333746467631491447
+    second: Game hud 152x270 px_13
+  - first:
+      213: -6783656752292159795
+    second: Game hud 152x270 px_14
+  - first:
+      213: -4311233991422876239
+    second: Game hud 152x270 px_15
+  - first:
+      213: 7453684943019226802
+    second: Game hud 152x270 px_16
+  - first:
+      213: 965022471523919174
+    second: Game hud 152x270 px_17
+  - first:
+      213: 3038073754897365256
+    second: Game hud 152x270 px_18
+  - first:
+      213: -2928369476535153868
+    second: Game hud 152x270 px_17
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Game hud 152x270 px_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 330
+        width: 152
+        height: 270
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 428bbb890913b52c0800000000000000
+      internalID: -4441902110363371484
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_1
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 564
+        width: 67
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 187e14f4d16b74e10800000000000000
+      internalID: 2181912781484320641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_2
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 564
+        width: 67
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0b66a28befdbc880800000000000000
+      internalID: -8589525661676836082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_5
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 365
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4dbccfc33f6c7a80800000000000000
+      internalID: -8467770931043058357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_3
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 365
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f1b36e32e0a3baf0800000000000000
+      internalID: -381784649826586126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_4
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 332
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a141f6f4470690910800000000000000
+      internalID: 1804079178403746842
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_6
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 332
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba29e05ea3b68a3c0800000000000000
+      internalID: -4348107539531001173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_7
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 386
+        width: 63
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82b3e1fca4b0850d0800000000000000
+      internalID: -3433982299939652824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_8
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 333
+        width: 63
+        height: 50
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c334299c5bd496b00800000000000000
+      internalID: 822273850138051388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_9
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 291
+        width: 71
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9908b12f02415680800000000000000
+      internalID: -8768154366755993187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_10
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 291
+        width: 71
+        height: 34
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d84d518834143ca0800000000000000
+      internalID: -6038178967475894059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_11
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 129
+        width: 150
+        height: 162
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f145e95a01ea76490800000000000000
+      internalID: -7753036846973692897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_12
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 93
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c12ab0ff58813430800000000000000
+      internalID: 3760937109473075651
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_13
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 95
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 779675b124a67a370800000000000000
+      internalID: 8333746467631491447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_14
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 115
+        width: 68
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dce1279002c9bd1a0800000000000000
+      internalID: -6783656752292159795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_15
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 61
+        width: 68
+        height: 54
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b566a5d68b6b24c0800000000000000
+      internalID: -4311233991422876239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_16
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 364
+        width: 34
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b6b650e6fec07760800000000000000
+      internalID: 7453684943019226802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_18
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 364
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8093812dbf7692a20800000000000000
+      internalID: 3038073754897365256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: d2eb19d14cafbbd488c14868ea96c5f3
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
