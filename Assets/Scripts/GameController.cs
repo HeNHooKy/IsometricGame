@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    
+    public static int MaxItemsListLength = 100;
+    public Item[] ItemsList = new Item[MaxItemsListLength];
     public PlayerController player;
     public string EnemyTag = "Enemy";
     public float FlagTimer = 0.5f;  //время на которое становится доступен флаг хода монстра
@@ -15,6 +16,19 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {   //получаем список всех enemy на карте
+
+        for(int i = 0; i < ItemsList.Length; i++)
+        {   //проверка соотетствия id предметов с их позицией в массиве предметов
+            if(ItemsList[i] != null)
+            {
+                if(ItemsList[i].id != i)
+                {
+                    throw new System.Exception("The id is not associated with position in array!");
+                }
+            }
+        }
+
+
         Enemies = GameObject.FindGameObjectsWithTag(EnemyTag);
     }
 

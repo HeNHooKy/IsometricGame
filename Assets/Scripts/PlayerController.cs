@@ -43,6 +43,8 @@ public class PlayerController : MonoBehaviour
     private float Energy = 0f;
     private bool isDamaged = false;
 
+    
+
     private System.Random random = new System.Random();
 
     void Start()
@@ -129,6 +131,14 @@ public class PlayerController : MonoBehaviour
         //вызов окна конца игры
     }
 
+    /// <summary>
+    /// Player capacity to do something
+    /// </summary>
+    /// <returns></returns>
+    public bool GetCapacity()
+    {   //способность игрока выполнить какое-то действие
+        return isMyTurn && isAlive && !beingStep;
+    }
 
     /// <summary>
     /// This method change the floor texture
@@ -211,7 +221,11 @@ public class PlayerController : MonoBehaviour
         {
             Attack(hit.collider.gameObject);
         }
-        else 
+        else if(hit.collider.tag == ItemTag)
+        {
+            //тут лежит что-то ценное, игнорируй :)
+        }
+        else
         { 
             //Кажется тут занято. Идти нельзя, нужно попробовать другое действие
         }
@@ -328,32 +342,24 @@ public class PlayerController : MonoBehaviour
                 freeLocs[n] = Instantiate(FreeFloor);
                 freeLocs[n].transform.position = position;
                 sp = freeLocs[n].GetComponentInChildren<SpriteRenderer>();
-                if (isStart)
-                {   //если метод вызван со старта
-                    sp.color = new Color(1f, 1f, 1f, 0.5f);
-                }
-                else
-                {
-                    StartCoroutine(Show(sp, 0.5f));
-                }
+                StartCoroutine(Show(sp, 0.5f));
                 break;
             case 2: //тут противник
                 freeLocs[n] = Instantiate(FreeFloor);
                 freeLocs[n].transform.position = position;
                 sp = freeLocs[n].GetComponentInChildren<SpriteRenderer>();
-                sp.color = Color.red;
+                //делай красным
+                sp.color = new Color(1f, 0f, 0f, 0f);
+                StartCoroutine(Show(sp, 0.5f));
+                break;
+            case 4: //тут лежит что-то ценное
+                freeLocs[n] = Instantiate(FreeFloor);
+                freeLocs[n].transform.position = position;
+                sp = freeLocs[n].GetComponentInChildren<SpriteRenderer>();
 
-                if (isStart)
-                {   //если метод вызван со старта
-                    //делай красным
-                    sp.color = new Color(1f, 0f, 0f, 0.5f);
-                }
-                else
-                {
-                    //делай красным
-                    sp.color = new Color(1f, 0f, 0f, 0f);
-                    StartCoroutine(Show(sp, 0.5f));
-                }
+                //делай зеленым
+                sp.color = new Color(0f, 1f, 0f, 0f);
+                StartCoroutine(Show(sp, 0.5f));
                 break;
         }
     }
