@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7767766203960673495}
   - component: {fileID: 206883318147537500}
-  - component: {fileID: 6880201155622559716}
+  - component: {fileID: 6102731945461691351}
   m_Layer: 12
   m_Name: HealingPotion
   m_TagString: Item
@@ -46,7 +46,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!114 &6880201155622559716
+--- !u!114 &6102731945461691351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,13 +55,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1790074142932618716}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 062da941a0076d84f9cff81a98dac633, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ccb803d946ac474dafd38c86ff600fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Rarity: 1
   isActivate: 1
   PlayerTag: Player
   ItemSprite: {fileID: 21300000, guid: fa570a14e16673644bcd7046a4d69604, type: 3}
+  count: 1
+  maxStack: 4
+  id: 0
+  HealthPower: 5
 --- !u!1 &2438816298905084362
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,6 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3375525869157467412}
   - component: {fileID: 3146673456904633240}
+  - component: {fileID: 1482826242956680994}
   m_Layer: 12
   m_Name: Sprite
   m_TagString: Untagged
@@ -143,3 +148,23 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1482826242956680994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2438816298905084362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ccb803d946ac474dafd38c86ff600fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Rarity: 1
+  isActivate: 1
+  PlayerTag: Player
+  ItemSprite: {fileID: 0}
+  count: 1
+  maxStack: 4
+  id: 0
+  HealthPower: 5

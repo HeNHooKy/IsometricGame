@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -47,6 +48,7 @@ public abstract class Enemy : MonoBehaviour
     protected PlayerController player; //здесь окажется игрок, если будет обнаружен
     protected List<Vector3> PathToPlayer = null; //после вызова FindPath путь будет храниться в этой перменной
     protected float StartHP; //стартовое количество здоровья (полная шкала здоровья)
+    protected HealthBar hp; //шкала здоровья
 
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
     private GameObject LastMoveBlock; //указатель на блокировку хода
@@ -241,6 +243,7 @@ public abstract class Enemy : MonoBehaviour
             //если здоровье упало слишком низко наступает смерть
             eAnimator.Play("Die");
             this.GetComponent<Collider>().enabled = false;
+            Destroy(hp.gameObject);
             Invoke("Die", DieTime);
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BatController : Enemy
 {
-    private HealthBar hp;
+    
     void Start()
     {
         StartHP = Health;
@@ -16,7 +16,10 @@ public class BatController : Enemy
     // Update is called once per frame
     void Update()
     {
-        hp.Set(Health / StartHP);
+        if(isAlive)
+        {
+            hp.Set(Health / StartHP);
+        }
 
         if (isMyTurn)
         {   //проверка на конец хода

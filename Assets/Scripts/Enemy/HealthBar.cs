@@ -14,7 +14,7 @@ public class HealthBar : MonoBehaviour
     public void Display()
     {
         Line.localScale = new Vector3(Health, 1f, 1f);
-        Line.localPosition = new Vector3((float)(-((1 - Health) / 2) - 0.03), 0f, 0f);
+        Line.localPosition = new Vector3((float)(-((1 - Health) / 2)), 0f, 0f);
     }
 
     public void Set(float health)
