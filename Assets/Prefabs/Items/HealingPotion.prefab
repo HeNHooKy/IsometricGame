@@ -61,7 +61,7 @@ MonoBehaviour:
   Rarity: 1
   isActivate: 1
   PlayerTag: Player
-  ItemSprite: {fileID: 21300000, guid: fa570a14e16673644bcd7046a4d69604, type: 3}
+  ItemSprite: {fileID: 21300000, guid: 86436240428f15b448ef1addeb586226, type: 3}
   count: 1
   maxStack: 4
   id: 0

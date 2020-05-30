@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     public string EnvironmentTag = "Environment";
     public string ItemTag = "Item";
 
+    public bool isPressedButton = false;
+
     Transform turnObj;
     GameObject turnFloor = null;
     Animator pAnimator;
@@ -175,17 +177,19 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     Transform Touch()
     {
-        if(isMyTurn && !beingStep)
+        if(isMyTurn && !beingStep && !isPressedButton)
         {
-            RaycastHit hit;
-            int layerMask = (1 << 8);
+            
             if (Input.touchCount > 0)
             {
+                //ловим пол
+                RaycastHit hitFloor;
+                int layerMask = (1 << 8);
                 Touch touch = Input.GetTouch(0);
-                Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, layerMask);
-                if (hit.transform == null)
+                Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitFloor, layerMask);
+                if (hitFloor.transform == null)
                     return null;
-                return hit.transform;
+                return hitFloor.transform;
             }
             else
             {   //тач отжат

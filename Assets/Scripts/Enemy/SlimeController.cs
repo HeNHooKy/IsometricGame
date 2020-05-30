@@ -52,28 +52,5 @@ public class SlimeController : Enemy
         }
     }
 
-    /// <summary>
-    /// Get random position around slime,
-    /// if around slime exist player - return player position
-    /// </summary>
-    Vector3 GetRandomPosition(out bool isNotExist)
-    {
-        bool isPlayer;
-        List<Vector3> locations = GetFreeLocation(out isPlayer);
-
-        isNotExist = false;
-        if(locations.Count == 0)
-        {
-            isNotExist = true;
-            return Vector3.zero;
-        }
-        if(isPlayer)
-        {
-            return locations.Last();
-        }
-        else
-        {
-            return locations[random.Next(locations.Count)];
-        }    
-    }
+    
 }

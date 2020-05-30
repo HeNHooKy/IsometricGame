@@ -37,6 +37,14 @@ public class HUD : MonoBehaviour
         bottomItemText = Root.Find("BottomItem").Find("Count").GetComponent<Text>();
     }
 
+    /// <summary>
+    /// Lock player controller, while clicked HUD button
+    /// </summary>
+    public void SetLockControll(bool isLocking)
+    {
+        player.GetComponent<PlayerController>().isPressedButton = isLocking;
+    }
+
     //была нажата какая-то кнопка худа
     public void ClickedButton(int butId)
     {

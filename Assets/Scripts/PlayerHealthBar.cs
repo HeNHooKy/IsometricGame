@@ -13,18 +13,27 @@ public class PlayerHealthBar : MonoBehaviour
     public Sprite HalfOverHeart;//половина оверхил сердца
     public Sprite EmptyHeart;   //пустой слот под сердце
     public Sprite EmptyHalfHeart;//пустой слот под половину сердца
+    public Sprite Empty;    //пустой спрайт
 
     public int MaxHealth;       //максимальное здоровье игрока
     public int CurrentHealth;   //текущее здоровье игрока
-
     public void DisplayHeart(int max, int cur)
     {
         MaxHealth = max;
         CurrentHealth = cur;
 
-        for (int i = 0; i <= MaxHealth / 2; i++)
+        for (int i = 0; i < hearts.Count; i++)
+        {
+            hearts[i].sprite = Empty;
+        }
+
+        for (int i = 0; i < MaxHealth / 2; i++)
         {
             hearts[i].sprite = EmptyHeart;
+        }
+        if (MaxHealth % 2 != 0)
+        {
+            hearts[MaxHealth / 2].sprite = EmptyHeart;
         }
 
         for (int i = 0; i < MaxHealth / 2 && i < CurrentHealth / 2; i++)
@@ -37,10 +46,11 @@ public class PlayerHealthBar : MonoBehaviour
         }
 
         //отображаем overheal
-        for (int i = MaxHealth / 2 + 1; i < CurrentHealth / 2; i++)
+        for (int i = (MaxHealth / 2) + (MaxHealth % 2) ; i < CurrentHealth / 2; i++)
         {
             hearts[i].sprite = OverHeart;
         }
+
         if (MaxHealth < CurrentHealth && CurrentHealth % 2 != 0)
         {
             hearts[CurrentHealth / 2].sprite = HalfOverHeart;

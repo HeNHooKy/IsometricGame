@@ -404,6 +404,128 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &355078938 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2556897515678684479, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &355078940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355078938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 355078941}
+          m_MethodName: Press
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 355078941}
+          m_MethodName: UnPress
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+--- !u!114 &355078941 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2368116498136278014, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355078938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5efbaf8057c64f81fe464122e570d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &455240547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2163817559284075352, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &455240549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455240547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 455240550}
+          m_MethodName: Press
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 455240550}
+          m_MethodName: UnPress
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &455240550 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3853985775211134424, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 455240547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5efbaf8057c64f81fe464122e570d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &514515213 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7417637534148951522, guid: 96becdea61eb20840b11723c325ec4aa,
@@ -518,6 +640,67 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &814143440 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1753376391544076614, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &814143442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814143440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 814143443}
+          m_MethodName: Press
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 814143443}
+          m_MethodName: UnPress
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &814143443 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7158647355611581107, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 814143440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5efbaf8057c64f81fe464122e570d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,6 +888,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 014a09bb357ca044192c938cf38ff634, type: 3}
+--- !u!1 &1130869962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1904928737567107629, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1130869964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130869962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1130869965}
+          m_MethodName: Press
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 3
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1130869965}
+          m_MethodName: UnPress
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1130869965 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3400897851660673754, guid: 80553c5126c06374c93b52c5bb0f87c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 2556897514849957674}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130869962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fba5efbaf8057c64f81fe464122e570d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1147058821
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -960,7 +1204,7 @@ PrefabInstance:
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: Health
-      value: 7
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
@@ -980,13 +1224,18 @@ PrefabInstance:
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: AttackPower
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: phb
       value: 
       objectReference: {fileID: 2058507289}
+    - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
+        type: 3}
+      propertyPath: MaxHealth
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6337127394772414436, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -1818,6 +2067,21 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1374500322}
+    - target: {fileID: 2368116498136278014, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: UnPressButton.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368116498136278014, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: UnPressButton.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2368116498136278014, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: UnPressButton.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2556897515430829857, guid: 80553c5126c06374c93b52c5bb0f87c8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1959,10 +2223,36 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 745dcb6514c877245960009ac1f3c214,
         type: 3}
+    - target: {fileID: 3400897851660673754, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: ButtonId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3853985775211134424, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: ButtonId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061681851309335064, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: Empty
+      value: 
+      objectReference: {fileID: 21300000, guid: 745dcb6514c877245960009ac1f3c214,
+        type: 3}
+    - target: {fileID: 5758098596675368217, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.100586
+      objectReference: {fileID: 0}
+    - target: {fileID: 5758098596675368217, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 403.69992
+      objectReference: {fileID: 0}
     - target: {fileID: 8148850895814810049, guid: 80553c5126c06374c93b52c5bb0f87c8,
         type: 3}
       propertyPath: ButtonId
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80553c5126c06374c93b52c5bb0f87c8, type: 3}

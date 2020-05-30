@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
@@ -57,6 +58,31 @@ public abstract class Enemy : MonoBehaviour
     public bool GetAlive()
     {
         return isAlive;
+    }
+
+    /// <summary>
+    /// Get random position around enemy
+    /// if in around enemy exist player - return player position
+    /// </summary>
+    protected Vector3 GetRandomPosition(out bool isNotExist)
+    {
+        bool isPlayer;
+        List<Vector3> locations = GetFreeLocation(out isPlayer);
+
+        isNotExist = false;
+        if (locations.Count == 0)
+        {
+            isNotExist = true;
+            return Vector3.zero;
+        }
+        if (isPlayer)
+        {
+            return locations.Last();
+        }
+        else
+        {
+            return locations[random.Next(locations.Count)];
+        }
     }
 
     /// <summary>

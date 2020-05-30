@@ -57,9 +57,25 @@ public class BatController : Enemy
                 }
             }
             else
-            {   //пути до игрока не существует. Конец хода
-                isMyTurn = false;
-                Energy = 0;
+            {   //пути до игрока не существует. Пойдем куда-нибудь
+                bool isNotExist;
+                Vector3 target = GetRandomPosition(out isNotExist);
+                if (!isNotExist)
+                {   //путь есть
+                    if (GetCell(target) == 0)
+                    {   //тут нет игрока и можно ходить
+                        Move(target);
+                    }
+                    else if (GetCell(target) == 2)
+                    {   //тут игрок, в атаку!
+                        CloseAttack(target);
+                    }
+                }
+                else
+                {   //нечего делать - конец хода
+                    isMyTurn = false;
+                    Energy = 0;
+                }
             }
              
         }
