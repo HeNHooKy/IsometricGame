@@ -62,6 +62,57 @@ TextureImporter:
   - first:
       213: -2928369476535153868
     second: Game hud 152x270 px_17
+  - first:
+      213: -7573192346310246488
+    second: Game hud 152x270 px_0
+  - first:
+      213: -632750292203318092
+    second: Game hud 152x270 px_1
+  - first:
+      213: 8920194399830168326
+    second: Game hud 152x270 px_2
+  - first:
+      213: -1719167504530349174
+    second: Game hud 152x270 px_3
+  - first:
+      213: 5741681977640917427
+    second: Game hud 152x270 px_4
+  - first:
+      213: -4314723782321859074
+    second: Game hud 152x270 px_5
+  - first:
+      213: -2170406005783348019
+    second: Game hud 152x270 px_6
+  - first:
+      213: 4115971588020307136
+    second: Game hud 152x270 px_7
+  - first:
+      213: 792540197990870960
+    second: Game hud 152x270 px_8
+  - first:
+      213: 3015502531011043906
+    second: Game hud 152x270 px_9
+  - first:
+      213: 1674637903439680203
+    second: Game hud 152x270 px_10
+  - first:
+      213: -5995867219048785666
+    second: Game hud 152x270 px_11
+  - first:
+      213: -7919251582119779905
+    second: Game hud 152x270 px_12
+  - first:
+      213: -3932530186951470568
+    second: Game hud 152x270 px_13
+  - first:
+      213: 3514076215470010216
+    second: Game hud 152x270 px_14
+  - first:
+      213: -2996659510254677702
+    second: Game hud 152x270 px_15
+  - first:
+      213: 7976722547454552896
+    second: Game hud 152x270 px_16
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -167,14 +218,14 @@ TextureImporter:
         width: 152
         height: 270
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 428bbb890913b52c0800000000000000
-      internalID: -4441902110363371484
+      spriteID: 8af787e7fad96e690800000000000000
+      internalID: -7573192346310246488
       vertices: []
       indices: 
       edges: []
@@ -188,14 +239,14 @@ TextureImporter:
         width: 67
         height: 29
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 187e14f4d16b74e10800000000000000
-      internalID: 2181912781484320641
+      spriteID: 4b452b136f40837f0800000000000000
+      internalID: -632750292203318092
       vertices: []
       indices: 
       edges: []
@@ -209,14 +260,56 @@ TextureImporter:
         width: 67
         height: 29
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e0b66a28befdbc880800000000000000
-      internalID: -8589525661676836082
+      spriteID: 6035e41ab85eacb70800000000000000
+      internalID: 8920194399830168326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_3
+      rect:
+        serializedVersion: 2
+        x: 462
+        y: 564
+        width: 67
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a83e21f534a4428e0800000000000000
+      internalID: -1719167504530349174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Game hud 152x270 px_4
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 564
+        width: 67
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b99c82865d8eaf40800000000000000
+      internalID: 5741681977640917427
       vertices: []
       indices: 
       edges: []
@@ -230,56 +323,14 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4dbccfc33f6c7a80800000000000000
-      internalID: -8467770931043058357
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Game hud 152x270 px_3
-      rect:
-        serializedVersion: 2
-        x: 267
-        y: 365
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2f1b36e32e0a3baf0800000000000000
-      internalID: -381784649826586126
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Game hud 152x270 px_4
-      rect:
-        serializedVersion: 2
-        x: 234
-        y: 332
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a141f6f4470690910800000000000000
-      internalID: 1804079178403746842
+      spriteID: ef596c294950f14c0800000000000000
+      internalID: -4314723782321859074
       vertices: []
       indices: 
       edges: []
@@ -289,18 +340,18 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 267
-        y: 332
+        y: 365
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ba29e05ea3b68a3c0800000000000000
-      internalID: -4348107539531001173
+      spriteID: dccb8eeac3b21e1e0800000000000000
+      internalID: -2170406005783348019
       vertices: []
       indices: 
       edges: []
@@ -314,14 +365,14 @@ TextureImporter:
         width: 63
         height: 10
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 82b3e1fca4b0850d0800000000000000
-      internalID: -3433982299939652824
+      spriteID: 0c40d891a5ede1930800000000000000
+      internalID: 4115971588020307136
       vertices: []
       indices: 
       edges: []
@@ -330,19 +381,19 @@ TextureImporter:
       name: Game hud 152x270 px_8
       rect:
         serializedVersion: 2
-        x: 310
-        y: 333
+        x: 462
+        y: 386
         width: 63
-        height: 50
+        height: 10
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c334299c5bd496b00800000000000000
-      internalID: 822273850138051388
+      spriteID: 0bfa67b6c1baffa00800000000000000
+      internalID: 792540197990870960
       vertices: []
       indices: 
       edges: []
@@ -351,19 +402,19 @@ TextureImporter:
       name: Game hud 152x270 px_9
       rect:
         serializedVersion: 2
-        x: 308
-        y: 291
-        width: 71
-        height: 34
+        x: 690
+        y: 364
+        width: 32
+        height: 33
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d9908b12f02415680800000000000000
-      internalID: -8768154366755993187
+      spriteID: 242643c339739d920800000000000000
+      internalID: 3015502531011043906
       vertices: []
       indices: 
       edges: []
@@ -372,19 +423,19 @@ TextureImporter:
       name: Game hud 152x270 px_10
       rect:
         serializedVersion: 2
-        x: 381
-        y: 291
-        width: 71
-        height: 34
+        x: 843
+        y: 366
+        width: 30
+        height: 31
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5d84d518834143ca0800000000000000
-      internalID: -6038178967475894059
+      spriteID: bc25de1fc428d3710800000000000000
+      internalID: 1674637903439680203
       vertices: []
       indices: 
       edges: []
@@ -393,19 +444,19 @@ TextureImporter:
       name: Game hud 152x270 px_11
       rect:
         serializedVersion: 2
-        x: 305
-        y: 129
-        width: 150
-        height: 162
+        x: 234
+        y: 332
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f145e95a01ea76490800000000000000
-      internalID: -7753036846973692897
+      spriteID: ef8103028866acca0800000000000000
+      internalID: -5995867219048785666
       vertices: []
       indices: 
       edges: []
@@ -414,19 +465,19 @@ TextureImporter:
       name: Game hud 152x270 px_12
       rect:
         serializedVersion: 2
-        x: 80
-        y: 93
-        width: 36
-        height: 36
+        x: 267
+        y: 332
+        width: 32
+        height: 32
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3c12ab0ff58813430800000000000000
-      internalID: 3760937109473075651
+      spriteID: fb1ecc0e4aa291290800000000000000
+      internalID: -7919251582119779905
       vertices: []
       indices: 
       edges: []
@@ -435,19 +486,19 @@ TextureImporter:
       name: Game hud 152x270 px_13
       rect:
         serializedVersion: 2
-        x: 234
-        y: 95
-        width: 32
-        height: 32
+        x: 310
+        y: 333
+        width: 63
+        height: 50
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 779675b124a67a370800000000000000
-      internalID: 8333746467631491447
+      spriteID: 812d14261a8dc69c0800000000000000
+      internalID: -3932530186951470568
       vertices: []
       indices: 
       edges: []
@@ -456,19 +507,19 @@ TextureImporter:
       name: Game hud 152x270 px_14
       rect:
         serializedVersion: 2
-        x: 307
-        y: 115
-        width: 68
-        height: 13
+        x: 462
+        y: 333
+        width: 63
+        height: 50
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dce1279002c9bd1a0800000000000000
-      internalID: -6783656752292159795
+      spriteID: 86f2db813b184c030800000000000000
+      internalID: 3514076215470010216
       vertices: []
       indices: 
       edges: []
@@ -477,19 +528,19 @@ TextureImporter:
       name: Game hud 152x270 px_15
       rect:
         serializedVersion: 2
-        x: 307
-        y: 61
-        width: 68
-        height: 54
+        x: 80
+        y: 93
+        width: 36
+        height: 36
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b566a5d68b6b24c0800000000000000
-      internalID: -4311233991422876239
+      spriteID: a31597a6d0ab966d0800000000000000
+      internalID: -2996659510254677702
       vertices: []
       indices: 
       edges: []
@@ -498,40 +549,40 @@ TextureImporter:
       name: Game hud 152x270 px_16
       rect:
         serializedVersion: 2
-        x: 689
-        y: 364
-        width: 34
-        height: 35
+        x: 235
+        y: 96
+        width: 30
+        height: 30
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2b6b650e6fec07760800000000000000
-      internalID: 7453684943019226802
+      spriteID: 04ba0e8f4e203be60800000000000000
+      internalID: 7976722547454552896
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Game hud 152x270 px_18
+      name: Game hud 152x270 px_17
       rect:
         serializedVersion: 2
-        x: 840
-        y: 364
-        width: 35
-        height: 35
+        x: 304
+        y: 60
+        width: 152
+        height: 264
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8093812dbf7692a20800000000000000
-      internalID: 3038073754897365256
+      spriteID: 645e37f23d2746d00800000000000000
+      internalID: 965022471523919174
       vertices: []
       indices: 
       edges: []
