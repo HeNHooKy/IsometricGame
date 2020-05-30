@@ -1833,6 +1833,12 @@ PrefabInstance:
       propertyPath: m_Transition
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2556897515430829859, guid: 80553c5126c06374c93b52c5bb0f87c8,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5e62fd23ffd70864e9ef931156cc1e27,
+        type: 3}
     - target: {fileID: 2556897515430829869, guid: 80553c5126c06374c93b52c5bb0f87c8,
         type: 3}
       propertyPath: m_IsActive
