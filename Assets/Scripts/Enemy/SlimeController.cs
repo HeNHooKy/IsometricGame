@@ -8,6 +8,7 @@ public class SlimeController : Enemy
 
     void Start()
     {
+        baseSpeed = MoveSpeed;
         eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
         controller = transform.Find("/GameController").GetComponent<GameController>();
         eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
@@ -24,6 +25,7 @@ public class SlimeController : Enemy
             if (Energy < 1f)
             {   //конец хода
                 isMyTurn = false;
+                MoveSpeed = baseSpeed;
                 return;
             }
         }
@@ -48,6 +50,7 @@ public class SlimeController : Enemy
             {   //нечего делать - конец хода
                 isMyTurn = false;
                 Energy = 0;
+                MoveSpeed = baseSpeed;
             }
         }
     }

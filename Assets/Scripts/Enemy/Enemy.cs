@@ -52,8 +52,16 @@ public abstract class Enemy : MonoBehaviour
     protected HealthBar hp; //шкала здоровья
 
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
+    protected float baseSpeed;
     private GameObject LastMoveBlock; //указатель на блокировку хода
     private System.Random random = new System.Random();
+    
+
+    //если игрок вне зоны видимотсти(определяет GameController), вызывается этот метод
+    public void PlayerOutOfRange()
+    {
+        MoveSpeed = 1000000; //увеличиваем скорость передвижения
+    }
 
     public bool GetAlive()
     {

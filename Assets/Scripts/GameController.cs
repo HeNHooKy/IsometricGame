@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     public float Length = 100f; //длина игрового поля
     public float Witdh = 100f; //ширина игрового поля
     public long Score = 0;
+    public float EnemiesNotInRange; //расстояение на котором противники становятся невидимы
 
     private GameObject[] Enemies;  //все монстры на карте
 
@@ -50,9 +51,14 @@ public class GameController : MonoBehaviour
         foreach (GameObject e in Enemies)
         {
             Enemy enemy = e.GetComponent<Enemy>();
+            
             if (enemy.GetAlive())
             {
-                e.GetComponent<Enemy>().TurnAllowed();
+                if((e.transform.position - player.transform.position).magnitude > EnemiesNotInRange)
+                {   //игрок слишком далеко
+                    enemy.PlayerOutOfRange();
+                }
+                enemy.TurnAllowed();
                 yield return null;  //пропускаем два фрейма
                 yield return null;
             }

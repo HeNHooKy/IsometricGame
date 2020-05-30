@@ -17,6 +17,7 @@ public class PlayerHealthBar : MonoBehaviour
 
     public int MaxHealth;       //максимальное здоровье игрока
     public int CurrentHealth;   //текущее здоровье игрока
+
     public void DisplayHeart(int max, int cur)
     {
         MaxHealth = max;
@@ -33,7 +34,7 @@ public class PlayerHealthBar : MonoBehaviour
         }
         if (MaxHealth % 2 != 0)
         {
-            hearts[MaxHealth / 2].sprite = EmptyHeart;
+            hearts[MaxHealth / 2].sprite = EmptyHalfHeart;
         }
 
         for (int i = 0; i < MaxHealth / 2 && i < CurrentHealth / 2; i++)

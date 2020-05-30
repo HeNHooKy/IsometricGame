@@ -6,6 +6,7 @@ public class BatController : Enemy
     
     void Start()
     {
+        baseSpeed = MoveSpeed;
         StartHP = Health;
         hp = transform.Find("Character").Find("HealthBar").GetComponent<HealthBar>();
         eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
@@ -25,6 +26,8 @@ public class BatController : Enemy
         {   //проверка на конец хода
             if (Energy < 1f)
             {   //конец хода
+                isMyTurn = false;
+                MoveSpeed = baseSpeed;
                 isMyTurn = false;
                 return;
             }
@@ -75,6 +78,7 @@ public class BatController : Enemy
                 {   //нечего делать - конец хода
                     isMyTurn = false;
                     Energy = 0;
+                    MoveSpeed = baseSpeed;
                 }
             }
              

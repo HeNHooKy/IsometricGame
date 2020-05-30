@@ -240,8 +240,10 @@ public class HUD : MonoBehaviour
     public void ItemStaySet(GameObject Item)
     {   //есть предмет, который можно поднять
         pickUpButton.SetActive(true);
+        //отобразим поверх спрайта спрайт предмета
+        pickUpButton.transform.Find("Feature").GetComponent<Image>().sprite = 
+            Item.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
         ItemStay = Item;
-        Debug.Log("ITEM!");
     }
 }
 

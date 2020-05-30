@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -77,6 +78,32 @@ public class PlayerController : MonoBehaviour
                     TurnFloor(turnObj);
             }
         }
+    }
+
+    /// <summary>
+    /// Set player Health Point to Health plus HealthPower, but lower than 16
+    /// </summary>
+    /// <param name="HealthPower">Heal power</param>
+    public void Heal(float healPower, bool isOverHeal = false)
+    {
+        float needHeal;
+        if (isOverHeal)
+        {
+            needHeal = 16 > Health ? 16 - Health : 0;
+            Health += healPower > needHeal ? needHeal : healPower;
+            return;
+        }
+        needHeal = MaxHealth > Health ? MaxHealth - Health : 0;
+        Health += healPower > needHeal ? needHeal : healPower;
+        
+    }
+
+    /// <summary>
+    /// Base on phb - Display player health
+    /// </summary>
+    public void DisplayHearts()
+    {
+        phb.DisplayHeart((int)MaxHealth, (int)Health);
     }
 
     /// <summary>
@@ -179,7 +206,6 @@ public class PlayerController : MonoBehaviour
     {
         if(isMyTurn && !beingStep && !isPressedButton)
         {
-            
             if (Input.touchCount > 0)
             {
                 //ловим пол

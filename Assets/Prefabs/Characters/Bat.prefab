@@ -73,7 +73,7 @@ MonoBehaviour:
   BiasChance: 0.15
   Score: 500
   EnergyReload: 2
-  MoveSpeed: 3
+  MoveSpeed: 2
   DieTime: 10
   FarVision: 2
   Ball: {fileID: 0}

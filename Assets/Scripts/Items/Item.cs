@@ -32,6 +32,7 @@ public abstract class Item : MonoBehaviour
         if(player.tag == PlayerTag)
         {   //сообщим HUD, что игрок вошел в зону предмета
             HUD.ItemStaySet(this.gameObject);
+            
         }
     }
 

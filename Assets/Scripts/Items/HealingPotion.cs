@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class HealingPotion : Item
 {
-    public float HealthPower = 5f;
+    public float HealPower = 5f;
     protected override IEnumerator Do(PlayerController player, GameObject item)
     {
         //player.Drink();
-        player.Health += HealthPower;
-        yield return null;
+        player.Heal(HealPower);
+        player.DisplayHearts();
         Destroy(item);
+        yield return null;
+        
     }
 }
