@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BatController : Enemy
 {
-    private HealthBar hp;
+    
     void Start()
     {
         StartHP = Health;
@@ -16,7 +16,10 @@ public class BatController : Enemy
     // Update is called once per frame
     void Update()
     {
-        hp.Set(Health / StartHP);
+        if(isAlive)
+        {
+            hp.Set(Health / StartHP);
+        }
 
         if (isMyTurn)
         {   //проверка на конец хода
@@ -29,28 +32,28 @@ public class BatController : Enemy
 
         if (isMyTurn && !isBeingStep)
         {
-            PathToPlayer = null;    //сбрасываем путь (на всякий случай)
+            Path = null;    //сбрасываем путь (на всякий случай)
             //релизуем AI
             FindPath(); //ищем путь до игрока
             
-            if (PathToPlayer != null)
+            if (Path != null)
             {
                 /*
                 //рисуем путь
-                Vector3 prev = PathToPlayer[0];
-                for (int i = 1; i < PathToPlayer.Count; i++)
+                Vector3 prev = Path[0];
+                for (int i = 1; i < Path.Count; i++)
                 {
-                    Debug.DrawLine(prev + Vector3.up * 1, PathToPlayer[i] + Vector3.up * 1, Color.green, 1f);
-                    prev = PathToPlayer[i];
+                    Debug.DrawLine(prev + Vector3.up * 1, Path[i] + Vector3.up * 1, Color.green, 1f);
+                    prev = Path[i];
                 }*/
-                PathToPlayer.Remove(PathToPlayer.First()); //стираем позицию монстра
-                if (GetCell(PathToPlayer.First()) == 0)
+                Path.Remove(Path.First()); //стираем позицию монстра
+                if (GetCell(Path.First()) == 0)
                 {   //тут нет игрока и можно ходить
-                    Move(PathToPlayer.First());
+                    Move(Path.First());
                 }
-                else if (GetCell(PathToPlayer.First()) == 2)
+                else if (GetCell(Path.First()) == 2)
                 {   //тут игрок, в атаку!
-                    CloseAttack(PathToPlayer.First());
+                    CloseAttack(Path.First());
                 }
             }
             else

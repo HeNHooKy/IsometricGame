@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SlimeController : Enemy
 {
-
+    System.Random random = new System.Random();
 
     void Start()
     {
@@ -11,10 +12,13 @@ public class SlimeController : Enemy
         controller = transform.Find("/GameController").GetComponent<GameController>();
         eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
     }
+    
+    
 
     // Update is called once per frame
     void Update()
     {
+
         if (isMyTurn)
         {   //проверка на конец хода
             if (Energy < 1f)
@@ -26,36 +30,50 @@ public class SlimeController : Enemy
 
         if (isMyTurn && !isBeingStep)
         {
-            PathToPlayer = null;    //сбрасываем путь (на всякий случай)
             //релизуем AI
-            FindPath(); //ищем путь до игрока
-
-            if (PathToPlayer != null)
-            {
-                
-                //рисуем путь
-                Vector3 prev = PathToPlayer[0];
-                for (int i = 1; i < PathToPlayer.Count; i++)
-                {
-                    Debug.DrawLine(prev + Vector3.up * 1, PathToPlayer[i] + Vector3.up * 1, Color.green, 1f);
-                    prev = PathToPlayer[i];
-                }
-                PathToPlayer.Remove(PathToPlayer.First()); //стираем позицию монстра
-                if (GetCell(PathToPlayer.First()) == 0)
+            bool isNotExist;
+            Vector3 target = GetRandomPosition(out isNotExist);
+            if(!isNotExist)
+            {   //путь есть
+                if (GetCell(target) == 0)
                 {   //тут нет игрока и можно ходить
-                    Move(PathToPlayer.First());
+                    Move(target);
                 }
-                else if (GetCell(PathToPlayer.First()) == 2)
+                else if (GetCell(target) == 2)
                 {   //тут игрок, в атаку!
-                    CloseAttack(PathToPlayer.First());
+                    CloseAttack(target);
                 }
             }
             else
-            {   //пути до игрока не существует. Конец хода
+            {   //нечего делать - конец хода
                 isMyTurn = false;
                 Energy = 0;
             }
-
         }
+    }
+
+    /// <summary>
+    /// Get random position around slime,
+    /// if around slime exist player - return player position
+    /// </summary>
+    Vector3 GetRandomPosition(out bool isNotExist)
+    {
+        bool isPlayer;
+        List<Vector3> locations = GetFreeLocation(out isPlayer);
+
+        isNotExist = false;
+        if(locations.Count == 0)
+        {
+            isNotExist = true;
+            return Vector3.zero;
+        }
+        if(isPlayer)
+        {
+            return locations.Last();
+        }
+        else
+        {
+            return locations[random.Next(locations.Count)];
+        }    
     }
 }

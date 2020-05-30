@@ -30,7 +30,6 @@ public class PlayerController : MonoBehaviour
     public string EnvironmentTag = "Environment";
     public string ItemTag = "Item";
 
-
     Transform turnObj;
     GameObject turnFloor = null;
     Animator pAnimator;
@@ -42,8 +41,6 @@ public class PlayerController : MonoBehaviour
     private bool isAlive = true;
     private float Energy = 0f;
     private bool isDamaged = false;
-
-    
 
     private System.Random random = new System.Random();
 
@@ -308,30 +305,31 @@ public class PlayerController : MonoBehaviour
         //находим все позиции, на которые можно ступить
         //пускаем лучи в 4 стороны и собираем данные 
         //первая сторона
-        int floorType = 0; //нет пола
+        int floorType = 0; //нет пути
         RaycastHit[] hit = Physics.RaycastAll(position - Vector3.up, Vector3.up*2f);
+        Debug.DrawRay(position - Vector3.up, Vector3.up * 2f, Color.green, 2f);
         
         foreach (RaycastHit h in hit)
         {
-            if (h.collider.tag == EnemyTag)
+            if (h.collider.tag == EnemyTag && floorType < 4)
             {
-                floorType = 2; //тут стоит враг
-                break;
+                floorType = 4; //тут стоит враг
+                continue;
             }
-            if (h.collider.tag == EnvironmentTag)
+            if (h.collider.tag == EnvironmentTag && floorType < 3)
             {
                 floorType = 3; //тут есть что-то с чем можно взаимодейстовать
-                break;
+                continue;
             }
-            if (h.collider.tag == ItemTag)
+            if (h.collider.tag == ItemTag && floorType < 2)
             {
-                floorType = 4; //тут лежит что-то ценное
-                break;
+                floorType = 2; //тут лежит что-то ценное
+                continue;
             }
-            if (h.collider.tag == FloorTag && hit.Length == 1)
+            if (h.collider.tag == FloorTag && hit.Length == 1 && floorType < 1)
             {
-                floorType = 1; //тут можно ходить
-                break;
+                floorType = 1; //тут просто можно ходить
+                continue;
             }
         }
 
@@ -344,7 +342,7 @@ public class PlayerController : MonoBehaviour
                 sp = freeLocs[n].GetComponentInChildren<SpriteRenderer>();
                 StartCoroutine(Show(sp, 0.5f));
                 break;
-            case 2: //тут противник
+            case 4: //тут противник
                 freeLocs[n] = Instantiate(FreeFloor);
                 freeLocs[n].transform.position = position;
                 sp = freeLocs[n].GetComponentInChildren<SpriteRenderer>();
@@ -352,11 +350,10 @@ public class PlayerController : MonoBehaviour
                 sp.color = new Color(1f, 0f, 0f, 0f);
                 StartCoroutine(Show(sp, 0.5f));
                 break;
-            case 4: //тут лежит что-то ценное
+            case 2: //тут лежит что-то ценное
                 freeLocs[n] = Instantiate(FreeFloor);
                 freeLocs[n].transform.position = position;
                 sp = freeLocs[n].GetComponentInChildren<SpriteRenderer>();
-
                 //делай зеленым
                 sp.color = new Color(0f, 1f, 0f, 0f);
                 StartCoroutine(Show(sp, 0.5f));

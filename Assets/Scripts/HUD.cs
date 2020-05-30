@@ -11,6 +11,7 @@ public class HUD : MonoBehaviour
     public int BottomItemCount = 0;
 
     public GameController gameController; //указатель на гейм контроллер
+    public Sprite UIMask; //маска (накладывается при отсутствии предмета в инвентаре)
 
     private GameObject ItemStay = null; //предмет на котором стоит персонаж
     private GameObject player; //ссылка на игрока
@@ -28,11 +29,46 @@ public class HUD : MonoBehaviour
     {
         IPUP = 0;
         player = transform.Find("/Player").gameObject;
-        pickUpButton = transform.Find("PickUpItem").gameObject;
-        topItemImage = transform.Find("TopItem").GetComponent<Image>();
-        topItemText = transform.Find("TopItem").Find("Count").GetComponent<Text>();
-        bottomItemImage = transform.Find("BottomItem").GetComponent<Image>();
-        bottomItemText = transform.Find("BottomItem").Find("Count").GetComponent<Text>();
+        Transform Root = transform.Find("Root");
+        pickUpButton = Root.Find("PickUpItem").gameObject;
+        topItemImage = Root.Find("TopItem").Find("Icon").GetComponent<Image>();
+        topItemText = Root.Find("TopItem").Find("Count").GetComponent<Text>();
+        bottomItemImage = Root.Find("BottomItem").Find("Icon").GetComponent<Image>();
+        bottomItemText = Root.Find("BottomItem").Find("Count").GetComponent<Text>();
+    }
+
+    //была нажата какая-то кнопка худа
+    public void ClickedButton(int butId)
+    {
+        if (!player.GetComponent<PlayerController>().GetCapacity())
+        {   //игрок не может выполнить это действие сейчас
+            return;
+        }
+
+        //Какие-то действия
+        if (butId == 0 && TopItemId != -1)
+        {   
+            //кнопка верхнего предмета
+            TopItemCount--; //уменьшаем кол-во в инвентаре
+            gameController.ItemsList[TopItemId].Use(player.GetComponent<PlayerController>());   //применяем предмет
+            if (TopItemCount <= 0)
+            {
+                //удалить предмет
+                TopItemId = -1;
+            }
+        }
+        else if(butId == 1 && BottomItemId != -1)
+        {   //кнопка нижнего предмета
+            BottomItemCount--; //уменьшаем кол-во в инвентаре
+            gameController.ItemsList[BottomItemId].Use(player.GetComponent<PlayerController>());   //применяем предмет
+            if (BottomItemCount <= 0)
+            {
+                //удалить предмет
+                BottomItemId = -1;
+            }
+        }
+
+        DisplayActual();
     }
 
     //поднять предмет, который лежит на земле
@@ -42,6 +78,8 @@ public class HUD : MonoBehaviour
         {   //игрок не может выполнить это действие сейчас
             return;
         }
+        
+
         bool isNeedDelete = true;
         if (ItemStay != null)
         {
@@ -166,13 +204,21 @@ public class HUD : MonoBehaviour
         if(TopItemId != -1)
         {   //отображение верхнего предмета
             topItemImage.sprite = gameController.ItemsList[TopItemId].ItemSprite;
-            topItemText.text = TopItemCount > 1 ? TopItemCount + "" : "";
         }
-        if(BottomItemId != -1)
+        else
+        {
+            topItemImage.sprite = UIMask;
+        }
+        if (BottomItemId != -1)
         {   //отображение нижнего предмета
             bottomItemImage.sprite = gameController.ItemsList[BottomItemId].ItemSprite;
-            bottomItemText.text = BottomItemCount > 1 ? BottomItemCount + "" : "";
-        } 
+        }
+        else
+        {
+            bottomItemImage.sprite = UIMask;
+        }
+        topItemText.text = TopItemCount > 1 ? TopItemCount + "" : "";
+        bottomItemText.text = BottomItemCount > 1 ? BottomItemCount + "" : "";
     }
 
     //на змеле ничего не лежит

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 
@@ -45,20 +46,77 @@ public abstract class Enemy : MonoBehaviour
     protected Animator eAnimator;    //указатель на аниматор (У каждого enemy должен быть animator
     protected bool isAlive = true; //отображает способность двигаться, наносить урон(жить)
     protected PlayerController player; //здесь окажется игрок, если будет обнаружен
-    protected List<Vector3> PathToPlayer = null; //после вызова FindPath путь будет храниться в этой перменной
+    protected List<Vector3> Path = null; //после вызова FindPath путь будет храниться в этой перменной
     protected float StartHP; //стартовое количество здоровья (полная шкала здоровья)
+    protected HealthBar hp; //шкала здоровья
 
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
     private GameObject LastMoveBlock; //указатель на блокировку хода
     private System.Random random = new System.Random();
-    
 
     public bool GetAlive()
     {
         return isAlive;
     }
 
-    //поиск пути к персонажу
+    /// <summary>
+    ///  Get free location near enemy
+    /// </summary>
+    /// <returns></returns>
+    protected List<Vector3> GetFreeLocation(out bool isPlayer)
+    {
+        isPlayer = false;
+        List<Vector3> locations = new List<Vector3>();
+        //перебором каждой локации вокруг найдем все доступные
+        int vertPlus = GetCell(transform.position + new Vector3(1, 0, 0));
+        int vertMinus = GetCell(transform.position + new Vector3(-1, 0, 0));
+        int horizPlus = GetCell(transform.position + new Vector3(0, 0, 1));
+        int horizMinus = GetCell(transform.position + new Vector3(0, 0, -1));
+
+        if (vertPlus == 0 || vertPlus == 2)
+        {
+            locations.Add(transform.position + new Vector3(1, 0, 0));
+            if (vertPlus == 2)
+            {
+                isPlayer = true;
+                return locations;
+            }
+        }
+        if(vertMinus == 0 || vertMinus == 2)
+        {
+            locations.Add(transform.position + new Vector3(-1, 0, 0));
+            if (vertMinus == 2)
+            {
+                isPlayer = true;
+                return locations;
+            }
+        }
+        if(horizPlus == 0 || horizPlus == 2)
+        {
+            locations.Add(transform.position + new Vector3(0, 0, 1));
+            if (horizPlus == 2)
+            {
+                isPlayer = true;
+                return locations;
+            }
+        }
+        if(horizMinus == 0 || horizMinus == 2)
+        {
+            locations.Add(transform.position + new Vector3(0, 0, -1));
+            if (horizMinus == 2)
+            {
+                isPlayer = true;
+                return locations;
+            }
+        }
+
+        return locations;
+    }
+
+
+    /// <summary>
+    /// Find player and close path to him
+    /// </summary>
     protected void FindPath()
     {
         int[,] map = GetMap(new Vector3(transform.position.x, transform.position.z), FarVision);
@@ -85,7 +143,7 @@ public abstract class Enemy : MonoBehaviour
         }
 
         //получаем путь до игрока(если он есть)
-        PathToPlayer = ConvertToVector3(FindClosePath.FindPath(map, new System.Drawing.Point(FarVision, FarVision), PlayerPoint),
+        Path = ConvertToVector3(FindClosePath.FindPath(map, new System.Drawing.Point(FarVision, FarVision), PlayerPoint),
             new Vector2(transform.position.x, transform.position.z));
     }
 
@@ -110,7 +168,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     //построение integer карты перемещений
-    int[,] GetMap(Vector2 sPos, int n)
+    int[,] GetMap(Vector2 sPos, int n, bool isPlayerTarget = true)
     {
         int[,] map = new int[(2 * n) + 1, (2 * n) + 1];
         for(int i = 0; i < (2*n)+1; i++)
@@ -127,7 +185,7 @@ public abstract class Enemy : MonoBehaviour
             {
                 if(FarVision >= (new Vector2(FarVision - i, FarVision - j).magnitude))
                 {
-                    map[i, j] = GetCell(new Vector3(sPos.x - n + i, -0.2f, sPos.y - n + j));
+                    map[i, j] = GetCell(new Vector3(sPos.x - n + i, -0.2f, sPos.y - n + j), isPlayerTarget);
                 }
             }
         }
@@ -135,7 +193,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     //определение допустимости движения по блоку
-    protected int GetCell(Vector3 pos)
+    protected int GetCell(Vector3 pos, bool isPlayerTarget = true)
     {
         pos.y = -0.2f;
         RaycastHit[] hit = Physics.RaycastAll(pos, Vector3.up * 2f, 2f);
@@ -146,11 +204,15 @@ public abstract class Enemy : MonoBehaviour
             {
                 return 0; //тут я
             }
-            if (h.collider.tag == PlayerTag)
+            if (h.collider.tag == PlayerTag && isPlayerTarget)
             {
                 return 2;   //тут игрок!
             }
-            if(h.collider.tag == FloorTag && hit.Length == 1)
+            if (h.collider.tag == PlayerTag && !isPlayerTarget)
+            {
+                return 0;   //тут игрок, но как-то пофиг.
+            }
+            if (h.collider.tag == FloorTag && hit.Length == 1)
             {
                 return 0;   //ходить можно
             }
@@ -241,6 +303,7 @@ public abstract class Enemy : MonoBehaviour
             //если здоровье упало слишком низко наступает смерть
             eAnimator.Play("Die");
             this.GetComponent<Collider>().enabled = false;
+            Destroy(hp.gameObject);
             Invoke("Die", DieTime);
         }
     }
@@ -368,13 +431,13 @@ public abstract class Enemy : MonoBehaviour
 
 /*  отображение поиска пути
  * FindPath();
-        if(PathToPlayer != null)
+        if(Path != null)
         {
-            Vector3 prev = PathToPlayer[0];
-            for (int i = 1; i < PathToPlayer.Count; i++)
+            Vector3 prev = Path[0];
+            for (int i = 1; i < Path.Count; i++)
             {
-                Debug.DrawLine(prev + Vector3.up * 1, PathToPlayer[i] + Vector3.up * 1, UnityEngine.Color.green, 1f);
-                prev = PathToPlayer[i];
+                Debug.DrawLine(prev + Vector3.up * 1, Path[i] + Vector3.up * 1, UnityEngine.Color.green, 1f);
+                prev = Path[i];
             }
         }
 */
