@@ -49,10 +49,16 @@ MonoBehaviour:
   DamageAnimationSpeedShift: 2
   AttackAnimationSpeedShift: 2
   AttackAnimationShift: 2
-  AttackPower: 1
+  TextMoveSpeed: 1
   RangeMeasure: 2
+  AttackPower: 1
   Health: 2
   Energy: 0
+  AttackChance: 0.5
+  CriticalChance: 0.15
+  CriticalMultiply: 1.5
+  BiasChance: 0.15
+  Score: 500
   EnergyReload: 1
   MoveSpeed: 1
   DieTime: 3
@@ -201,7 +207,7 @@ Animator:
   m_GameObject: {fileID: 8138492627089046912}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8b75324e34ec3864084a1aaab1d573df, type: 2}
+  m_Controller: {fileID: 9100000, guid: 653283905b32a8749b5a6c8b8494aa8b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
