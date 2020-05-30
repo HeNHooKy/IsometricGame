@@ -3133,12 +3133,12 @@ PrefabInstance:
     - target: {fileID: 2952468644764193970, guid: 4c08211bbe5bc1244974cf07eb39efd5,
         type: 3}
       propertyPath: Health
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2952468644764193970, guid: 4c08211bbe5bc1244974cf07eb39efd5,
         type: 3}
       propertyPath: BiasChance
-      value: 0.05
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3050623936571556868, guid: 4c08211bbe5bc1244974cf07eb39efd5,
         type: 3}
@@ -3198,6 +3198,16 @@ PrefabInstance:
     - target: {fileID: 3298137763910754438, guid: 4c08211bbe5bc1244974cf07eb39efd5,
         type: 3}
       propertyPath: Health
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298137763910754438, guid: 4c08211bbe5bc1244974cf07eb39efd5,
+        type: 3}
+      propertyPath: MinFix
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3298137763910754438, guid: 4c08211bbe5bc1244974cf07eb39efd5,
+        type: 3}
+      propertyPath: MaxFix
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3363862802747136629, guid: 4c08211bbe5bc1244974cf07eb39efd5,
