@@ -17,11 +17,6 @@ public class PlayerHealthBar : MonoBehaviour
     public int MaxHealth;       //максимальное здоровье игрока
     public int CurrentHealth;   //текущее здоровье игрока
 
-    public void Update()
-    {
-        DisplayHeart(MaxHealth, CurrentHealth);
-    }
-
     public void DisplayHeart(int max, int cur)
     {
         MaxHealth = max;

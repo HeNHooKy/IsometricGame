@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float AttackAnimationShift = 2f;
 
     public float Health = 4f;   //здоровье
+    public float MaxHealth = 10f;   //максимальное здоровье
     public float EnergyReload = 2f; //количество действий за ход
     public float AttackPower = 1f; //сила атаки
     public float AttackChance = 0.5f;   //шанс урона
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     public float DieTime = 10f;
     public float MoveSpeed = 1f;
+    public PlayerHealthBar phb;
     public GameController GameController;
     public GameObject FreeFloor;
     public GameObject SelectFloor;
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
         pSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
         freeLocs = new GameObject[4];
         TurnStart();
+        phb.DisplayHeart((int)MaxHealth, (int)Health);
     }
 
     void Update()
@@ -57,6 +60,7 @@ public class PlayerController : MonoBehaviour
         if (!isAlive)
             return; //мертвый персонаж больше не обрабатывается 
         //получаем объект, на который кликнул пользователь
+
         turnObj = Touch();
         if (isMyTurn && !beingStep)
         {
@@ -90,7 +94,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Health -= damage; //сначала снимаем HP потом проверяем
-
+        phb.DisplayHeart((int)MaxHealth, (int)Health);
         if (isDamaged) return;  //игрок уже получает урон. Анимирование невозможно
 
         isDamaged = true;   //сейчас персонаж уже получает урон (исключение необратимых сдвигов спрайта)

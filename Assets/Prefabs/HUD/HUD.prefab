@@ -4312,7 +4312,7 @@ MonoBehaviour:
   TopItemCount: 0
   BottomItemCount: 0
   gameController: {fileID: 0}
-  UIMask: {fileID: 0}
+  UIMask: {fileID: 21300000, guid: 745dcb6514c877245960009ac1f3c214, type: 3}
 --- !u!1 &2556897516028212581
 GameObject:
   m_ObjectHideFlags: 0
