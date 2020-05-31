@@ -81,6 +81,19 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
+    /// Player take shield and set front(englesh..)
+    /// </summary>
+    public void SetBlock()
+    {   //должна проиграться анимация: игрок достает щит.
+        //ход заканчивается
+        //игрок держит щит, пока ему не нанесут первый удар - первый удар полностью заблокируется
+        //после удара персонаж спрячет щит
+
+
+
+    }
+
+    /// <summary>
     /// Set player Health Point to Health plus HealthPower, but lower than 16
     /// </summary>
     /// <param name="HealthPower">Heal power</param>

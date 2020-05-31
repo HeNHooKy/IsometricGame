@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2596960641577482833}
   - component: {fileID: 6712865078157776545}
   - component: {fileID: 3238085690698909007}
+  - component: {fileID: 7824107453483874962}
   m_Layer: 0
   m_Name: Endless light Mushrooms
   m_TagString: Untagged
@@ -93,3 +94,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.01, y: 1.6, z: 1.73}
   m_Center: {x: 0.15714246, y: 0.799995, z: 0.22857201}
+--- !u!114 &7824107453483874962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2338298134038178356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af8da43a500e04428785d4329222993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Chance: 0.4
