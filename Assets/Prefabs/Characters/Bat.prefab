@@ -67,7 +67,7 @@ MonoBehaviour:
   AttackPower: 1
   Health: 50
   Energy: 0
-  AttackChance: 0.5
+  AttackChance: 2
   CriticalChance: 0.15
   CriticalMultiply: 1.5
   BiasChance: 0.15
@@ -108,7 +108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2181968145070320218}
   m_LocalRotation: {x: 0.4964001, y: -0.32275194, z: 0.20561564, w: 0.77919215}
-  m_LocalPosition: {x: 0.122, y: 1.387, z: -0.028}
+  m_LocalPosition: {x: -0.15, y: 1.06, z: 0.15}
   m_LocalScale: {x: 6.25, y: 6.2500005, z: 1}
   m_Children: []
   m_Father: {fileID: 7899703297010592807}
@@ -233,7 +233,7 @@ PrefabInstance:
     - target: {fileID: 706844231555772901, guid: 25a7361115eefbf4f80391b4bb9c6623,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.21
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 706844231555772901, guid: 25a7361115eefbf4f80391b4bb9c6623,
         type: 3}
@@ -388,17 +388,17 @@ PrefabInstance:
     - target: {fileID: 2064032787376415351, guid: 65a34c1c2f64ce344a02f1b33b3e971b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2064032787376415351, guid: 65a34c1c2f64ce344a02f1b33b3e971b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2064032787376415351, guid: 65a34c1c2f64ce344a02f1b33b3e971b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.25
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2064032787376415351, guid: 65a34c1c2f64ce344a02f1b33b3e971b,
         type: 3}

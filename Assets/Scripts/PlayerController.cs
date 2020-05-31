@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public float BiasChance = 0.15f; //шанс уклона
 
 
-    public float DieTime = 10f;
+    public float DieTime = 2f;
     public float MoveSpeed = 1f;
     public PlayerHealthBar phb;
     public GameController GameController;
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         spritePosition = transform.Find("Character").localPosition;   //собираем данные о стартовой позиции спрайта персонажа для того,
                                                                       //чтобы сдвигать персонажа при получении урона относительно неё
         TurnStart();
-        phb.DisplayHeart((int)MaxHealth, (int)Health);
+        DisplayHearts();
     }
 
     void Update()
@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void DisplayHearts()
     {
-        phb.DisplayHeart((int)MaxHealth, (int)Health);
+        phb.DisplayHeart((int)Math.Ceiling(MaxHealth), (int)Math.Ceiling(Health));
     }
 
     /// <summary>
@@ -212,10 +212,8 @@ public class PlayerController : MonoBehaviour
     //смерть
     private void Die()
     {
-        if (!isAlive) return;   //То, что мертво, умереть не может!
-        
-        Destroy(this.gameObject);
         //вызов окна конца игры
+        GameController.GameOver();
     }
 
     /// <summary>
@@ -524,7 +522,7 @@ public class PlayerController : MonoBehaviour
 
         for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
         {   //анимация
-            sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
+            sprite.position = Vector3.Lerp(sPos, tPos, Easing.easeOutExpo(i));
             yield return null;
         }
     }
@@ -541,7 +539,7 @@ public class PlayerController : MonoBehaviour
 
         for(float i = 0; i < 1f; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
-            sprite.position = Vector3.Lerp(sPos, tPos, easeInOutQuart(i));
+            sprite.position = Vector3.Lerp(sPos, tPos, Easing.easeInOutQuart(i));
             yield return null;
         }
 
@@ -564,7 +562,7 @@ public class PlayerController : MonoBehaviour
 
         for (float i = 0; i < 1; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
-            sprite.position = Vector3.Lerp(tPos, sPos, easeOutQuint(i));
+            sprite.position = Vector3.Lerp(tPos, sPos, Easing.easeOutQuint(i));
             yield return null;
         }
         sprite.position = sPos;
@@ -591,43 +589,28 @@ public class PlayerController : MonoBehaviour
 
         SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
 
-        Vector3 sPos = spritePosition;//получим позицию спрайта
+        Vector3 sPos = sprite.localPosition;//получим позицию спрайта
         //поворот спрайта
-        sp.flipX = (transform.position - tPos).x < 0 || (tPos - transform.position).z > 0;
+        sp.flipX = tPos.x > 0 || tPos.z > 0;
 
         tPos = sPos + (tPos/DamageAnimationShift);
         tPos.y = sPos.y;
 
         for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
         {   //анимация
-            sprite.localPosition = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
+            sprite.localPosition = Vector3.Lerp(sPos, tPos, Easing.easeOutExpo(i));
             yield return null;
         }
         for (float i = 0.4f; i < 1; i += DamageAnimationSpeedShift * Time.deltaTime)
         {
-            sprite.localPosition = Vector3.Lerp(tPos, sPos, easeInOutQuad(i));
+            sprite.localPosition = Vector3.Lerp(tPos, spritePosition, Easing.easeInOutQuad(i));
             yield return null;
         }
         sprite.localPosition = spritePosition;
         isDamaged = false;
     }
 
-    float easeOutExpo(float x)
-    {
-        return (float)(x == 1f ? 1f : 1f - Math.Pow(2f, -10f * x));
-    }
-    float easeInOutQuad(float x)
-    {
-        return (float)(x < 0.5 ? 2 * x * x : 1 - Math.Pow(-2 * x + 2, 2) / 2);
-    }
-    float easeInOutQuart(float x) {
-        return  x< 0.5 ? (float) (8 * x* x* x* x) : (float) (1 - Math.Pow(-2 * x + 2, 4) / 2);
-    }
-
-    float easeOutQuint(float x)
-    {
-        return (float) (1 - Math.Pow(1 - x, 5));
-    }
+    
 }
 
 

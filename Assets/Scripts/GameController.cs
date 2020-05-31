@@ -14,9 +14,12 @@ public class GameController : MonoBehaviour
     public float EnemiesNotInRange; //расстояение на котором противники становятся невидимы
 
     private GameObject[] Enemies;  //все монстры на карте
+    private HUD HUD;
 
     private void Start()
     {   //получаем список всех enemy на карте
+
+        HUD = transform.Find("/HUD").GetComponent<HUD>();
 
         for(int i = 0; i < ItemsList.Length; i++)
         {   //проверка соотетствия id предметов с их позицией в массиве предметов
@@ -33,9 +36,15 @@ public class GameController : MonoBehaviour
         Enemies = GameObject.FindGameObjectsWithTag(EnemyTag);
     }
 
+    //конец игры
+    public void GameOver()
+    {
+        HUD.DisplayGameOver(Score);
+    }
+
     public void AddScore(int score)
     {
-        this.Score += score;
+        Score += score;
     }
 
 

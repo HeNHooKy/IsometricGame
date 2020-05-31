@@ -65,7 +65,7 @@ MonoBehaviour:
   count: 1
   maxStack: 4
   id: 0
-  HealthPower: 5
+  HealPower: 5
 --- !u!1 &2438816298905084362
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,7 +92,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2438816298905084362}
   m_LocalRotation: {x: 0.4964001, y: -0.32275194, z: 0.20561564, w: 0.77919215}
-  m_LocalPosition: {x: -0.1, y: 0.35, z: 0.1}
+  m_LocalPosition: {x: -0.1, y: 0.08, z: 0.1}
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_Children: []
   m_Father: {fileID: 7767766203960673495}
@@ -167,4 +167,4 @@ MonoBehaviour:
   count: 1
   maxStack: 4
   id: 0
-  HealthPower: 5
+  HealPower: 5
