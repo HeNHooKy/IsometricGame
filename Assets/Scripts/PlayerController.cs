@@ -46,6 +46,8 @@ public class PlayerController : MonoBehaviour
     private bool isAlive = true;
     private float Energy = 0f;
     private bool isDamaged = false;
+    private bool isDefending = false;
+    private Vector3 spritePosition;
 
     private System.Random random = new System.Random();
 
@@ -54,6 +56,8 @@ public class PlayerController : MonoBehaviour
         pAnimator = GetComponentInChildren<Animator>();
         pSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
         freeLocs = new GameObject[4];
+        spritePosition = transform.Find("Character").localPosition;   //собираем данные о стартовой позиции спрайта персонажа для того,
+                                                                      //чтобы сдвигать персонажа при получении урона относительно неё
         TurnStart();
         phb.DisplayHeart((int)MaxHealth, (int)Health);
     }
@@ -81,17 +85,48 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Player take shield and set front(englesh..)
+    /// Player take shield and defending(englesh..)
     /// </summary>
     public void SetBlock()
     {   //должна проиграться анимация: игрок достает щит.
         //ход заканчивается
         //игрок держит щит, пока ему не нанесут первый удар - первый удар полностью заблокируется
-        //после удара персонаж спрячет щит
-
-
-
+        //после первого удара персонаж спрячет щит
+        if (!isAlive && isDefending) return;
+        isDefending = true;
+        
+        
+        StartCoroutine(_SetBlock());
     }
+
+    IEnumerator _SetBlock()
+    {
+        pAnimator.Play("SetShield");
+        //ждём пока анимация будет завершена
+        while (!pAnimator.GetCurrentAnimatorStateInfo(0).IsName("ShieldIdle"))
+        {
+            yield return null;
+        }
+        Energy = 0f;
+    }
+
+    //Снятие щита в начале хода
+    IEnumerator _DisBlock()
+    {   //вызывается только в начале хода
+        pAnimator.Play("HideShield");
+        while (!pAnimator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+        {
+            yield return null;
+        }
+
+        //начинаем ход
+        ClearFreeLoc();
+        Energy += EnergyReload;
+        isMyTurn = true;
+        Debug.Log("Ход вернулся к игроку");
+        GetFreeLoc();
+    }
+
 
     /// <summary>
     /// Set player Health Point to Health plus HealthPower, but lower than 16
@@ -124,7 +159,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="damage">Attack Power</param>
     /// <param name="AC">Attack Chance</param>
-    /// <param name="pPos">My position</param>
+    /// <param name="pPos">Enemy position</param>
     public void Damaged(float damage, float AC, Vector3 pPos)
     {
         if (!isAlive) return;
@@ -134,20 +169,21 @@ public class PlayerController : MonoBehaviour
         {   //промах!
             return;
         }
-
-        Health -= damage; //сначала снимаем HP потом проверяем
-        phb.DisplayHeart((int)MaxHealth, (int)Health);
-        if (isDamaged) return;  //игрок уже получает урон. Анимирование невозможно
-
-        isDamaged = true;   //сейчас персонаж уже получает урон (исключение необратимых сдвигов спрайта)
+        if(!isDefending)
+        {
+            Health -= damage; //сначала снимаем HP потом проверяем
+        }
+        //отображаем актуальное хп
+        DisplayHearts();
         if(Health > 0f)
         {   //показвыаем анимацию получения урона
-            StartCoroutine(DamageAnimation(transform.position + (transform.position - pPos)));//берем обратную от положения персонажа
+            StartCoroutine(DamageAnimation(transform.position - pPos));//берем вектор направления удара
         }
         if (Health <= 0f)
         {   //если здоровье упало слишком низко наступает смерть
             //тут показываем анимацию смерти
             StartCoroutine(DieAnimation(transform.position + (transform.position - pPos)));
+            transform.Find("Point Light").gameObject.SetActive(false);
             ClearFreeLoc(); //очищаем все свободные пути
             isAlive = false;
             Invoke("Die", DieTime);
@@ -158,11 +194,19 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive)
             return; //смерть. Ход не возвращается
-        ClearFreeLoc();
-        Energy += EnergyReload;
-        isMyTurn = true;
-        Debug.Log("Ход вернулся к игроку");
-        GetFreeLoc();
+        if(isDefending)
+        {   //игрок держит щит
+            isDefending = false;
+            StartCoroutine(_DisBlock());
+        }
+        else
+        {
+            ClearFreeLoc();
+            Energy += EnergyReload;
+            isMyTurn = true;
+            Debug.Log("Ход вернулся к игроку");
+            GetFreeLoc();
+        }
     }
 
     //смерть
@@ -234,7 +278,7 @@ public class PlayerController : MonoBehaviour
             {   //тач отжат
                 if (turnFloor != null)
                 {
-                    if (!beingStep)
+                    if (isMyTurn && !beingStep && !isDefending)
                     {
                         //Сдлеай шаг!
                         beingStep = true;
@@ -320,6 +364,8 @@ public class PlayerController : MonoBehaviour
     {
         isMyTurn = false;
         Debug.Log("Игрок завершил ход. Передача управления");
+        turnObj = null; //блокируем возможность сходить еще
+        Destroy(selected);
         ClearFreeLoc();
         GameController.PlayerTurnEnd();
     }
@@ -531,30 +577,38 @@ public class PlayerController : MonoBehaviour
     //плавно Анимация получения урона
     IEnumerator DamageAnimation(Vector3 tPos)
     {
+        if(isDefending)
+        {   //анимация снятия щита 
+            pAnimator.Play("HideShieldDamaged");
+            isDefending = false;    //теперь игрок будет получать урон
+        }
+        else
+        {   //анимация получения урона
+            pAnimator.Play("Damaged");//проиграть анимацию в аниматоре
+        }
         
-        pAnimator.Play("Damaged");//проиграть анимацию в аниматоре
         Transform sprite = transform.Find("Character"); //найдем спрайт, который будем двигать
 
         SpriteRenderer sp = sprite.GetComponentInChildren<SpriteRenderer>();
 
-        Vector3 sPos = sprite.position;//получим позицию спрайта
+        Vector3 sPos = spritePosition;//получим позицию спрайта
         //поворот спрайта
         sp.flipX = (transform.position - tPos).x < 0 || (tPos - transform.position).z > 0;
 
-        tPos -= (tPos - sPos) / DamageAnimationShift;
+        tPos = sPos + (tPos/DamageAnimationShift);
         tPos.y = sPos.y;
 
         for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
         {   //анимация
-            sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
+            sprite.localPosition = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
             yield return null;
         }
         for (float i = 0.4f; i < 1; i += DamageAnimationSpeedShift * Time.deltaTime)
         {
-            sprite.position = Vector3.Lerp(tPos, sPos, easeInOutQuad(i));
+            sprite.localPosition = Vector3.Lerp(tPos, sPos, easeInOutQuad(i));
             yield return null;
         }
-        sprite.position = sPos;
+        sprite.localPosition = spritePosition;
         isDamaged = false;
     }
 

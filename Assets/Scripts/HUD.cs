@@ -75,6 +75,10 @@ public class HUD : MonoBehaviour
                 BottomItemId = -1;
             }
         }
+        else if(butId == 2)
+        {   //попытка поставить блок
+            player.GetComponent<PlayerController>().SetBlock();
+        }
 
         DisplayActual();
     }

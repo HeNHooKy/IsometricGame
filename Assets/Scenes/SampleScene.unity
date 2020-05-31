@@ -1142,6 +1142,11 @@ PrefabInstance:
       propertyPath: MaxHealth
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
+        type: 3}
+      propertyPath: DamageAnimationShift
+      value: 1.36
+      objectReference: {fileID: 0}
     - target: {fileID: 6337127394772414436, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -1997,6 +2002,11 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1374500322}
+    - target: {fileID: 8760952025002143722, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.100525
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e36a56e7e2f3be41b885fd09f026c6c, type: 3}
 --- !u!114 &1956271574634222898 stripped
