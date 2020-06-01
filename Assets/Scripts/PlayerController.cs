@@ -45,7 +45,6 @@ public class PlayerController : MonoBehaviour
     private bool beingStep = false;
     private bool isAlive = true;
     private float Energy = 0f;
-    private bool isDamaged = false;
     private bool isDefending = false;
     private Vector3 spritePosition;
 
@@ -92,7 +91,7 @@ public class PlayerController : MonoBehaviour
         //ход заканчивается
         //игрок держит щит, пока ему не нанесут первый удар - первый удар полностью заблокируется
         //после первого удара персонаж спрячет щит
-        if (!isAlive && isDefending) return;
+        if (!isAlive || isDefending) return;
         isDefending = true;
         
         
@@ -607,7 +606,6 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
         sprite.localPosition = spritePosition;
-        isDamaged = false;
     }
 
     

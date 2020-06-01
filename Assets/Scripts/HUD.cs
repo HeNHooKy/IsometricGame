@@ -113,61 +113,21 @@ public class HUD : MonoBehaviour
         //текст GameOver должен быстро появится и как бы упасть сверхку
         //тест status должен быстро появится и как бы упасть сверху
         //StartCoroutine(_DisplayGameOver(score));
-    }
 
-    private IEnumerator _DisplayGameOver(float score)
-    {
+
         //включаем кнопку выйти из игры
         isGameOver = true;
         //отключаем значек взаимодействия
         pickUpButton.SetActive(false);
-        //получаем все сслыки и активируем GameOver - родитель всех компонентов
-        GameOver.SetActive(true);
-        Image cover = GameOver.transform.Find("Cover").GetComponent<Image>();
-        RectTransform gameOverTextTransform = GameOver.transform.Find("GameOverText").GetComponent<RectTransform>();
-        Image gameOverTextImage = GameOver.transform.Find("GameOverText").GetComponent<Image>();
-        RectTransform statusTextTransform = GameOver.transform.Find("StatusText").GetComponent<RectTransform>();
-        Image StatusTextImage = GameOver.transform.Find("StatusText").GetComponent<Image>();
-
-        //отображение cover
-        Color c = cover.color;
-        for(float i = 0; i <= 1; i += Time.deltaTime * CoverShowSpeed)
-        {   
-            c.a = Easing.easeOutSine(i);
-            cover.color = c;
-            yield return null;
-        }
-
-        //появление значка GameOver
-        c = gameOverTextImage.color;
-        Vector3 sPos = gameOverTextTransform.localPosition;
-        Vector3 tPos = sPos + Vector3.down * GameOverShift;
-
-        for (float i = 0; i <= 1; i += Time.deltaTime * GOSShowSpeed)
-        {   
-            c.a = Easing.easeOutExpo(i);
-            gameOverTextImage.color = c;
-            gameOverTextTransform.localPosition = Vector3.Lerp(sPos, tPos, Easing.easeOutExpo(i));
-            yield return null;
-        }
-
-        //появление значка Status
-        c = StatusTextImage.color;
-        sPos = statusTextTransform.localPosition;
-        tPos = sPos + Vector3.up * StatusShift;
-
-        for (float i = 0; i <= 1; i += Time.deltaTime * GOSShowSpeed)
-        {
-            c.a = Easing.easeOutExpo(i);
-            StatusTextImage.color = c;
-            statusTextTransform.localPosition = Vector3.Lerp(sPos, tPos, Easing.easeOutExpo(i));
-            yield return null;
-        }
-        //отображаем score
+        
+        //заполняем score
         Text scoreText = GameOver.transform.Find("Score").GetComponent<Text>();
-        scoreText.gameObject.SetActive(true);
         scoreText.text = score + "";
+        //активируем GameOver - родитель всех компонентов
+        GameOver.SetActive(true);
+        GameOver.GetComponent<Animator>().Play("GameOver");
 
+        
     }
 
     //поднять предмет, который лежит на земле
