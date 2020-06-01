@@ -112,7 +112,7 @@ public class HUD : MonoBehaviour
     {   //плавно показать cover
         //текст GameOver должен быстро появится и как бы упасть сверхку
         //тест status должен быстро появится и как бы упасть сверху
-        StartCoroutine(_DisplayGameOver(score));
+        //StartCoroutine(_DisplayGameOver(score));
     }
 
     private IEnumerator _DisplayGameOver(float score)

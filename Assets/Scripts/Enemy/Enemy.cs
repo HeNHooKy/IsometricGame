@@ -219,7 +219,7 @@ public abstract class Enemy : MonoBehaviour
             {
                 if(FarVision >= (new Vector2(FarVision - i, FarVision - j).magnitude))
                 {
-                    map[i, j] = GetCell(new Vector3(sPos.x - n + i, -0.2f, sPos.y - n + j), isPlayerTarget);
+                    map[i, j] = GetCell(new Vector3(sPos.x - n + i, -1f, sPos.y - n + j), isPlayerTarget);
                 }
             }
         }
