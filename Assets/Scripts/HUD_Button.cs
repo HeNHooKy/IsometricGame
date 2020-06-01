@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class HUD_Button : MonoBehaviour
 {
-    public int ButtonId = 0;
+    public ButConst ButtonId = 0;
     public float AnimationSpeed = 1f;
     public float Shift = 0.1f;  //смещение icon и count
 
