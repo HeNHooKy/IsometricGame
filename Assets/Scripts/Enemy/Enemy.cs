@@ -389,7 +389,7 @@ public abstract class Enemy : MonoBehaviour
 
         for (float i = 0; i < 1f; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
-            sprite.position = Vector3.Lerp(sPos, tPos, easeInOutQuart(i));
+            sprite.position = Vector3.Lerp(sPos, tPos, Easing.easeInOutQuart(i));
             yield return null;
         }
 
@@ -402,7 +402,7 @@ public abstract class Enemy : MonoBehaviour
 
         for (float i = 0; i < 1; i += AttackAnimationSpeedShift * Time.deltaTime)
         {
-            sprite.position = Vector3.Lerp(tPos, sPos, easeOutQuint(i));
+            sprite.position = Vector3.Lerp(tPos, sPos, Easing.easeOutQuint(i));
             yield return null;
         }
 
@@ -429,36 +429,19 @@ public abstract class Enemy : MonoBehaviour
 
         for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)
         {   //анимация
-            sprite.position = Vector3.Lerp(sPos, tPos, easeOutExpo(i));
+            sprite.position = Vector3.Lerp(sPos, tPos, Easing.easeOutExpo(i));
             yield return null;
         }
         for (float i = 0.4f; i < 1; i += DamageAnimationSpeedShift * Time.deltaTime)
         {
-            sprite.position = Vector3.Lerp(tPos, sPos, easeInOutQuad(i));
+            sprite.position = Vector3.Lerp(tPos, sPos, Easing.easeInOutQuad(i));
             yield return null;
         }
         sprite.position = sPos;
     }
 
 
-    float easeOutExpo(float x)
-    {
-        return (float)(x == 1f ? 1f : 1f - Math.Pow(2f, -10f * x));
-    }
-    float easeInOutQuad(float x)
-    {
-        return (float) (x < 0.5 ? 2 * x * x : 1 - Math.Pow(-2 * x + 2, 2) / 2);
-    }
-
-    float easeInOutQuart(float x)
-    {
-        return x < 0.5 ? (float)(8 * x * x * x * x) : (float)(1 - Math.Pow(-2 * x + 2, 4) / 2);
-    }
-
-    float easeOutQuint(float x)
-    {
-        return (float)(1 - Math.Pow(1 - x, 5));
-    }
+    
 
 }
 

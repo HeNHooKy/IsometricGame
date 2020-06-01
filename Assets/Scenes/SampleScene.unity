@@ -1110,7 +1110,7 @@ PrefabInstance:
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: Health
-      value: 16
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
@@ -1140,7 +1140,12 @@ PrefabInstance:
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: MaxHealth
-      value: 2
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
+        type: 3}
+      propertyPath: DamageAnimationShift
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 6337127394772414436, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
@@ -1682,17 +1687,17 @@ PrefabInstance:
     - target: {fileID: 7564421714842974883, guid: 4f516549b56ef26448fd658d6b1634e5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7564421714842974883, guid: 4f516549b56ef26448fd658d6b1634e5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7564421714842974883, guid: 4f516549b56ef26448fd658d6b1634e5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7564421714842974883, guid: 4f516549b56ef26448fd658d6b1634e5,
         type: 3}
@@ -1982,6 +1987,31 @@ PrefabInstance:
       propertyPath: gameController
       value: 
       objectReference: {fileID: 207577315}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: StatusShift
+      value: 175
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: GameOverShift
+      value: 175
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: GOStatusShowSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: GOSShowSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: CoverShowSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1514946596130071222, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
         type: 3}
       propertyPath: m_Name
@@ -1997,6 +2027,16 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1374500322}
+    - target: {fileID: 8760952025002143722, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -2.100586
+      objectReference: {fileID: 0}
+    - target: {fileID: 8760952025002143722, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 403.7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e36a56e7e2f3be41b885fd09f026c6c, type: 3}
 --- !u!114 &1956271574634222898 stripped

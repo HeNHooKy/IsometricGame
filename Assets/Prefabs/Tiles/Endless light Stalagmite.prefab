@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3744591809523278419}
   - component: {fileID: 5392449914303516323}
   - component: {fileID: 2383989852011136331}
+  - component: {fileID: 6561972807533217775}
   m_Layer: 0
   m_Name: Endless light Stalagmite
   m_TagString: Untagged
@@ -93,3 +94,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.600002, y: 3.600003, z: 1.600003}
   m_Center: {x: 0.07843301, y: 1.7999965, z: 0.08627248}
+--- !u!114 &6561972807533217775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4003271650472653366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af8da43a500e04428785d4329222993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Chance: 0.4
