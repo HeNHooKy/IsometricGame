@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 0a7f7297a4731554692c5827fcc28911
+=======
+guid: d5f54cd72eac6274c9976c0b23df0ed0
+>>>>>>> refs/remotes/IsometricGame1/master
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

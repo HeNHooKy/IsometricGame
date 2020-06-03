@@ -2252,6 +2252,16 @@ PrefabInstance:
       propertyPath: CoverShowSpeed
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 514515213}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: IsMainMenu
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1514946596130071222, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
         type: 3}
       propertyPath: m_Name
@@ -2267,6 +2277,11 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 1374500322}
+    - target: {fileID: 8637272406895621821, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8760952025002143722, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
         type: 3}
       propertyPath: m_AnchoredPosition.x

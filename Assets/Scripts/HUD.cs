@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
+    public GameObject Player; //ссылка на игрока
+    public string LoadSceneName;
+    public string MenuScenename;
+
+    public bool IsMainMenu = false;
+
     public float CoverShowSpeed = 2f;
     public float GOSShowSpeed = 2f;
 
@@ -18,13 +24,15 @@ public class HUD : MonoBehaviour
     public int TopItemCount = 0;
     public int BottomItemCount = 0;
 
+    public ButConst TurnedBut;
+
     public GameController gameController; //указатель на гейм контроллер
     public Sprite UIMask; //маска (накладывается при отсутствии предмета в инвентаре)
 
     private GameObject GameOver;
 
     private GameObject ItemStay = null; //предмет на котором стоит персонаж
-    private GameObject player; //ссылка на игрока
+    
     private GameObject pickUpButton;    //ссылка на кнопку "поднять предмет"
 
     private Image topItemImage; //отображение спрайтов предметов
@@ -35,12 +43,17 @@ public class HUD : MonoBehaviour
 
     private int IPUP;//item pick up pointer
 
+    
     private bool isGameOver = false;
+
+    private MenuButton newGameBut;
+    private MenuButton continueBut;
+    private MenuButton statisticsBut;
 
     private void Start()
     {
         IPUP = 0;
-        player = transform.Find("/Player").gameObject;
+        
         Transform Root = transform.Find("Root");
         pickUpButton = Root.Find("PickUpItem").gameObject;
         topItemImage = Root.Find("TopItem").Find("Icon").GetComponent<Image>();
@@ -48,63 +61,172 @@ public class HUD : MonoBehaviour
         bottomItemImage = Root.Find("BottomItem").Find("Icon").GetComponent<Image>();
         bottomItemText = Root.Find("BottomItem").Find("Count").GetComponent<Text>();
         GameOver = transform.Find("GameOver").gameObject;
+
+        newGameBut = transform.Find("MainMenu").Find("NewGame").GetComponent<MenuButton>();
+        continueBut = transform.Find("MainMenu").Find("ContinueGame").GetComponent<MenuButton>();
+        statisticsBut = transform.Find("MainMenu").Find("Statistics").GetComponent<MenuButton>();
+
+        if(IsMainMenu)
+        {   //пиздец какой-то...
+            newGameBut.transform.SetAsLastSibling();
+            continueBut.transform.SetAsLastSibling();
+            statisticsBut.transform.SetAsLastSibling();
+        }
+
+
+    }
+
+    public MenuButton GetButton(ButConst id)
+    {
+        switch(id)
+        {
+            case ButConst.NewGame:
+                return newGameBut;
+            case ButConst.Continue:
+                return continueBut;
+            case ButConst.Statistics:
+                return statisticsBut;
+            default:
+                return null;
+        }
+        
     }
 
     /// <summary>
-    /// Lock player controller, while clicked HUD button
+    /// Lock Player controller, while clicked HUD button
     /// </summary>
     public void SetLockControll(bool isLocking)
     {
-        player.GetComponent<PlayerController>().isPressedButton = isLocking;
+        if (!IsMainMenu)
+        {
+            Player.GetComponent<PlayerController>().isPressedButton = isLocking;
+        }
     }
 
     //была нажата какая-то кнопка худа
-    public void ClickedButton(int butId)
+    public void ClickedButton(ButConst butId)
     {
-        if (butId == 3)
+        if(IsMainMenu)
+        {   //сейчас отображается главное меню
+            if(butId == ButConst.Up)
+            {   //нажата кнопка "вверх"
+                GetButton(TurnedBut).UnPressed();
+                if (TurnedBut == ButConst.NewGame)
+                {
+                    TurnedBut = ButConst.Statistics;
+                }
+                else
+                {
+                    TurnedBut--;
+                }
+                GetButton(TurnedBut).Pressed();
+            }
+            else if(butId == ButConst.Bottom)
+            {   //нажата кнопка "вниз"
+                GetButton(TurnedBut).UnPressed();
+                if (TurnedBut == ButConst.Statistics)
+                {
+                    TurnedBut = ButConst.NewGame;
+                }
+                else
+                {
+                    TurnedBut++;
+                }
+                GetButton(TurnedBut).Pressed();
+
+            }
+            else if(butId == ButConst.Shield)
+            {   //нажата кнопка "выбрать"
+                GetButton(TurnedBut).Action();
+            }
+            else if(butId == ButConst.Back)
+            {   //нажата кнопка "выйти"
+                Application.Quit();
+            }
+            else if(butId == ButConst.NewGame)
+            {   //нажата кнопка "начать игру"
+                StartNewGame();
+            }
+            else if(butId == ButConst.Continue)
+            {   //нажата кнопка "продолжить игру"
+
+            }
+            else if(butId == ButConst.Statistics)
+            {   //нажата кнопка "статистика"
+
+            }
+            return;
+        }
+
+        if (butId == ButConst.Back)
         {   //попытка выйти в меню
             //пока игра не закончена, при нажатии на эту кнопку после смерти игра перезапускается
             if (isGameOver)
-            {   //выход в меню (ПЕРЕЗАПУСК)
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            {   //выход в меню
+                SceneManager.LoadScene(MenuScenename);
                 return;
             }
         }
 
-        if (!player.GetComponent<PlayerController>().GetCapacity())
+        if (!Player.GetComponent<PlayerController>().GetCapacity())
         {   //игрок не может выполнить это действие сейчас
             return;
         }
 
         //Какие-то действия
-        if (butId == 0 && TopItemId != -1)
+        if (butId == ButConst.Up && TopItemId != -1)
         {   
             //кнопка верхнего предмета
             TopItemCount--; //уменьшаем кол-во в инвентаре
-            gameController.ItemsList[TopItemId].Use(player.GetComponent<PlayerController>());   //применяем предмет
+            gameController.ItemsList[TopItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
             if (TopItemCount <= 0)
             {
                 //удалить предмет
                 TopItemId = -1;
             }
         }
-        else if(butId == 1 && BottomItemId != -1)
+        else if(butId == ButConst.Bottom && BottomItemId != -1)
         {   //кнопка нижнего предмета
             BottomItemCount--; //уменьшаем кол-во в инвентаре
-            gameController.ItemsList[BottomItemId].Use(player.GetComponent<PlayerController>());   //применяем предмет
+            gameController.ItemsList[BottomItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
             if (BottomItemCount <= 0)
             {
                 //удалить предмет
                 BottomItemId = -1;
             }
         }
-        else if(butId == 2)
+        else if(butId == ButConst.Shield)
         {   //попытка поставить блок
-            player.GetComponent<PlayerController>().SetBlock();
+            Player.GetComponent<PlayerController>().SetBlock();
         }
 
 
         DisplayActual();
+    }
+
+    //запустить сохраненную игру
+    public void ContinueGame()
+    {
+
+    }
+
+    //запускает новую игру
+    public void StartNewGame()
+    {
+        StartGame(true);
+    }
+
+    //Запускает игру
+    private void StartGame(bool isNewGame = false)
+    {
+        //пока просто загружаем сцену
+        SceneManager.LoadScene(LoadSceneName);
+    }
+
+    //открывает меню статистики
+    public void Statistics()
+    {
+
     }
 
     //конец игры
@@ -126,14 +248,12 @@ public class HUD : MonoBehaviour
         //активируем GameOver - родитель всех компонентов
         GameOver.SetActive(true);
         GameOver.GetComponent<Animator>().Play("GameOver");
-
-        
     }
 
     //поднять предмет, который лежит на земле
     public void PickUp()
     {
-        if (!player.GetComponent<PlayerController>().GetCapacity())
+        if (!Player.GetComponent<PlayerController>().GetCapacity())
         {   //игрок не может выполнить это действие сейчас
             return;
         }
@@ -252,7 +372,7 @@ public class HUD : MonoBehaviour
             drop = Instantiate(gameController.ItemsList[BottomItemId].gameObject);
             drop.GetComponent<Item>().count = BottomItemCount;
         }
-        drop.transform.position = player.transform.position;
+        drop.transform.position = Player.transform.position;
         //затираем инфу
         UpdateItem(taken.id, taken.count, IPUP);
         IPUP += 1; IPUP %= 2;
@@ -341,7 +461,7 @@ public class HUD : MonoBehaviour
     //поднять предмет, который лежит на земле
     public void PickUp()
     {
-        if (!player.GetComponent<PlayerController>().GetCapacity())
+        if (!Player.GetComponent<PlayerController>().GetCapacity())
         {   //игрок не может выполнить это действие сейчас
             return;
         }
@@ -445,13 +565,13 @@ public class HUD : MonoBehaviour
         if (IPUP == 0)
         {   //время дропнуть первый item
             TopItem = Instantiate(TopItem);
-            TopItem.transform.position = player.transform.position;
+            TopItem.transform.position = Player.transform.position;
             TopItem = new Item(taken.GetComponent<Item>()).gameObject; //поднять
         }
         else
         {   //пора дропнуть второй item
             BottomItem = Instantiate(BottomItem);
-            BottomItem.transform.position = player.transform.position;
+            BottomItem.transform.position = Player.transform.position;
             BottomItem = new Item(taken.GetComponent<Item>()).gameObject; //поднять
         }
         IPUP += 1; IPUP %= 2;
@@ -465,7 +585,7 @@ public class HUD : MonoBehaviour
         pickUpButton.SetActive(false);
 
         RaycastHit hit;
-        if (Physics.Raycast(player.transform.position, Vector3.up, out hit, 2f, (1 << 12)))
+        if (Physics.Raycast(Player.transform.position, Vector3.up, out hit, 2f, (1 << 12)))
         {   //тут что-то лежит
             pickUpButton.SetActive(true);
             ItemStay = hit.collider.gameObject;
