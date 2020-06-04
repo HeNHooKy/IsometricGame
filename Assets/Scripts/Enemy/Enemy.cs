@@ -52,15 +52,40 @@ public abstract class Enemy : MonoBehaviour
     protected HealthBar hp; //шкала здоровья
 
     protected bool isBeingStep { get; private set; } = false; //блокировка вызова хода
-    protected float baseSpeed;
-    private GameObject LastMoveBlock; //указатель на блокировку хода
+    protected GameObject LastMoveBlock; //указатель на блокировку хода
+    private bool isPlayerNearby = true;
     private System.Random random = new System.Random();
-    
 
-    //если игрок вне зоны видимотсти(определяет GameController), вызывается этот метод
-    public void PlayerOutOfRange()
+    void Start()
     {
-        MoveSpeed = 1000000; //увеличиваем скорость передвижения
+        StartHP = Health;
+        hp = transform.Find("Character").Find("HealthBar").GetComponent<HealthBar>();
+        eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
+        controller = transform.Find("/GameController").GetComponent<GameController>();
+        eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
+    }
+
+
+    /// <summary>
+    /// Завершение действия. Отнимает стамину, завершает step, удаляет moveBlock (если есть)
+    /// </summary>
+    protected void StepOut()
+    {
+        if(LastMoveBlock != null)
+        {
+            Destroy(LastMoveBlock); //удаляем MoveBlock
+        }
+        Energy--;
+        isBeingStep = false;
+    }
+
+    /// <summary>
+    /// Set enemies move type
+    /// </summary>
+    /// <param name="isTrue"></param>
+    public void PlayerInRange(bool isTrue)
+    {
+        isPlayerNearby = isTrue;
     }
 
     public bool GetAlive()
@@ -258,6 +283,15 @@ public abstract class Enemy : MonoBehaviour
         return -1;   //в остальных случаях, ходить нельзя
     }
 
+    /// <summary>
+    /// Shift the enemy, if player too far
+    /// </summary>
+    protected void Shift(Vector3 tPos)
+    {
+        transform.position = tPos;
+        StepOut();
+    }
+
     //двигаться
     protected void Move(Vector3 tPos)
     {
@@ -266,6 +300,13 @@ public abstract class Enemy : MonoBehaviour
         //создаем стоп-блок
         LastMoveBlock = Instantiate(MoveBlock);
         LastMoveBlock.transform.position = tPos;
+
+        if (!isPlayerNearby)
+        {
+            Shift(tPos);
+            return;
+        }
+
 
         isBeingStep = true;
         eSprite.flipX = (tPos - transform.position).x < 0 || (tPos - transform.position).z < 0;
@@ -309,6 +350,7 @@ public abstract class Enemy : MonoBehaviour
         GameObject arrow = Instantiate(Ball); //вызов стрелы
         arrow.transform.position = direct;  //определяем новое положение стрелы
         arrow.transform.rotation = Quaternion.Euler(0f, Vector3.Angle(transform.position, direct), 0f); //поворот стрелы
+        StepOut();  //минус очко действий
     }
     
     /// <summary>
@@ -317,11 +359,11 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="damage">Attack Power</param>
     /// <param name="AC">Attack Chance</param>
     /// <param name="pPos">My position</param>
-    public void Damaged(float damage, float AC, Vector3 pPos, bool trueSight = false)
+    public void Damaged(float damage, float AC, Vector3 pPos, bool trueStrike = false)
     {   //AC - AttackChance
         if (!isAlive) return;
         //пересчет шанса урона, уклонения
-        float chance = !trueSight ? (float) random.NextDouble() : 0;
+        float chance = !trueStrike ? (float) random.NextDouble() : 0;
         
         if (chance > (AC - BiasChance))
         {   //промах!
@@ -345,7 +387,6 @@ public abstract class Enemy : MonoBehaviour
     //смерть
     protected void Die()
     {
-        if (!isAlive) return;   //То, что мертво, умереть не может
         isMyTurn = false;
         Destroy(this.gameObject);
     }
@@ -363,7 +404,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     //перемещение
-    IEnumerator _Move(Vector3 sPos, Vector3 tPos)
+    protected virtual IEnumerator _Move(Vector3 sPos, Vector3 tPos)
     {
         for (float i = 0; i < 1; i += Time.deltaTime * MoveSpeed)
         {
@@ -371,16 +412,12 @@ public abstract class Enemy : MonoBehaviour
             yield return null;
         }
         transform.position = tPos;
-        //eAnimator.SetBool("IsWalking", false);
-        Destroy(LastMoveBlock); //удаляем MoveBlock
-        Energy--;
-        isBeingStep = false;
+        StepOut();
     }
 
     //Анимация ближней атаки
     IEnumerator CloseAttackAnimation(Transform p)
     {
-        //eAnimator.SetBool("IsAttack", true);
         Transform sprite = transform.Find("Character");
         Vector3 sPos = sprite.position;
         Vector3 tPos = p.position;
@@ -392,6 +429,8 @@ public abstract class Enemy : MonoBehaviour
             sprite.position = Vector3.Lerp(sPos, tPos, Easing.easeInOutQuart(i));
             yield return null;
         }
+
+        eAnimator.Play("Attack");
 
         //крит
         float CC = (float)random.NextDouble();
@@ -407,8 +446,7 @@ public abstract class Enemy : MonoBehaviour
         }
 
         sprite.position = sPos;
-        isBeingStep = false;
-        Energy--;
+        StepOut();
     }
 
 

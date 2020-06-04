@@ -16,13 +16,13 @@ public class MenuButton : MonoBehaviour
     public UnityEvent UnPressButton = new UnityEvent();
 
     private Image butImage;//указатель на картинку кнопки
-    private HUD HUD;
+    private MainMenu Menu;
 
 
-    private void Start()
+    private void Awake()
     {
         butImage = transform.Find("Base").GetComponent<Image>();
-        HUD = transform.parent.parent.GetComponent<HUD>();
+        Menu = transform.parent.parent.GetComponent<MainMenu>();
         PressButton.AddListener(Pressed);
         UnPressButton.AddListener(Action);
     }
@@ -40,18 +40,25 @@ public class MenuButton : MonoBehaviour
     public void Pressed()
     {
         butImage.sprite = Selected;
-        HUD.TurnedBut = butId;
+        DownShift(transform.GetComponent<RectTransform>(), -5);
+        Menu.TurnedBut = butId;
     }
 
     public void UnPressed()
     {   //кнопку просто отжали (без использования)
+        DownShift(transform.GetComponent<RectTransform>(), 5);
         butImage.sprite = NonActive;
     }
 
     public void Action()
     {   //выполняется действие назначенное на кнопку
+        DownShift(transform.GetComponent<RectTransform>(), 5);
         butImage.sprite = Activated;
-        HUD.ClickedButton(butId);
+        Menu.ClickedButton(butId);
     }
 
+    private void DownShift(RectTransform trans, float y)
+    {
+        trans.localPosition = new Vector3(trans.localPosition.x, trans.localPosition.y - y, trans.localPosition.z);
+    }
 }

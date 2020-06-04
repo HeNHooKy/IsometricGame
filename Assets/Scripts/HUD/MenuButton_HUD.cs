@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class HUD_Button : MonoBehaviour
+public class MenuButton_HUD : MonoBehaviour
 {
     public ButConst ButtonId = 0;
     public float AnimationSpeed = 1f;
@@ -15,7 +15,7 @@ public class HUD_Button : MonoBehaviour
     public UnityEvent PressButton = new UnityEvent();
     public UnityEvent UnPressButton = new UnityEvent();
 
-    private HUD HUD;
+    private MainMenu menu;
     private Image activated;
 
     private GameObject background;
@@ -31,7 +31,7 @@ public class HUD_Button : MonoBehaviour
         background = transform.Find("Background").gameObject;
         icon = transform.Find("Icon").GetComponent<RectTransform>();
         count = transform.Find("Count").GetComponent<RectTransform>();
-        HUD = transform.parent.parent.GetComponent<HUD>();
+        menu = transform.parent.parent.GetComponent<MainMenu>();
         activated = transform.Find("Activated").GetComponent<Image>();
         glassTransform = transform.Find("Glass").GetComponent<RectTransform>();
         baseGlass = glassTransform.GetComponent<Image>().sprite;
@@ -54,16 +54,14 @@ public class HUD_Button : MonoBehaviour
 
     void Pressed()
     {   //анимация и блокировка при нажатии на кнопку
-        HUD.SetLockControll(true);
         AnimationPress();
     }
 
     void Action()
     {
         //то, что происходит, когда кнопка отжимается
-        HUD.SetLockControll(false);
         AnimationUnPress();
-        HUD.ClickedButton(ButtonId);
+        menu.ClickedButton(ButtonId);
     }
 
     private void AnimationPress()
@@ -81,19 +79,13 @@ public class HUD_Button : MonoBehaviour
     private void AnimationUnPress()
     {
         Color c = activated.color;
-
-        DownShift(icon, - Shift);
-        DownShift(count, - Shift);
+        DownShift(icon, -Shift);
+        DownShift(count, -Shift);
         DownShift(glassTransform, -Shift);
+        glassTransform.GetComponent<Image>().sprite = baseGlass;
         background.SetActive(true);
         c.a = 0f;
         activated.color = c;
-    }
-
-
-
-    private float easeOutQuint(float x) {
-        return (float)(1 - Math.Pow(1 - x, 5));
     }
 
     private void DownShift(RectTransform trans, float y)

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -13,7 +14,7 @@ public class GameController : MonoBehaviour
     public long Score = 0;
     public float EnemiesNotInRange; //расстояение на котором противники становятся невидимы
 
-    private GameObject[] Enemies;  //все монстры на карте
+    private List<GameObject> Enemies = new List<GameObject>();  //все монстры на карте
     private HUD HUD;
 
     private void Start()
@@ -33,7 +34,7 @@ public class GameController : MonoBehaviour
         }
 
 
-        Enemies = GameObject.FindGameObjectsWithTag(EnemyTag);
+        Enemies.AddRange(GameObject.FindGameObjectsWithTag(EnemyTag));
     }
 
     //конец игры
@@ -57,15 +58,22 @@ public class GameController : MonoBehaviour
     IEnumerator SetEnemiesTurn()
     {
         //сообщаем каждому мобу по очереди разрешение на ход
-        foreach (GameObject e in Enemies)
+        for(int i = 0; i < Enemies.Count; i++)
         {
-            Enemy enemy = e.GetComponent<Enemy>();
+            if(Enemies[i] == null)
+            {
+                Enemies.Remove(Enemies[i]);
+                continue;
+            }
+
+            Enemy enemy = Enemies[i].GetComponent<Enemy>();
             
             if (enemy.GetAlive())
             {
-                if((e.transform.position - player.transform.position).magnitude > EnemiesNotInRange)
+                enemy.PlayerInRange(true);
+                if ((Enemies[i].transform.position - player.transform.position).magnitude > EnemiesNotInRange)
                 {   //игрок слишком далеко
-                    enemy.PlayerOutOfRange();
+                    enemy.PlayerInRange(false);
                 }
                 enemy.TurnAllowed();
                 yield return null;  //пропускаем два фрейма
@@ -91,9 +99,15 @@ public class GameController : MonoBehaviour
         while (isEnemiesTurn)
         {
             isEnemiesTurn = false;
-            foreach (GameObject e in Enemies)
+            for (int i = 0; i < Enemies.Count; i++)
             {
-                if (e.GetComponent<Enemy>().GetTurnFlag())
+                if (Enemies[i] == null)
+                {
+                    Enemies.Remove(Enemies[i]);
+                    continue;
+                }
+
+                if (Enemies[i].GetComponent<Enemy>().GetTurnFlag())
                 {   //если хотя бы у одного моба включен флаг ->
                     isEnemiesTurn = true;
                     yield return null;

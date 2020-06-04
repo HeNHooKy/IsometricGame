@@ -3,16 +3,7 @@ using UnityEngine;
 
 public class BatController : Enemy
 {
-    
-    void Start()
-    {
-        baseSpeed = MoveSpeed;
-        StartHP = Health;
-        hp = transform.Find("Character").Find("HealthBar").GetComponent<HealthBar>();
-        eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
-        controller = transform.Find("/GameController").GetComponent<GameController>();
-        eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
-    }
+
 
     // Update is called once per frame
     void Update()
@@ -27,7 +18,6 @@ public class BatController : Enemy
             if (Energy < 1f)
             {   //конец хода
                 isMyTurn = false;
-                MoveSpeed = baseSpeed;
                 isMyTurn = false;
                 return;
             }
@@ -78,7 +68,6 @@ public class BatController : Enemy
                 {   //нечего делать - конец хода
                     isMyTurn = false;
                     Energy = 0;
-                    MoveSpeed = baseSpeed;
                 }
             }
              

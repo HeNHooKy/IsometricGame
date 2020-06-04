@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Runtime.InteropServices;
+using System.Security.Permissions;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -269,6 +270,7 @@ public class PlayerController : MonoBehaviour
                 Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitFloor, layerMask);
                 if (hitFloor.transform == null)
                     return null;
+
                 return hitFloor.transform;
             }
             else
@@ -290,28 +292,21 @@ public class PlayerController : MonoBehaviour
     void DoStep()
     {
         if (!isAlive) return;
-        //этот метод выполняет любое взаимодействие с окружением
-        //проверим свободна ли ячейка
-        int layerMask = ~(1 << 10 | 1 << 8); // ~(1 << 10 | 1 << 8)
-        //пускаем луч и собираем данные
-        RaycastHit hit;
-        Physics.Raycast(turnFloor.transform.position, Vector3.up, out hit, 1f, layerMask, QueryTriggerInteraction.Ignore);
+        int floorType = GetLoc(turnFloor.transform.position);
 
-        if (RaycastHit.Equals(hit.collider, null))
-        {   //клетка пуста
+        if (floorType == 1 || floorType == 2)
+        {
             //Тут свободно. Можно идти
             Move(turnFloor.transform.position);
         }
-        else if (hit.collider.tag == EnemyTag)
+        else if (floorType == 4)
         {
-            Attack(hit.collider.gameObject);
-        }
-        else if(hit.collider.tag == ItemTag)
-        {
-            //тут лежит что-то ценное, игнорируй :)
+            Attack(turnFloor.transform.position);
         }
         else
-        { 
+        {
+            turnFloor = null;
+            beingStep = false;
             //Кажется тут занято. Идти нельзя, нужно попробовать другое действие
         }
         Destroy(selected);
@@ -346,13 +341,18 @@ public class PlayerController : MonoBehaviour
 
     
 
-    void Attack(GameObject e)
+    void Attack(Vector3 position)
     {
-        ClearFreeLoc();
-        //поворачиваем персонажа
-        pSprite.flipX = (e.transform.position - transform.position).x < 0 || (e.transform.position - transform.position).z < 0;
-        //запускаем анимацию
-        StartCoroutine(AttackAnimation(e.transform));
+        RaycastHit hit; int enemyLayer = (1 << 11);
+
+        if (Physics.Raycast(position, Vector3.up * 2f, out hit, 2f, enemyLayer))
+        {
+            ClearFreeLoc();
+            //поворачиваем персонажа
+            pSprite.flipX = (position - transform.position).x < 0 || (position - transform.position).z < 0;
+            //запускаем анимацию
+            StartCoroutine(AttackAnimation(hit.transform));
+        }
     }
    
 
@@ -392,37 +392,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void SetLoc(Vector3 position, int n, bool isStart)
     {
-        //находим все позиции, на которые можно ступить
-        //пускаем лучи в 4 стороны и собираем данные 
-        //первая сторона
-        int floorType = 0; //нет пути
-        RaycastHit[] hit = Physics.RaycastAll(position - Vector3.up, Vector3.up*2f);
-        Debug.DrawRay(position - Vector3.up, Vector3.up * 2f, Color.green, 2f);
-        
-        foreach (RaycastHit h in hit)
-        {
-            if (h.collider.tag == EnemyTag && floorType < 4)
-            {
-                floorType = 4; //тут стоит враг
-                continue;
-            }
-            if (h.collider.tag == EnvironmentTag && floorType < 3)
-            {
-                floorType = 3; //тут есть что-то с чем можно взаимодейстовать
-                continue;
-            }
-            if (h.collider.tag == ItemTag && floorType < 2)
-            {
-                floorType = 2; //тут лежит что-то ценное
-                continue;
-            }
-            if (h.collider.tag == FloorTag && hit.Length == 1 && floorType < 1)
-            {
-                floorType = 1; //тут просто можно ходить
-                continue;
-            }
-        }
-
+        int floorType = GetLoc(position);
         SpriteRenderer sp;
         switch (floorType)
         {
@@ -449,6 +419,42 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(Show(sp, 0.5f));
                 break;
         }
+    }
+
+    int GetLoc(Vector3 position)
+    {
+        //находим все позиции, на которые можно ступить
+        //пускаем лучи в 4 стороны и собираем данные 
+        //первая сторона
+        int floorType = 0; //нет пути
+        RaycastHit[] hit = Physics.RaycastAll(position - Vector3.up, Vector3.up * 2f);
+        Debug.DrawRay(position - Vector3.up, Vector3.up * 2f, Color.green, 2f);
+
+        foreach (RaycastHit h in hit)
+        {
+            if (h.collider.tag == EnemyTag && floorType < 4)
+            {
+                floorType = 4; //тут стоит враг
+                continue;
+            }
+            if (h.collider.tag == EnvironmentTag && floorType < 3)
+            {
+                floorType = 3; //тут есть что-то с чем можно взаимодейстовать
+                continue;
+            }
+            if (h.collider.tag == ItemTag && floorType < 2)
+            {
+                floorType = 2; //тут лежит что-то ценное
+                continue;
+            }
+            if (h.collider.tag == FloorTag && hit.Length == 1 && floorType < 1)
+            {
+                floorType = 1; //тут просто можно ходить
+                continue;
+            }
+        }
+
+        return floorType;
     }
 
     //очистка массива подсветки пола
@@ -574,7 +580,13 @@ public class PlayerController : MonoBehaviour
     //плавно Анимация получения урона
     IEnumerator DamageAnimation(Vector3 tPos)
     {
-        if(isDefending)
+        float damageShift = DamageAnimationShift;
+        int floorType = GetLoc(transform.position + tPos);
+
+        
+
+        //если позади занято или если игрок защищается (наоборот)
+        if (isDefending )
         {   //анимация снятия щита 
             pAnimator.Play("HideShieldDamaged");
             isDefending = false;    //теперь игрок будет получать урон
@@ -592,7 +604,12 @@ public class PlayerController : MonoBehaviour
         //поворот спрайта
         sp.flipX = tPos.x > 0 || tPos.z > 0;
 
-        tPos = sPos + (tPos/DamageAnimationShift);
+        if (isDefending || (floorType != 1 && floorType != 2))
+        {
+            damageShift *= 2;
+        }
+
+        tPos = sPos + (tPos/damageShift);
         tPos.y = sPos.y;
 
         for (float i = 0; i <= 0.4; i += DamageAnimationSpeedShift * Time.deltaTime)

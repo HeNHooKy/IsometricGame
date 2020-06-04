@@ -1,20 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class SlimeController : Enemy
 {
-    System.Random random = new System.Random();
-
-    void Start()
-    {
-        baseSpeed = MoveSpeed;
-        eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
-        controller = transform.Find("/GameController").GetComponent<GameController>();
-        eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
-    }
-    
-    
 
     // Update is called once per frame
     void Update()
@@ -25,7 +15,6 @@ public class SlimeController : Enemy
             if (Energy < 1f)
             {   //конец хода
                 isMyTurn = false;
-                MoveSpeed = baseSpeed;
                 return;
             }
         }
@@ -35,6 +24,7 @@ public class SlimeController : Enemy
             //релизуем AI
             bool isNotExist;
             Vector3 target = GetRandomPosition(out isNotExist);
+
             if(!isNotExist)
             {   //путь есть
                 if (GetCell(target) == 0)
@@ -50,10 +40,30 @@ public class SlimeController : Enemy
             {   //нечего делать - конец хода
                 isMyTurn = false;
                 Energy = 0;
-                MoveSpeed = baseSpeed;
             }
         }
     }
 
     
+    //в этом блоке переопределяется анимация ходьбы слизня(т.к. его перемещение специфично)
+    protected override IEnumerator _Move(Vector3 sPos, Vector3 tPos)
+    {
+        eAnimator.Play("JumpPrepare");
+        //ждём пока анимация будет завершена
+        while (!eAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+        {
+            yield return null;
+        }
+
+        for (float i = 0; i < 1; i += Time.deltaTime * MoveSpeed)
+        {
+            transform.position = Vector3.Lerp(sPos, tPos, i);
+            yield return null;
+        }
+
+        transform.position = tPos;
+        StepOut();
+    }
+
+
 }
