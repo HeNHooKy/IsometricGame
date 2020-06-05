@@ -24,10 +24,15 @@ public class Easing
         return (float)(1 - Math.Pow(1 - x, 5));
     }
 
-    /// <summary>
-    /// Плавная функция, возрастает линейно, под конец замедляется
-    /// </summary>
-    public static float easeOutSine(float x) {
+    public static float easeInOutCubic(float x)
+    { 
+        return (float) (x < 0.5 ? (4 * x* x* x) : (1 - Math.Pow(-2 * x + 2, 3) / 2));
+    }
+
+/// <summary>
+/// Плавная функция, возрастает линейно, под конец замедляется
+/// </summary>
+public static float easeOutSine(float x) {
       return (float) Math.Sin((x* Math.PI) / 2);
     }
 }
