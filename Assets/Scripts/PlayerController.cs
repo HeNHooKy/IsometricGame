@@ -6,34 +6,61 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float DamageAnimationShift = 2;  //сдвиг анимации при получении урона
-    public float DamageAnimationSpeedShift = 2f;//скорость сдвига анимации при получении урона
-
+    [Header("Анимация")]
+    [Tooltip("Cдвиг при получении урона")]
+    public float DamageAnimationShift = 2;
+    [Tooltip("Cкорость сдвига при получении урона")]
+    public float DamageAnimationSpeedShift = 2f;
+    [Tooltip("Сдвиг при нанесении урона")]
     public float AttackAnimationSpeedShift = 0.1f;
+    [Tooltip("Cкорость сдвига при нанесении урона")]
     public float AttackAnimationShift = 2f;
 
-    public float Health = 4f;   //здоровье
-    public float MaxHealth = 10f;   //максимальное здоровье
-    public float EnergyReload = 2f; //количество действий за ход
-    public float AttackPower = 1f; //сила атаки
-    public float AttackChance = 0.5f;   //шанс урона
-    public float CriticalChance = 0.15f;    //шанс крита
-    public float CriticalMultiply = 1.5f; //множитель критического удара
-    public float BiasChance = 0.15f; //шанс уклона
+    [Header("Аттрибуты")]
+    [Tooltip("Здоровье игрока")]
+    public float Health = 4f;
+    [Tooltip("Максимальное здоровье")]
+    public float MaxHealth = 10f;
+    [Tooltip("Количество действий за ход")]
+    public float EnergyReload = 2f;
+    [Tooltip("Сила атаки")]
+    public float AttackPower = 1f;
+    [Tooltip("Шанс урона")]
+    public float AttackChance = 0.5f;
+    [Tooltip("Шанс крита")]
+    public float CriticalChance = 0.15f;
+    [Tooltip("Множитель критического удара")]
+    public float CriticalMultiply = 1.5f;
+    [Tooltip("Шанс уклона")]
+    public float BiasChance = 0.15f;
 
-
+    [Header("Настройки игрока")]
+    [Tooltip("Время, через которое пропадет GO игрока после смерти")]
     public float DieTime = 2f;
+    [Tooltip("Скорость анимации перемещения игрока")]
     public float MoveSpeed = 1f;
+    [Tooltip("Указатель на Player Health Bar в HUD")]
     public PlayerHealthBar phb;
+    [Tooltip("Указатель на GameController")]
     public GameController GameController;
+    [Tooltip("Префаб свободной для движения ячейки")]
     public GameObject FreeFloor;
+    [Tooltip("Префаб выбранной ячейки")]
     public GameObject SelectFloor;
+    [Tooltip("Скорость появления/исчезания свободной для движения ячейки")]
     public float OpacitySpeed = 2f;
+
+    [Header("Теги")]
+    [Tooltip("Тег пола доступного для перемещения")]
     public string FloorTag = "Floor";
+    [Tooltip("Тег противников")]
     public string EnemyTag = "Enemy";
+    [Tooltip("Тег окружения, с которым можно взаимодействовать")]
     public string EnvironmentTag = "Environment";
+    [Tooltip("Тег предметов")]
     public string ItemTag = "Item";
 
+    [HideInInspector]
     public bool isPressedButton = false;
 
     Transform turnObj;

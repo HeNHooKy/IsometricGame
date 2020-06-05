@@ -6,13 +6,19 @@ using UnityEngine.UI;
 
 public class MenuButton : MonoBehaviour
 {
+    [Header("Найстройки кнопки")]
+    [Tooltip("ID кнопки из доступных")]
     public ButConst butId;
-
+    [Tooltip("Спрайт не активированной кнопки")]
     public Sprite NonActive;
+    [Tooltip("Спрайт выбранной кнопки")]
     public Sprite Selected;
+    [Tooltip("Спрайт вжатой кнопки")]
     public Sprite Activated;
 
+    [HideInInspector]
     public UnityEvent PressButton = new UnityEvent();
+    [HideInInspector]
     public UnityEvent UnPressButton = new UnityEvent();
 
     private Image butImage;//указатель на картинку кнопки

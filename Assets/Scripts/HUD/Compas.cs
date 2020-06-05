@@ -4,10 +4,14 @@ using UnityEngine.UI;
 
 public class Compas : MonoBehaviour
 {
-    public static int SpriteCount = 16; //количество спрайтов на компас
+    public static int SpriteCount = 16;
+    [Header("Настройки компаса")]
+    [Tooltip("Список спрайтов компаса")]
     public Sprite[] Sprites = new Sprite[SpriteCount];
-    public Transform Player; //сюды следует передать игрока
-    public Vector3 Target;  //цель
+    [Tooltip("Сюды следует передать игрока")]
+    public Transform Player; //
+    [Tooltip("Цель компаса")]
+    public Vector3 Target;
 
     private Image compasImage; //изображение компаса
     private Vector3 nulVect = new Vector3(1, 0, 0);//условный ноль

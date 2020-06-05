@@ -1,20 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameController : MonoBehaviour
 {
     public static int MaxItemsListLength = 100;
-    public Item[] ItemsList = new Item[MaxItemsListLength];
-    public PlayerController player;
-    public string EnemyTag = "Enemy";
-    public float FlagTimer = 0.5f;  //время на которое становится доступен флаг хода монстра
-    public float Length = 100f; //длина игрового поля
-    public float Witdh = 100f; //ширина игрового поля
-    public long Score = 0;
-    public float EnemiesNotInRange; //расстояение на котором противники становятся невидимы
 
-    private List<GameObject> Enemies = new List<GameObject>();  //все монстры на карте
+    [Header("Настройки игры")]
+    [Tooltip("Список всех предметов в игре")]
+    public Item[] ItemsList = new Item[MaxItemsListLength];
+    [Tooltip("Указатель на игрока")]
+    public PlayerController player;
+    [Tooltip("Тег монстров")]
+    public string EnemyTag = "Enemy";
+    [Tooltip("Время на которое становится доступен флаг хода монстра")]
+    public float FlagTimer = 0.5f;
+    [Tooltip("Длина игрового поля")]
+    public float Length = 100f;
+    [Tooltip("Ширина игрового поля")]
+    public float Witdh = 100f;
+    [HideInInspector]
+    public long Score = 0;
+    [Tooltip("Расстояение на котором противники становятся невидимы")]
+    public float EnemiesNotInRange;
+
+    private List<GameObject> enemies = new List<GameObject>();  //все монстры на карте
     private HUD HUD;
 
     private void Start()
@@ -32,9 +43,21 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+    }
 
-
-        Enemies.AddRange(GameObject.FindGameObjectsWithTag(EnemyTag));
+    //пересобрать данные о всех монстрах на карте 
+    public void GetEnemiesList()
+    {
+        //очистим данные о всех монстрах
+        enemies.Clear();
+        GameObject[] enemiesGO = GameObject.FindGameObjectsWithTag(EnemyTag);
+        foreach (GameObject e in enemiesGO)
+        {   //добавляем только активных монстров
+            if (e.activeInHierarchy)
+            {
+                enemies.Add(e);
+            }
+        }
     }
 
     //конец игры
@@ -58,20 +81,20 @@ public class GameController : MonoBehaviour
     IEnumerator SetEnemiesTurn()
     {
         //сообщаем каждому мобу по очереди разрешение на ход
-        for(int i = 0; i < Enemies.Count; i++)
+        for(int i = 0; i < enemies.Count; i++)
         {
-            if(Enemies[i] == null)
+            if(enemies[i] == null)
             {
-                Enemies.Remove(Enemies[i]);
+                enemies.Remove(enemies[i]);
                 continue;
             }
 
-            Enemy enemy = Enemies[i].GetComponent<Enemy>();
+            Enemy enemy = enemies[i].GetComponent<Enemy>();
             
             if (enemy.GetAlive())
             {
                 enemy.PlayerInRange(true);
-                if ((Enemies[i].transform.position - player.transform.position).magnitude > EnemiesNotInRange)
+                if ((enemies[i].transform.position - player.transform.position).magnitude > EnemiesNotInRange)
                 {   //игрок слишком далеко
                     enemy.PlayerInRange(false);
                 }
@@ -99,15 +122,15 @@ public class GameController : MonoBehaviour
         while (isEnemiesTurn)
         {
             isEnemiesTurn = false;
-            for (int i = 0; i < Enemies.Count; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                if (Enemies[i] == null)
+                if (enemies[i] == null)
                 {
-                    Enemies.Remove(Enemies[i]);
+                    enemies.Remove(enemies[i]);
                     continue;
                 }
 
-                if (Enemies[i].GetComponent<Enemy>().GetTurnFlag())
+                if (enemies[i].GetComponent<Enemy>().GetTurnFlag())
                 {   //если хотя бы у одного моба включен флаг ->
                     isEnemiesTurn = true;
                     yield return null;

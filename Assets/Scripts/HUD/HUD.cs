@@ -4,23 +4,25 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    public GameObject Player; //ссылка на игрока
+    [Header("Настройки HUD")]
+    [Tooltip("Ссылка на игрока")]
+    public GameObject Player;
+    [Tooltip("Название сцены главного меню")]
     public string MenuScenename;
 
-    public float CoverShowSpeed = 2f;
-    public float GOSShowSpeed = 2f;
-
-    public float GameOverShift = 1f;
-    public float StatusShift = 1f;
-    
+    [HideInInspector]
     public int TopItemId = -1;
+    [HideInInspector]
     public int BottomItemId = -1;
-
+    [HideInInspector]
     public int TopItemCount = 0;
+    [HideInInspector]
     public int BottomItemCount = 0;
 
-    public GameController gameController; //указатель на гейм контроллер
-    public Sprite UIMask; //маска (накладывается при отсутствии предмета в инвентаре)
+    [Tooltip("Указатель на гейм контроллер")]
+    public GameController gameController;
+    [Tooltip("Маска (накладывается при отсутствии предмета в инвентаре)")]
+    public Sprite UIMask;
 
     private GameObject GameOver;
 

@@ -5,17 +5,28 @@ using UnityEngine.UI;
 
 public class PlayerHealthBar : MonoBehaviour
 {
-    public List<Image> hearts;     //массив указателей на сердца
+    [Header("массив полей сердец")]
+    public List<Image> hearts;
 
-    public Sprite BaseHeart;    //обычное сердце
-    public Sprite HalfHeart;    //половинка сердца
-    public Sprite OverHeart;    //оверхил сердце
-    public Sprite HalfOverHeart;//половина оверхил сердца
-    public Sprite EmptyHeart;   //пустой слот под сердце
-    public Sprite EmptyHalfHeart;//пустой слот под половину сердца
-    public Sprite Empty;    //пустой спрайт
+    [Header("Спрайты сердец")]
+    [Tooltip("Обычное сердце")]
+    public Sprite BaseHeart;
+    [Tooltip("Половинка сердца")]
+    public Sprite HalfHeart;
+    [Tooltip("Оверхил сердце")]
+    public Sprite OverHeart;
+    [Tooltip("Половина оверхил сердца")]
+    public Sprite HalfOverHeart;
+    [Tooltip("Пустой слот под сердце")]
+    public Sprite EmptyHeart;
+    [Tooltip("Пустой слот под половину сердца")]
+    public Sprite EmptyHalfHeart;
+    [Tooltip("Пустой спрайт")]
+    public Sprite Empty;
 
+    [HideInInspector]
     public int MaxHealth;       //максимальное здоровье игрока
+    [HideInInspector]
     public int CurrentHealth;   //текущее здоровье игрока
 
     public void DisplayHeart(int max, int cur)

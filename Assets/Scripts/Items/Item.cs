@@ -3,13 +3,21 @@ using UnityEngine;
 
 public abstract class Item : MonoBehaviour
 {
-    public int Rarity = 1;  //ценность предмета (1-common)
-    public bool isActivate = true; //предмет активируемый?
-    public string PlayerTag = "Player"; //тег игрока
-    public Sprite ItemSprite; //спрайт, который будет отображаться в HUD
-    public int count = 1;   //количество предметов в стаке
+    [Tooltip("ценность предмета (1-common)")]
+    public int Rarity = 1;
+    [Tooltip("предмет активируемый?")]
+    public bool isActivate = true;
+    [Tooltip("Тег игрока")]
+    public string PlayerTag = "Player";
+    [Tooltip("Спрайт, который будет отображаться в HUD")]
+    public Sprite ItemSprite;
+    [Tooltip("Количество предметов в стаке")]
+    public int count = 1;
+    [Tooltip("Максимальное количество предметов в стаке")]
     public int maxStack = 4;
-    public int id;  //номер предмета
+    [Tooltip("Порядковый номер предмета в массиве предметов")]
+    public int id;
+
     private HUD HUD;
 
     private GameObject that;

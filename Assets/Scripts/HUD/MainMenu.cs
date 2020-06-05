@@ -4,8 +4,12 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    [Header("Найстройка меню")]
+    [Tooltip("Основная сцена игры")]
     public string LoadSceneName;
+    [Tooltip("Поле, в котором дублируется информация о нажатой кнопке")]
     public Text SecondString;
+    [Tooltip("Выбранная кнопка (изменение стартовой кнопки)")]
     public ButConst TurnedBut;
 
     private MenuButton newGameBut;

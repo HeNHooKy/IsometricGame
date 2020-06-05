@@ -6,13 +6,19 @@ using UnityEngine.UI;
 
 public class HUD_Button : MonoBehaviour
 {
+    [Header("Найстройки кнопки")]
+    [Tooltip("ID кнопки из доступных")]
     public ButConst ButtonId = 0;
+    [Tooltip("Скорость анимации")]
     public float AnimationSpeed = 1f;
+    [Tooltip("Сдвиг при анимации")]
     public float Shift = 0.1f;  //смещение icon и count
-
+    [Tooltip("Спрайт активированной кнопки")]
     public Sprite ActivatedGlass;
 
+    [HideInInspector]
     public UnityEvent PressButton = new UnityEvent();
+    [HideInInspector]
     public UnityEvent UnPressButton = new UnityEvent();
 
     private HUD HUD;

@@ -8,37 +8,61 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    //анимация
-    public float DamageAnimationShift = 2;  //сдвиг анимации при получении урона
-    public float DamageAnimationSpeedShift = 2f;//скорость сдвига анимации при получении урона
+    [Header("Aнимация")]
+    [Tooltip("Сдвиг анимации при получении урона")]
+    public float DamageAnimationShift = 2;
+    [Tooltip("Скорость сдвига анимации при получении урона")]
+    public float DamageAnimationSpeedShift = 2f;
+    [Tooltip("Скорость сдвига анимации при нанесении урона")]
+    public float AttackAnimationSpeedShift = 2f; 
+    [Tooltip("Сдвиг анимации при нанесении урона")]
+    public float AttackAnimationShift = 2f;
 
-    public float AttackAnimationSpeedShift = 2f; //скорость сдвига анимации при нанесении урона
-    public float AttackAnimationShift = 2f; //сдвиг анимации при нанесении урона
-
+    [Tooltip("Скорость движения текста miss, crit")]
     public float TextMoveSpeed = 1f;
 
-    //атрибуты
-    public float RangeMeasure = 2f; //делить дальних атак. Уменьшает-увеличивает урон от дальних атак
+    [Header("Aтрибуты")]
+    [Tooltip("Делить дальних атак. Уменьшает-увеличивает урон от дальних атак")]
+    public float RangeMeasure = 2f;
+    [Tooltip("Количество урона, который получит игрок от атаки этого монстра")]
+    public float AttackPower = 1f;
+    [Tooltip("Здоровье противника")]
+    public float Health = 2f;
+    [Tooltip("Количество действий за ход")]
+    public float Energy = 0f;
+    [Tooltip("Шанс урона")]
+    public float AttackChance = 0.5f;
+    [Tooltip("Шанс крита")]
+    public float CriticalChance = 0.15f;
+    [Tooltip("Множитель критического удара")]
+    public float CriticalMultiply = 1.5f;
+    [Tooltip("Шанс уклона")]
+    public float BiasChance = 0.15f;
+    [Tooltip("Количество очков, которое получит игрок за убийство этого моба")]
+    public int Score = 500; //
 
-    public float AttackPower = 1f;  //количество урона, который получит игрок от атаки этого монстра
-    public float Health = 2f; //здоровье противника
-    public float Energy = 0f;   //количество действий за ход
-    public float AttackChance = 0.5f;   //шанс урона
-    public float CriticalChance = 0.15f;    //шанс крита
-    public float CriticalMultiply = 1.5f; //множитель критического удара
-    public float BiasChance = 0.15f; //шанс уклона
+    [Tooltip("Количество восполняемой в ход энергии")]
+    public float EnergyReload = 1f;
+    [Tooltip("Скорость анимирования передвижения")]
+    public float MoveSpeed = 1f;
+    [Tooltip("Время, спустя которое противник пропадет после смерти")]
+    public float DieTime = 3f;
+    [Tooltip("зона видимости (использует сложные алгоритмы поиска - высокая нагрузка)")]
+    public int FarVision = 1;
 
-    public int Score = 500; //количество 
+    [Header("Используемые префабы")]
+    [Tooltip("Снаряд для дальней атаки")]
+    public GameObject Ball;
+    [Tooltip("GameObject with colider wich block move other enemies")]
+    public GameObject MoveBlock;
 
-    public float EnergyReload = 1f; //количество восполняемой в ход энергии
-    public float MoveSpeed = 1f; //скорость анимирования передвижения
-    public float DieTime = 3f;  //время, спустя которое противник пропадет после смерти
-    public int FarVision = 1; //зона видимости (использует сложные алгоритмы поиска - высокая нагрузка)
-    public GameObject Ball; //снаряд для дальней атаки
-    public GameObject MoveBlock; //GameObject with colider wich block move other enemies
-    public string PlayerTag = "Player"; //тег игрока
-    public string FloorTag = "Floor"; //тег пола
-    public string ItemTag = "Item"; //тег предметов, чтобы они не считались стеной
+    [Header("Теги")]
+    [Tooltip("Тег игрока")]
+    public string PlayerTag = "Player";
+    [Tooltip("Тег пола")]
+    public string FloorTag = "Floor";
+    [Tooltip("Тег предметов, чтобы они не считались стеной")]
+    public string ItemTag = "Item"; 
 
     protected SpriteRenderer eSprite;
     protected GameController controller; //указатель на управляющий игрой компонент

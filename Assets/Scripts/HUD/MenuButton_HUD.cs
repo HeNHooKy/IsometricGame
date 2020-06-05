@@ -6,13 +6,20 @@ using UnityEngine.UI;
 
 public class MenuButton_HUD : MonoBehaviour
 {
+    [Header("Настройки кнопки")]
+    [Tooltip("ID кнопки из возможных")]
     public ButConst ButtonId = 0;
-    public float AnimationSpeed = 1f;
-    public float Shift = 0.1f;  //смещение icon и count
-
+    [Tooltip("Спрайт стекла, которое появится, когда кнопка вжата")]
     public Sprite ActivatedGlass;
+    [Tooltip("Сдвиг при нажатии")]
+    public float Shift = 0.1f;  //смещение icon и count
+    [Tooltip("Скорость сдвига")]
+    public float AnimationSpeed = 1f;
+    
 
+    [HideInInspector]
     public UnityEvent PressButton = new UnityEvent();
+    [HideInInspector]
     public UnityEvent UnPressButton = new UnityEvent();
 
     private MainMenu menu;

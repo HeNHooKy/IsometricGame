@@ -6,7 +6,10 @@ using UnityEngine.UI;
 
 public class MenuBackground : MonoBehaviour
 {
+    [Header("Анимация заднего фона")]
+    [Tooltip("Скорость изменения цвета заднего фона")]
     public float ColormaticSpeed = 1f;
+    [Tooltip("Процент затухания заднего фона")]
     public float ColormaticShift = 0.1f;
 
     Image backgroundImage;

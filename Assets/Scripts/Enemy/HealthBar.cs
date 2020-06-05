@@ -2,8 +2,13 @@
 
 public class HealthBar : MonoBehaviour
 {
+    [Header("Здоровье ")]
+    [Tooltip("Отображаемое в % здоровье")]
     public float Health = 1f; //100%
+    [Header("Поправка сдвига влево")]
+    [Tooltip("Минимальная поправка")]
     public float MinFix = 0.01f;
+    [Tooltip("Максимальная поправка")]
     public float MaxFix = 0.02f;
 
     private Transform Line;
