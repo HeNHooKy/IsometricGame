@@ -16,7 +16,9 @@ public class Group : MonoBehaviour
     public void Unpack()
     {
         int choise = random.Next(Storage.Count);
-        Instantiate(Storage[choise]).transform.position = transform.position;
+        GameObject stuff = Instantiate(Storage[choise]);
+        stuff.transform.position = transform.position;
+        stuff.transform.parent = transform.parent;
         Destroy(gameObject);
     }
 }

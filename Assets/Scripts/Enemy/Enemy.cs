@@ -85,7 +85,7 @@ public abstract class Enemy : MonoBehaviour
         StartHP = Health;
         hp = transform.Find("Character").Find("HealthBar").GetComponent<HealthBar>();
         eAnimator = transform.Find("Character").Find("Sprite").GetComponent<Animator>();
-        controller = transform.Find("/GameController").GetComponent<GameController>();
+        controller = transform.parent.parent.parent.Find("/GameController").GetComponent<GameController>();
         eSprite = transform.Find("Character").Find("Sprite").GetComponent<SpriteRenderer>();
     }
 

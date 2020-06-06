@@ -32,7 +32,7 @@ public abstract class Item : MonoBehaviour
 
     void Start()
     {
-        HUD = transform.Find("/HUD").GetComponent<HUD>();
+        HUD = transform.parent.parent.parent.Find("/HUD").GetComponent<HUD>();
     }
 
     private void OnTriggerEnter(Collider player)

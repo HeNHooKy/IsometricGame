@@ -8,6 +8,10 @@ public class GameController : MonoBehaviour
     public static int MaxItemsListLength = 100;
 
     [Header("Настройки игры")]
+    [Tooltip("Список всех генераторов уровней в игре")]
+    public List<MatrixLevelGenerator> LevelList = new List<MatrixLevelGenerator>();
+
+    [Header("Настройки игры")]
     [Tooltip("Список всех предметов в игре")]
     public Item[] ItemsList = new Item[MaxItemsListLength];
     [Tooltip("Указатель на игрока")]
@@ -28,9 +32,11 @@ public class GameController : MonoBehaviour
     private List<GameObject> enemies = new List<GameObject>();  //все монстры на карте
     private HUD HUD;
 
+    private MatrixLevelGenerator currentLevel;
+
     private void Start()
     {   //получаем список всех enemy на карте
-
+        StartLevel();
         HUD = transform.Find("/HUD").GetComponent<HUD>();
 
         for(int i = 0; i < ItemsList.Length; i++)
@@ -43,6 +49,32 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void LevelEnd()
+    {
+        currentLevel.EndLevel();
+        //генерируем следующий уровень
+        StartLevel();
+    }
+
+    public void StartLevel()
+    {
+        if (LevelList.Count > 0)
+        {   
+            currentLevel = LevelList[0];
+            LevelList.Remove(LevelList[0]);
+            player.transform.position = currentLevel.GenerateLevel();
+        }
+        else
+        {
+            Win();
+        }
+    }
+
+    public void Win()
+    {
+        //Победа! конец игры
     }
 
     //пересобрать данные о всех монстрах на карте 

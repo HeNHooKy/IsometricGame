@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.CodeDom;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +11,9 @@ public class Room : MonoBehaviour
     public enum RoomType
     {
         Spawn = 0,
-        Coridor = 1, 
         Mobalnya = 2,
-        Arena = 3
+        Arena = 3,
+        MainArena = 4
     }
 
     [Header("Освещение")]
@@ -36,25 +37,56 @@ public class Room : MonoBehaviour
     [Tooltip("Восточная дверь")]
     public Door EastDoor;
     [Tooltip("Южная дверь")]
-    public Door SouthDoor; 
+    public Door SouthDoor;
+
+    private void Refresh()
+    {
+        //скрываем все двери на карте и привязываем их к этой комнате
+        NorthDoor.gameObject.SetActive(false);
+        NorthDoor.Room = this;
+
+        WestDoor.gameObject.SetActive(false);
+        WestDoor.Room = this;
+
+        EastDoor.gameObject.SetActive(false);
+        EastDoor.Room = this;
+
+        SouthDoor.gameObject.SetActive(false);
+        SouthDoor.Room = this;
+    }
+
+
+    public Room Unpack()
+    {
+        GameObject inst = Instantiate(this.gameObject);
+        inst.GetComponent<Room>().Refresh();
+        inst.SetActive(false);
+        //распаковываем сетки
+        foreach (DataGrid dg in inst.GetComponent<Room>().Grids)
+        {
+            dg.Randomize();
+        }
+        return inst.GetComponent<Room>();
+    }
 
     /// <summary>
     /// Connect Room to room
     /// </summary>
     /// <param name="door">Door, wich connected to the opposite door in the room</param>
-    public bool Connect(Door door)
+    public bool Connect(Door door, Color light)
     {
+        Door myDoor = GetOpposite(door.type);
         //прикрепляем дверь к двери
-        if (GetOpposite(door.type) != null)
+        if ((myDoor != null) && (myDoor.GetNext() == null))
         {
-            GetOpposite(door.type).SetNext(door);
+            door.LightColor = Light;
+            myDoor.SetNext(door);
+            myDoor.LightColor = light;
             //и наоборот
-            door.SetNext(GetOpposite(door.type));
-            //распаковываем комнату
-            foreach (DataGrid dg in Grids)
-            {
-                dg.Randomize();
-            }
+            door.SetNext(myDoor);
+            //отображаем двери
+            door.gameObject.SetActive(true);
+            myDoor.gameObject.SetActive(true);
             return true;
         }
         else
@@ -62,6 +94,69 @@ public class Room : MonoBehaviour
             return false;
         }
         //иначе свободных дверей нет, добавить путь невозможно
+    }
+
+    public Door GetDoorByNumber(int number)
+    {
+        switch(number)
+        {
+            case (int)Door.DoorType.North:
+                return NorthDoor;
+            case (int)Door.DoorType.South:
+                return SouthDoor;
+            case (int)Door.DoorType.West:
+                return WestDoor;
+            case (int)Door.DoorType.East:
+                return EastDoor;
+            default:
+                return null;
+        }
+    }
+
+    public List<Door> GetFreeDoors()
+    {
+        List<Door> freeDoors = new List<Door>();
+        //есть ли хоть одна свободная дверь
+        if (EastDoor != null && EastDoor.GetNext() == null)
+        {
+            freeDoors.Add(EastDoor);
+        }
+        if (NorthDoor != null && NorthDoor.GetNext() == null)
+        {
+            freeDoors.Add(NorthDoor);
+        }
+        if (SouthDoor != null && SouthDoor.GetNext() == null)
+        {
+            freeDoors.Add(SouthDoor);
+        }
+        if (WestDoor != null && WestDoor.GetNext() == null)
+        {
+            freeDoors.Add(WestDoor);
+        }
+        return freeDoors;
+    }
+
+    public List<Door> GetBuzyDoors()
+    {
+        List<Door> buzyDoors = new List<Door>();
+        //есть ли хоть одна свободная дверь
+        if (EastDoor.GetNext() != null)
+        {
+            buzyDoors.Add(EastDoor);
+        }
+        if (NorthDoor.GetNext() != null)
+        {
+            buzyDoors.Add(NorthDoor);
+        }
+        if (SouthDoor.GetNext() != null)
+        {
+            buzyDoors.Add(SouthDoor);
+        }
+        if (WestDoor.GetNext() != null)
+        {
+            buzyDoors.Add(WestDoor);
+        }
+        return buzyDoors;
     }
 
     /// <summary>
@@ -85,5 +180,4 @@ public class Room : MonoBehaviour
                 return null;
         }
     }
-    
 }

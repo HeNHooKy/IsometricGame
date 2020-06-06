@@ -5,10 +5,17 @@ using UnityEngine;
 
 public class DataGrid : MonoBehaviour
 {
-    public bool IsRandomize = false; //необходимо ли случайное перемешивание
-    public int MaxObjects = 5;  //максимальное количество объектов в сетке
- 
+    [Header("Настройки сетки")]
+    [Tooltip("Необходимо ли случайное перемешивание")]
+    public bool IsRandomize = false;
+    [Tooltip("Максимальное количество объектов в сетке")]
+    public int MaxObjects = 5; 
+
+    
+
     private System.Random random = new System.Random();
+
+    
 
     /// <summary>
     /// Try to randomize grid objects
