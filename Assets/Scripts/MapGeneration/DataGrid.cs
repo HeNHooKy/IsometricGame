@@ -40,7 +40,8 @@ public class DataGrid : MonoBehaviour
 
             for(int i = 0; i < MaxObjects; i++)
             {   //разбираем группы счастливчиков
-                groups[i].Unpack();
+                int choise = random.Next(groups[i].Storage.Count);
+                groups[i].Unpack(choise);
             }
 
             for(int i = MaxObjects; i < groups.Count; i++)

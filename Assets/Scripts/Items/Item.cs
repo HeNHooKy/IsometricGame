@@ -54,7 +54,7 @@ public abstract class Item : MonoBehaviour
 
     //вызывается в HUD принимает указатель на игрока. 
     //в корутине выолняет переопределенные действия
-    public void Use(PlayerController player)
+    public virtual void Use(PlayerController player)
     {
         that = Instantiate(this.gameObject);
         that.GetComponent<Item>().StartCoroutine(that.GetComponent<Item>().Do(player, that));

@@ -171,6 +171,7 @@ public class MatrixLevelGenerator : MonoBehaviour
             }
         }
 
+        spawnRoom.gameObject.SetActive(true);
         return spawnRoom.gameObject.transform.Find("SpawnPosition").position;
     }
 

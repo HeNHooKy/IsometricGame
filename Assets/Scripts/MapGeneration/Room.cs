@@ -44,15 +44,19 @@ public class Room : MonoBehaviour
         //скрываем все двери на карте и привязываем их к этой комнате
         NorthDoor.gameObject.SetActive(false);
         NorthDoor.Room = this;
+        NorthDoor.Load();
 
         WestDoor.gameObject.SetActive(false);
         WestDoor.Room = this;
+        WestDoor.Load();
 
         EastDoor.gameObject.SetActive(false);
         EastDoor.Room = this;
+        EastDoor.Load();
 
         SouthDoor.gameObject.SetActive(false);
         SouthDoor.Room = this;
+        SouthDoor.Load();
     }
 
 

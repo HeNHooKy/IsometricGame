@@ -75,7 +75,7 @@ MonoBehaviour:
   EnergyReload: 2
   MoveSpeed: 2
   DieTime: 10
-  FarVision: 2
+  FarVision: 5
   Ball: {fileID: 0}
   MoveBlock: {fileID: 7959823956800075077, guid: 35cac99570036024c9b3ab1c82ea8024,
     type: 3}

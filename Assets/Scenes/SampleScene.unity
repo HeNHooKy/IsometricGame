@@ -150,7 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad955c46934cae449b0b6a3828ba9398, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelList: []
+  LevelList:
+  - {fileID: 908281675}
   ItemsList:
   - {fileID: 6102731945461691351, guid: 014a09bb357ca044192c938cf38ff634, type: 3}
   player: {fileID: 1374500320}
@@ -389,6 +390,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 908281674}
+  - component: {fileID: 908281675}
   m_Layer: 0
   m_Name: GeneratorLevel1
   m_TagString: Untagged
@@ -410,6 +412,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &908281675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 908281673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8fb06f15aeadf54e83525f71d7926b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ArenaRoomsCounter: 0
+  MobalnyaRoomsCounter: 0
+  Rooms:
+  - {fileID: 8899014073858036877, guid: b45cb42e4327fdc4d818a820d794e10c, type: 3}
+  - {fileID: 503096471222542864, guid: 0a14aa71408b09649853b876bdba645f, type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +687,12 @@ PrefabInstance:
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: DamageAnimationShift
-      value: 1.2
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
+        type: 3}
+      propertyPath: AttackChance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6337127394772414436, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
@@ -1045,6 +1069,11 @@ PrefabInstance:
       propertyPath: IsMainMenu
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1514946596130071213, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
+        type: 3}
+      propertyPath: GameController
+      value: 
+      objectReference: {fileID: 207577315}
     - target: {fileID: 1514946596130071222, guid: 9e36a56e7e2f3be41b885fd09f026c6c,
         type: 3}
       propertyPath: m_Name

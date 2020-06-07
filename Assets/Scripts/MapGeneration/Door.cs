@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : Environment
 {
     public enum DoorType
     {
@@ -11,8 +11,10 @@ public class Door : MonoBehaviour
         West = 2,
         East = 3
     }
+
     [HideInInspector]
     public Room Room = null;
+
     
     [Header("Тип двери")]
     [Tooltip("сторона света этой двери")]
@@ -23,6 +25,16 @@ public class Door : MonoBehaviour
 
     Door Next = null; //Дверь, с которой связана данная
 
+    private void Start()
+    {
+        //DO nothing!
+    }
+
+    public void Load()
+    {
+        HUD = transform.parent.Find("/HUD").GetComponent<HUD>();
+    }
+
     public Door GetNext()
     {
         return Next;
@@ -31,5 +43,18 @@ public class Door : MonoBehaviour
     public void SetNext(Door Next)
     {
         this.Next = Next;
+    }
+
+    public override void Use(PlayerController player)
+    {
+        //Телепортирует игрока на другую локацию
+        Room.gameObject.SetActive(false);
+        Next.Room.gameObject.SetActive(true);
+        HUD.GameController.GetEnemiesList();
+        //перемещаем персонажа
+        player.transform.position =
+            Next.transform.Find("SpawnPoint").transform.position;
+        player.ClearFreeLoc();
+        player.GetFreeLoc();
     }
 }

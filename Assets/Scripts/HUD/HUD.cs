@@ -20,7 +20,7 @@ public class HUD : MonoBehaviour
     public int BottomItemCount = 0;
 
     [Tooltip("Указатель на гейм контроллер")]
-    public GameController gameController;
+    public GameController GameController;
     [Tooltip("Маска (накладывается при отсутствии предмета в инвентаре)")]
     public Sprite UIMask;
 
@@ -39,6 +39,7 @@ public class HUD : MonoBehaviour
     private int IPUP;//item pick up pointer
 
     private bool isGameOver = false;
+    private bool isPause = false;
 
     private void Start()
     {
@@ -72,6 +73,22 @@ public class HUD : MonoBehaviour
                 SceneManager.LoadScene(MenuScenename);
                 return;
             }
+
+            //игра не окончена, поставить игру на паузу
+            if(!isPause)
+            {   //игра поставлена на паузу
+                Time.timeScale = 0;
+                isPause = true;
+                //блокировка тача
+                Player.GetComponent<PlayerController>().isPressedButton = true;
+            }
+            else
+            {   //игра снята с паузы
+                Time.timeScale = 1;
+                isPause = false;
+                //разблокировка тача
+                Player.GetComponent<PlayerController>().isPressedButton = false;
+            }
         }
 
         if (!Player.GetComponent<PlayerController>().GetCapacity())
@@ -84,7 +101,7 @@ public class HUD : MonoBehaviour
         {   
             //кнопка верхнего предмета
             TopItemCount--; //уменьшаем кол-во в инвентаре
-            gameController.ItemsList[TopItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
+            GameController.ItemsList[TopItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
             if (TopItemCount <= 0)
             {
                 //удалить предмет
@@ -94,7 +111,7 @@ public class HUD : MonoBehaviour
         else if(butId == ButConst.Bottom && BottomItemId != -1)
         {   //кнопка нижнего предмета
             BottomItemCount--; //уменьшаем кол-во в инвентаре
-            gameController.ItemsList[BottomItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
+            GameController.ItemsList[BottomItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
             if (BottomItemCount <= 0)
             {
                 //удалить предмет
@@ -164,37 +181,46 @@ public class HUD : MonoBehaviour
             return;
         }
         
-
         bool isNeedDelete = true;
         if (ItemStay != null)
         {
             Item item = ItemStay.GetComponent<Item>();
-            if (TopItemCount == 0)
-            {   //врхний слот свободен, просто занесем
-                UpdateItem(item.id, item.count, 0);
-            }
-            else if (item.id == TopItemId && (TopItemCount < item.maxStack))
-            {   //такой предмет уже есть в инвентаре и что-то можно положить
-                isNeedDelete = !FillSlot(item, 0);
-            }
-            else if (BottomItemCount == 0)
-            {   //нижний слот свободен, просто занесем
-                UpdateItem(item.id, item.count, 1);
-            }
-            else if (item.id == BottomItemId && (BottomItemCount < item.maxStack))
-            {   //такой предмет уже есть в инвентаре и что-то можно положить
-                isNeedDelete = !FillSlot(item, 1);
+            if(item != null)
+            {
+                if (TopItemCount == 0)
+                {   //врхний слот свободен, просто занесем
+                    UpdateItem(item.id, item.count, 0);
+                }
+                else if (item.id == TopItemId && (TopItemCount < item.maxStack))
+                {   //такой предмет уже есть в инвентаре и что-то можно положить
+                    isNeedDelete = !FillSlot(item, 0);
+                }
+                else if (BottomItemCount == 0)
+                {   //нижний слот свободен, просто занесем
+                    UpdateItem(item.id, item.count, 1);
+                }
+                else if (item.id == BottomItemId && (BottomItemCount < item.maxStack))
+                {   //такой предмет уже есть в инвентаре и что-то можно положить
+                    isNeedDelete = !FillSlot(item, 1);
+                }
+                else
+                {
+                    //в остальных случаях нужно что-то выбросить
+                    DropItem(item);
+                }
+                item.PickUp(isNeedDelete);
             }
             else
-            {
-                //в остальных случаях нужно что-то выбросить
-                DropItem(item);
+            {   //это не предмет
+                //скорее всего это окружение. Нужно использовать
+                Environment environment = ItemStay.GetComponent<Environment>();
+                //собрав данные, используем
+                environment.Use(Player.GetComponent<PlayerController>());
             }
-            item.PickUp(isNeedDelete);
+            
         }
         
         DisplayActual();
-        ItemStayClear();
         ItemStayClear();
     }
 
@@ -270,12 +296,12 @@ public class HUD : MonoBehaviour
 
         if (IPUP == 0)
         {   //время дропнуть первый item
-            drop = Instantiate(gameController.ItemsList[TopItemId].gameObject);
+            drop = Instantiate(GameController.ItemsList[TopItemId].gameObject);
             drop.GetComponent<Item>().count = TopItemCount;
         }
         else
         {   //пора дропнуть второй item
-            drop = Instantiate(gameController.ItemsList[BottomItemId].gameObject);
+            drop = Instantiate(GameController.ItemsList[BottomItemId].gameObject);
             drop.GetComponent<Item>().count = BottomItemCount;
         }
         drop.transform.position = Player.transform.position;
@@ -288,7 +314,7 @@ public class HUD : MonoBehaviour
     {
         if(TopItemId != -1)
         {   //отображение верхнего предмета
-            topItemImage.sprite = gameController.ItemsList[TopItemId].ItemSprite;
+            topItemImage.sprite = GameController.ItemsList[TopItemId].ItemSprite;
         }
         else
         {
@@ -296,7 +322,7 @@ public class HUD : MonoBehaviour
         }
         if (BottomItemId != -1)
         {   //отображение нижнего предмета
-            bottomItemImage.sprite = gameController.ItemsList[BottomItemId].ItemSprite;
+            bottomItemImage.sprite = GameController.ItemsList[BottomItemId].ItemSprite;
         }
         else
         {
@@ -322,4 +348,12 @@ public class HUD : MonoBehaviour
             Item.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
         ItemStay = Item;
     }
+
+    public void Use(GameObject feature)
+    {
+        pickUpButton.transform.Find("Feature").GetComponent<Image>().sprite =
+            feature.transform.Find("Sprite").GetComponent<SpriteRenderer>().sprite;
+    }
+
+    
 }

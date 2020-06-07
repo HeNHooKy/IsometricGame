@@ -321,7 +321,7 @@ public class PlayerController : MonoBehaviour
         if (!isAlive) return;
         int floorType = GetLoc(turnFloor.transform.position);
 
-        if (floorType == 1 || floorType == 2)
+        if (floorType == 1 || floorType == 2 || floorType == 3)
         {
             //Тут свободно. Можно идти
             Move(turnFloor.transform.position);
@@ -398,7 +398,7 @@ public class PlayerController : MonoBehaviour
     
 
     //Устанавливает подсветку ячеек, по которым можно ходить
-    void GetFreeLoc(bool isStart = false)
+    public void GetFreeLoc(bool isStart = false)
     {
         if(Energy >= 1f)
         {
@@ -445,6 +445,14 @@ public class PlayerController : MonoBehaviour
                 sp.color = new Color(0f, 1f, 0f, 0f);
                 StartCoroutine(Show(sp, 0.5f));
                 break;
+            case 3: //тут окружение
+                freeLocs[n] = Instantiate(FreeFloor);
+                freeLocs[n].transform.position = position;
+                sp = freeLocs[n].GetComponentInChildren<SpriteRenderer>();
+                //делай синим
+                sp.color = new Color(0f, 0f, 1f, 0f);
+                StartCoroutine(Show(sp, 0.5f));
+                break;
         }
     }
 
@@ -485,7 +493,7 @@ public class PlayerController : MonoBehaviour
     }
 
     //очистка массива подсветки пола
-    void ClearFreeLoc()
+    public void ClearFreeLoc()
     {   
         for(int i = 0; i < 4; i++)
         {

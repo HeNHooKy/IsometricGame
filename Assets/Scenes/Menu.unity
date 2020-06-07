@@ -707,8 +707,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9, y: 0.000013351}
-  m_SizeDelta: {x: 1931.1664, y: 356.9999}
+  m_AnchoredPosition: {x: -0.000012051, y: 0.000031948}
+  m_SizeDelta: {x: 1679.9996, y: 213.2042}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &992636396788722134
 MonoBehaviour:
@@ -2522,10 +2522,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonId: 0
-  AnimationSpeed: 8
-  Shift: 10
   ActivatedGlass: {fileID: 7453684943019226802, guid: be821a4d1768fb04584b08f8a9040e86,
     type: 3}
+  Shift: 10
+  AnimationSpeed: 8
   PressButton:
     m_PersistentCalls:
       m_Calls: []
@@ -3198,12 +3198,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 74b49ba9cc455d349a49f85ca921184a, type: 3}
-    m_FontSize: 125
+    m_Font: {fileID: 12800000, guid: ff0aaf8bddea2704eb8e66c5d279391d, type: 3}
+    m_FontSize: 170
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 125
+    m_MaxSize: 170
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -3260,10 +3260,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonId: 2
-  AnimationSpeed: 8
-  Shift: 10
   ActivatedGlass: {fileID: 7453684943019226802, guid: be821a4d1768fb04584b08f8a9040e86,
     type: 3}
+  Shift: 10
+  AnimationSpeed: 8
   PressButton:
     m_PersistentCalls:
       m_Calls: []
@@ -3452,10 +3452,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonId: 3
-  AnimationSpeed: 8
-  Shift: 10
   ActivatedGlass: {fileID: 7453684943019226802, guid: be821a4d1768fb04584b08f8a9040e86,
     type: 3}
+  Shift: 10
+  AnimationSpeed: 8
   PressButton:
     m_PersistentCalls:
       m_Calls: []
@@ -3606,10 +3606,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ButtonId: 1
-  AnimationSpeed: 8
-  Shift: 10
   ActivatedGlass: {fileID: 7453684943019226802, guid: be821a4d1768fb04584b08f8a9040e86,
     type: 3}
+  Shift: 10
+  AnimationSpeed: 8
   PressButton:
     m_PersistentCalls:
       m_Calls: []
@@ -3972,8 +3972,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 74b49ba9cc455d349a49f85ca921184a, type: 3}
-    m_FontSize: 125
+    m_Font: {fileID: 12800000, guid: ff0aaf8bddea2704eb8e66c5d279391d, type: 3}
+    m_FontSize: 170
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -4684,12 +4684,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 74b49ba9cc455d349a49f85ca921184a, type: 3}
-    m_FontSize: 125
+    m_Font: {fileID: 12800000, guid: ff0aaf8bddea2704eb8e66c5d279391d, type: 3}
+    m_FontSize: 170
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 125
+    m_MaxSize: 170
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -5930,7 +5930,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000076294, y: -0.00010395}
+  m_AnchoredPosition: {x: 0.0000076294, y: -0.000011531}
   m_SizeDelta: {x: 1680, y: 238.00006}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &9060008570411904480

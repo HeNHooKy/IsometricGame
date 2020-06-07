@@ -65,6 +65,7 @@ public class GameController : MonoBehaviour
             currentLevel = LevelList[0];
             LevelList.Remove(LevelList[0]);
             player.transform.position = currentLevel.GenerateLevel();
+            GetEnemiesList();
         }
         else
         {
@@ -118,6 +119,7 @@ public class GameController : MonoBehaviour
             if(enemies[i] == null)
             {
                 enemies.Remove(enemies[i]);
+                i--;
                 continue;
             }
 
@@ -159,6 +161,7 @@ public class GameController : MonoBehaviour
                 if (enemies[i] == null)
                 {
                     enemies.Remove(enemies[i]);
+                    i--;
                     continue;
                 }
 
