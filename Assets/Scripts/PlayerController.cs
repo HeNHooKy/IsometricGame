@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Cкорость сдвига при нанесении урона")]
     public float AttackAnimationShift = 2f;
 
+
     [Header("Аттрибуты")]
     [Tooltip("Здоровье игрока")]
     public float Health = 4f;
@@ -35,6 +36,10 @@ public class PlayerController : MonoBehaviour
     public float BiasChance = 0.15f;
 
     [Header("Настройки игрока")]
+    [Tooltip("Максимально возможное количество здоровья")]
+    public float MaxHealthOver = 16f;
+    [Tooltip("Максимально возможное количество энергии")]
+    public float MaxEnergyOver = 12f;
     [Tooltip("Время, через которое пропадет GO игрока после смерти")]
     public float DieTime = 2f;
     [Tooltip("Скорость анимации перемещения игрока")]
@@ -154,6 +159,26 @@ public class PlayerController : MonoBehaviour
         GetFreeLoc();
     }
 
+    /// <summary>
+    /// Setup player health point
+    /// </summary>
+    public void MaxHPUp(float hp)
+    {
+        if (MaxHealth + hp >= MaxHealthOver)
+        {
+            MaxHealth = MaxEnergyOver - MaxHealth > hp ? hp : MaxEnergyOver - MaxHealth;
+        }
+        else
+        {
+            MaxHealth += hp;
+        }
+        DisplayHearts();
+    }
+
+    public void MaxEnergyUp(float energy)
+    {
+        //TODO: Energy UP
+    }
 
     /// <summary>
     /// Set player Health Point to Health plus HealthPower, but lower than 16
@@ -170,7 +195,6 @@ public class PlayerController : MonoBehaviour
         }
         needHeal = MaxHealth > Health ? MaxHealth - Health : 0;
         Health += healPower > needHeal ? needHeal : healPower;
-        
     }
 
     /// <summary>

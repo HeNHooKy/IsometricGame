@@ -64,15 +64,22 @@ public abstract class Item : MonoBehaviour
         that.GetComponent<Item>().StartCoroutine(that.GetComponent<Item>().Do(player, that));
     }
 
-    public void PickUp(bool isNeedDelete = true)
-    {   //вызов анимции подъема предмета
-        StartCoroutine(PickedUp());
+    //юз без пересоздания
+    public virtual void JustUse(PlayerController player)
+    {
+        StartCoroutine(Do(player, gameObject));
     }
 
-    IEnumerator PickedUp()
+    public void PickUp(bool isNeedDelete = true)
+    {   //вызов анимции подъема предмета
+        StartCoroutine(PickedUp(isNeedDelete));
+    }
+
+    IEnumerator PickedUp(bool isNeedDelete)
     {   //анимация подъема, божественное свечение
         yield return null;
-        Destroy(this.gameObject);
+        if(isNeedDelete)
+            Destroy(this.gameObject);
     }
 
     //выполняет объявленные действия с игроком

@@ -1,4 +1,4 @@
-﻿using Boo.Lang;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,7 +12,21 @@ public class HUD : MonoBehaviour
         Items = 2,
         GameOver = 3
     }
-
+    [Header("Настройки спрайтов кнопок")]
+    [Tooltip("Спрайт щита во время игры")]
+    public Sprite Shield;
+    [Tooltip("Спрайт кнопки назад во время игры")]
+    public Sprite Menu;
+    [Tooltip("Спрайт кнопки назад в меню")]
+    public Sprite Back;
+    [Tooltip("Спрайт кнопки вверх на пузе")]
+    public Sprite UpBut;
+    [Tooltip("Спрайт кнопки вниз на паузе")]
+    public Sprite DownBut;
+    [Tooltip("Спрайт кнопки выбрать на паузе")]
+    public Sprite Select;
+    [Tooltip("Спрайт 'покинуть игру'")]
+    public Sprite Exit;
 
 
     [Header("Настройки HUD")]
@@ -45,6 +59,8 @@ public class HUD : MonoBehaviour
 
     private Image topItemImage; //отображение спрайтов предметов
     private Image bottomItemImage;
+    private Image shieldBut;
+    private Image backBut;
 
     private Text topItemText;  //отображение количества верхних предметов
     private Text bottomItemText;   //отображение количества нижних предметов
@@ -52,6 +68,7 @@ public class HUD : MonoBehaviour
     private List<Game_LongButton> buttons = new List<Game_LongButton>();
     private int selectBut = 0;
     private PickedUpItems items;
+    private PickedUpInfo puInfo;
 
     private int IPUP;//item pick up pointer
 
@@ -67,10 +84,16 @@ public class HUD : MonoBehaviour
         topItemText = Root.Find("TopItem").Find("Count").GetComponent<Text>();
         bottomItemImage = Root.Find("BottomItem").Find("Icon").GetComponent<Image>();
         bottomItemText = Root.Find("BottomItem").Find("Count").GetComponent<Text>();
+        shieldBut = Root.Find("Shield").Find("Icon").GetComponent<Image>();
+        backBut = Root.Find("Pause").Find("Icon").GetComponent<Image>();
+
+
         GameOver = transform.Find("GameOver").gameObject;
         pause = transform.Find("Pause").gameObject;
         buttons.AddRange(transform.Find("Pause").GetComponentsInChildren<Game_LongButton>());
         items = transform.Find("Items").GetComponent<PickedUpItems>();
+        puInfo = Root.Find("PickedUpInfo").GetComponent<PickedUpInfo>();
+        DisplayActual();
     }
 
     /// <summary>
@@ -259,28 +282,38 @@ public class HUD : MonoBehaviour
             Item item = ItemStay.GetComponent<Item>();
             if(item != null)
             {
-                if (TopItemCount == 0)
-                {   //врхний слот свободен, просто занесем
-                    UpdateItem(item.id, item.count, 0);
-                }
-                else if (item.id == TopItemId && (TopItemCount < item.maxStack))
-                {   //такой предмет уже есть в инвентаре и что-то можно положить
-                    isNeedDelete = !FillSlot(item, 0);
-                }
-                else if (BottomItemCount == 0)
-                {   //нижний слот свободен, просто занесем
-                    UpdateItem(item.id, item.count, 1);
-                }
-                else if (item.id == BottomItemId && (BottomItemCount < item.maxStack))
-                {   //такой предмет уже есть в инвентаре и что-то можно положить
-                    isNeedDelete = !FillSlot(item, 1);
+                puInfo.DisplayAbout(item);
+                if(item.isActivate)
+                {
+                    if (TopItemCount == 0)
+                    {   //врхний слот свободен, просто занесем
+                        UpdateItem(item.id, item.count, 0);
+                    }
+                    else if (item.id == TopItemId && (TopItemCount < item.maxStack))
+                    {   //такой предмет уже есть в инвентаре и что-то можно положить
+                        isNeedDelete = !FillSlot(item, 0);
+                    }
+                    else if (BottomItemCount == 0)
+                    {   //нижний слот свободен, просто занесем
+                        UpdateItem(item.id, item.count, 1);
+                    }
+                    else if (item.id == BottomItemId && (BottomItemCount < item.maxStack))
+                    {   //такой предмет уже есть в инвентаре и что-то можно положить
+                        isNeedDelete = !FillSlot(item, 1);
+                    }
+                    else
+                    {
+                        //в остальных случаях нужно что-то выбросить
+                        DropItem(item);
+                    }
+                    item.PickUp(isNeedDelete);
                 }
                 else
                 {
-                    //в остальных случаях нужно что-то выбросить
-                    DropItem(item);
+                    item.JustUse(Player.GetComponent<PlayerController>());
+                    items.PickedUp(GameController.ItemsList[item.id]);
+                    item.PickUp(isNeedDelete);
                 }
-                item.PickUp(isNeedDelete);
             }
             else
             {   //это не предмет
@@ -405,12 +438,30 @@ public class HUD : MonoBehaviour
                 }
                 topItemText.text = TopItemCount > 1 ? TopItemCount + "" : "";
                 bottomItemText.text = BottomItemCount > 1 ? BottomItemCount + "" : "";
+                //отображение спрайтов щита и меню
+                backBut.sprite = Menu;
+                shieldBut.sprite = Shield;
                 break;
             case GameStatus.Pause:
                 //Отображение кнопок вверх, вниз, назад, ок вместо предметов и щита
+                topItemImage.sprite = UpBut;
+                bottomItemImage.sprite = DownBut;
+                backBut.sprite = Back;
+                shieldBut.sprite = Select;
+                break;
+            case GameStatus.Items:
+                //Отображение кнопок вверх, вниз, назад, ок вместо предметов и щита
+                topItemImage.sprite = UpBut;
+                bottomItemImage.sprite = DownBut;
+                backBut.sprite = Back;
+                shieldBut.sprite = UIMask;
                 break;
             case GameStatus.GameOver:
                 //отображение кнопоки выйти в меню и др. вместо худа игры
+                topItemImage.sprite = UIMask;
+                bottomItemImage.sprite = UIMask;
+                backBut.sprite = Exit;
+                shieldBut.sprite = UIMask;
                 break;
         }
         

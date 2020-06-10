@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7767766203960673495}
   - component: {fileID: 206883318147537500}
-  - component: {fileID: 6102731945461691351}
+  - component: {fileID: 7878590070361175659}
   m_Layer: 12
-  m_Name: HealingPotion
+  m_Name: Demonic horn
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,7 +47,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!114 &6102731945461691351
+--- !u!114 &7878590070361175659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,19 +56,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1790074142932618716}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ccb803d946ac474dafd38c86ff600fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 69240c8f9193d59468b932bb0d247743, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rarity: 0
-  isActivate: 1
-  Name: Healing potion
-  Description: healing five health points
+  Rarity: 2
+  isActivate: 0
+  Name: Demonic horn
+  Description: +damage +critical chance
   PlayerTag: Player
-  ItemSprite: {fileID: 21300000, guid: 5a8c7f4dfa5f94a4eb34d92345d557fa, type: 3}
+  ItemSprite: {fileID: 21300000, guid: 05bc178cdabcbda4ba3d9e522c302d2a, type: 3}
   count: 1
-  maxStack: 4
-  id: 0
-  HealPower: 5
+  maxStack: 1
+  id: 1
+  CriticalChanceUp: 0.05
+  DamageUp: 2
 --- !u!1 &2438816298905084362
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,7 +80,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3375525869157467412}
   - component: {fileID: 3146673456904633240}
-  - component: {fileID: 1482826242956680994}
   m_Layer: 12
   m_Name: Sprite
   m_TagString: Untagged
@@ -140,7 +140,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: fc45a53bf7f088a479fb8ff85bb7aeba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1323a90acbea5a348b555882fcc594ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -151,28 +151,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1482826242956680994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2438816298905084362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ccb803d946ac474dafd38c86ff600fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Rarity: 1
-  isActivate: 1
-  Name: 
-  Description: 
-  PlayerTag: Player
-  ItemSprite: {fileID: 0}
-  count: 1
-  maxStack: 4
-  id: 0
-  HealPower: 5
 --- !u!1001 &3163498348317181366
 PrefabInstance:
   m_ObjectHideFlags: 0

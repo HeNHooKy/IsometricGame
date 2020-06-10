@@ -154,6 +154,9 @@ MonoBehaviour:
   - {fileID: 908281675}
   ItemsList:
   - {fileID: 6102731945461691351, guid: 014a09bb357ca044192c938cf38ff634, type: 3}
+  - {fileID: 7878590070361175659, guid: 52fc30296e7f754408f5f40305182299, type: 3}
+  - {fileID: 3533354586338451381, guid: 51f0a90aa91746c44872d306e282e099, type: 3}
+  - {fileID: 158847760351589561, guid: f3af3ccd0917a924db143777002047bc, type: 3}
   player: {fileID: 1374500320}
   EnemyTag: Enemy
   FlagTimer: 0.5
@@ -642,7 +645,7 @@ PrefabInstance:
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
       propertyPath: EnergyReload
-      value: 2
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4045180672509390678, guid: 96becdea61eb20840b11723c325ec4aa,
         type: 3}
