@@ -12,10 +12,10 @@ public class InfoLine : MonoBehaviour
     [Header("Отображаемые данные")]
     public Fields Field;
     [Header("Вариативные параметры")]
-    [Tooltip("Максимум энергии. Настраивается только для поля Str")]
-    public int MaxEnergy;
-    [Tooltip("Максимум хелсы. Настраивается только для поля HP")]
-    public int MaxHp;
+    [Tooltip("Отрицательный сдвиг")]
+    public int Shift = 2;
+    [Tooltip("Максимум в этом поле")]
+    public int Max;
 
     private List<Image> points = new List<Image>();
     private PlayerController player;
@@ -37,35 +37,61 @@ public class InfoLine : MonoBehaviour
         points.AddRange(GetComponentsInChildren<Image>());
     }
 
-    //Умеет отображать только энергию
+    private void Update()
+    {
+        switch (Field)
+        {
+            case Fields.HP:
+                DisplayHP();
+                break;
+            case Fields.Str:
+                DisplayStr();
+                break;
+            case Fields.Atc:
+                DisplayAtc();
+                break;
+            case Fields.Crt:
+                DisplayCrt();
+                break;
+            case Fields.Agi:
+                DisplayAgi();
+                break;
+        }
+    }
+
+    //Умеет отображать только уклонение
     private void DisplayAgi()
     {
-        float energy = player.EnergyReload;
-
+        float agi = player.BiasChance * 10 * 2;
+        DisplayCount((int)agi);
     }
 
     //Умеет отображать только стамину
     private void DisplayStr()
     {
-
+        float energy = player.EnergyReload;
+        DisplayCount((int)energy - Shift);
     }
 
     //Умеет отображать только атаку
     private void DisplayAtc()
     {
-
+        float atcPw = player.AttackPower;
+        DisplayCount((int)atcPw - Shift);
     }
 
     //умеет отображать только хп
     private void DisplayHP()
     {
-
+        float hp = player.MaxHealth;
+        DisplayCount((int)hp * 10 / Max);
     }
 
     //умеет отображать только криты
     private void DisplayCrt()
     {
-
+        float crtCh = player.CriticalChance * 10 * 2;
+        DisplayCount((int) crtCh);
     }
 
     //отображает заданное число точек

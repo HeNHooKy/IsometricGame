@@ -1,9 +1,20 @@
-﻿using UnityEngine;
+﻿using Boo.Lang;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
+    public enum GameStatus
+    {
+        OnGoing = 0,
+        Pause = 1,
+        Items = 2,
+        GameOver = 3
+    }
+
+
+
     [Header("Настройки HUD")]
     [Tooltip("Ссылка на игрока")]
     public GameObject Player;
@@ -30,16 +41,21 @@ public class HUD : MonoBehaviour
     
     private GameObject pickUpButton;    //ссылка на кнопку "поднять предмет"
 
+    private GameObject pause; //ссылка на окно паузы
+
     private Image topItemImage; //отображение спрайтов предметов
     private Image bottomItemImage;
 
     private Text topItemText;  //отображение количества верхних предметов
     private Text bottomItemText;   //отображение количества нижних предметов
 
+    private List<Game_LongButton> buttons = new List<Game_LongButton>();
+    private int selectBut = 0;
+    private PickedUpItems items;
+
     private int IPUP;//item pick up pointer
 
-    private bool isGameOver = false;
-    private bool isPause = false;
+    private GameStatus gs = GameStatus.OnGoing;
 
     private void Start()
     {
@@ -52,6 +68,9 @@ public class HUD : MonoBehaviour
         bottomItemImage = Root.Find("BottomItem").Find("Icon").GetComponent<Image>();
         bottomItemText = Root.Find("BottomItem").Find("Count").GetComponent<Text>();
         GameOver = transform.Find("GameOver").gameObject;
+        pause = transform.Find("Pause").gameObject;
+        buttons.AddRange(transform.Find("Pause").GetComponentsInChildren<Game_LongButton>());
+        items = transform.Find("Items").GetComponent<PickedUpItems>();
     }
 
     /// <summary>
@@ -62,67 +81,120 @@ public class HUD : MonoBehaviour
         Player.GetComponent<PlayerController>().isPressedButton = isLocking;
     }
 
-    //была нажата какая-то кнопка худа
+
+    //была нажата какая-то кнопка
     public void ClickedButton(ButConst butId)
     {
-        if (butId == ButConst.Back)
-        {   //попытка выйти в меню
-            //пока игра не закончена, при нажатии на эту кнопку после смерти игра перезапускается
-            if (isGameOver)
-            {   //выход в меню
+        switch(gs)
+        {
+            case GameStatus.OnGoing:
+                if (butId == ButConst.Back)
+                {
+                    //игра поставлена на паузу
+                    Time.timeScale = 0;
+                    gs = GameStatus.Pause;
+                    //блокировка тача
+                    Player.GetComponent<PlayerController>().isPressedButton = true;
+                    pause.SetActive(true);
+                }
+
+                if (!Player.GetComponent<PlayerController>().GetCapacity())
+                {   //игрок не может выполнить это действие сейчас
+                    return;
+                }
+
+                //Какие-то действия
+                if (butId == ButConst.Up && TopItemId != -1)
+                {
+                    //кнопка верхнего предмета
+                    TopItemCount--; //уменьшаем кол-во в инвентаре
+                    GameController.ItemsList[TopItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
+                    if (TopItemCount <= 0)
+                    {
+                        //удалить предмет
+                        TopItemId = -1;
+                    }
+                }
+                else if (butId == ButConst.Bottom && BottomItemId != -1)
+                {   //кнопка нижнего предмета
+                    BottomItemCount--; //уменьшаем кол-во в инвентаре
+                    GameController.ItemsList[BottomItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
+                    if (BottomItemCount <= 0)
+                    {
+                        //удалить предмет
+                        BottomItemId = -1;
+                    }
+                }
+                else if (butId == ButConst.Shield)
+                {   //попытка поставить блок
+                    Player.GetComponent<PlayerController>().SetBlock();
+                }
+                
+                break;
+            case GameStatus.Pause:
+                if(butId == ButConst.Back)
+                {
+                    //игра снята с паузы
+                    Time.timeScale = 1;
+                    gs = GameStatus.OnGoing;
+                    //разблокировка тача
+                    pause.SetActive(false);
+                    Player.GetComponent<PlayerController>().isPressedButton = false;
+                }
+                else if(butId == ButConst.Menu)
+                {
+                    Time.timeScale = 1;
+                    gs = GameStatus.OnGoing;
+                    //выход в меню
+                    SceneManager.LoadScene(MenuScenename);
+                }
+                else if(butId == ButConst.Items)
+                {
+                    gs = GameStatus.Items;
+                    selectBut = 0;
+                    pause.SetActive(false);
+                    items.gameObject.SetActive(true);
+
+                }
+                else if(butId == ButConst.Up)
+                {
+                    buttons[selectBut].UnPressed();
+                    selectBut = (++selectBut)%buttons.Count;
+                    buttons[selectBut].Press();
+                }
+                else if(butId == ButConst.Bottom)
+                {
+                    buttons[selectBut].UnPressed();
+                    selectBut = selectBut > 0 ? selectBut - 1 : buttons.Count - 1;
+                    buttons[selectBut].Press();
+                }
+                else if(butId == ButConst.Shield)
+                {
+                    buttons[selectBut].UnPress();
+                    selectBut = 0;
+                }
+                break;
+            case GameStatus.Items:
+                if(butId == ButConst.Up)
+                {
+                    items.Up();
+                }
+                else if(butId == ButConst.Bottom)
+                {
+                    items.Down();
+                }
+                else if(butId == ButConst.Back)
+                {
+                    gs = GameStatus.Pause;
+                    pause.SetActive(true);
+                    items.gameObject.SetActive(false);
+                }
+                break;
+            case GameStatus.GameOver:
+                //выход в меню
                 SceneManager.LoadScene(MenuScenename);
                 return;
-            }
-
-            //игра не окончена, поставить игру на паузу
-            if(!isPause)
-            {   //игра поставлена на паузу
-                Time.timeScale = 0;
-                isPause = true;
-                //блокировка тача
-                Player.GetComponent<PlayerController>().isPressedButton = true;
-            }
-            else
-            {   //игра снята с паузы
-                Time.timeScale = 1;
-                isPause = false;
-                //разблокировка тача
-                Player.GetComponent<PlayerController>().isPressedButton = false;
-            }
         }
-
-        if (!Player.GetComponent<PlayerController>().GetCapacity())
-        {   //игрок не может выполнить это действие сейчас
-            return;
-        }
-
-        //Какие-то действия
-        if (butId == ButConst.Up && TopItemId != -1)
-        {   
-            //кнопка верхнего предмета
-            TopItemCount--; //уменьшаем кол-во в инвентаре
-            GameController.ItemsList[TopItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
-            if (TopItemCount <= 0)
-            {
-                //удалить предмет
-                TopItemId = -1;
-            }
-        }
-        else if(butId == ButConst.Bottom && BottomItemId != -1)
-        {   //кнопка нижнего предмета
-            BottomItemCount--; //уменьшаем кол-во в инвентаре
-            GameController.ItemsList[BottomItemId].Use(Player.GetComponent<PlayerController>());   //применяем предмет
-            if (BottomItemCount <= 0)
-            {
-                //удалить предмет
-                BottomItemId = -1;
-            }
-        }
-        else if(butId == ButConst.Shield)
-        {   //попытка поставить блок
-            Player.GetComponent<PlayerController>().SetBlock();
-        }
-
 
         DisplayActual();
     }
@@ -160,8 +232,8 @@ public class HUD : MonoBehaviour
         //StartCoroutine(_DisplayGameOver(score));
 
 
-        //включаем кнопку выйти из игры
-        isGameOver = true;
+        //ставим статус "игра окончена"
+        gs = GameStatus.GameOver;
         //отключаем значек взаимодействия
         pickUpButton.SetActive(false);
         
@@ -312,24 +384,36 @@ public class HUD : MonoBehaviour
 
     private void DisplayActual()
     {
-        if(TopItemId != -1)
-        {   //отображение верхнего предмета
-            topItemImage.sprite = GameController.ItemsList[TopItemId].ItemSprite;
-        }
-        else
+        switch(gs)
         {
-            topItemImage.sprite = UIMask;
+            case GameStatus.OnGoing:
+                if (TopItemId != -1)
+                {   //отображение верхнего предмета
+                    topItemImage.sprite = GameController.ItemsList[TopItemId].ItemSprite;
+                }
+                else
+                {
+                    topItemImage.sprite = UIMask;
+                }
+                if (BottomItemId != -1)
+                {   //отображение нижнего предмета
+                    bottomItemImage.sprite = GameController.ItemsList[BottomItemId].ItemSprite;
+                }
+                else
+                {
+                    bottomItemImage.sprite = UIMask;
+                }
+                topItemText.text = TopItemCount > 1 ? TopItemCount + "" : "";
+                bottomItemText.text = BottomItemCount > 1 ? BottomItemCount + "" : "";
+                break;
+            case GameStatus.Pause:
+                //Отображение кнопок вверх, вниз, назад, ок вместо предметов и щита
+                break;
+            case GameStatus.GameOver:
+                //отображение кнопоки выйти в меню и др. вместо худа игры
+                break;
         }
-        if (BottomItemId != -1)
-        {   //отображение нижнего предмета
-            bottomItemImage.sprite = GameController.ItemsList[BottomItemId].ItemSprite;
-        }
-        else
-        {
-            bottomItemImage.sprite = UIMask;
-        }
-        topItemText.text = TopItemCount > 1 ? TopItemCount + "" : "";
-        bottomItemText.text = BottomItemCount > 1 ? BottomItemCount + "" : "";
+        
     }
 
     //на змеле ничего не лежит

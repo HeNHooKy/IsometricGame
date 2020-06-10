@@ -7,6 +7,10 @@ public abstract class Item : MonoBehaviour
     public int Rarity = 1;
     [Tooltip("предмет активируемый?")]
     public bool isActivate = true;
+    [Tooltip("Название предмета")]
+    public string Name;
+    [Tooltip("Описание предмета")]
+    public string Description;
     [Tooltip("Тег игрока")]
     public string PlayerTag = "Player";
     [Tooltip("Спрайт, который будет отображаться в HUD")]

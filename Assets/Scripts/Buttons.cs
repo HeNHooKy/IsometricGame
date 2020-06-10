@@ -30,6 +30,14 @@
         /// <summary>
         /// Кнопка "статистика" в MeinMenu
         /// </summary>
-        Statistics = 6
-    }
+        Statistics = 6,
+        /// <summary>
+        /// Кнопка "Инвентарь" в меню паузы
+        /// </summary>
+        Items = 7,
+        /// <summary>
+        /// Кнопка "выйти в главное меню" в меню паузы
+        /// </summary>
+        Menu = 8
+        }
 }

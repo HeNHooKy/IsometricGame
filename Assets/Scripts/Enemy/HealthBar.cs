@@ -14,7 +14,7 @@ public class HealthBar : MonoBehaviour
     private Transform Line;
     private float fix;
 
-    private void Start()
+    private void Awake()
     {
         Line = transform.Find("Line").transform;
     }
