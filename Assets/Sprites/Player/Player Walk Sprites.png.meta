@@ -33,7 +33,7 @@ TextureImporter:
       213: 2081851128651907579
     second: Player Walk Sprites_4
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -50,9 +50,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -62,11 +65,11 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: -1
-    mipBias: -100
+    aniso: 1
+    mipBias: 0
     wrapU: 1
     wrapV: 1
-    wrapW: -1
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -84,10 +87,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -99,6 +107,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -111,6 +120,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -123,6 +133,33 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -144,7 +181,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 57e100d997b589260800000000000000
-      internalID: 7104528990060158581
+      internalID: 1336343089615764964
       vertices: []
       indices: 
       edges: []
@@ -165,7 +202,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c6fac965a660290b0800000000000000
-      internalID: -5723505122645069972
+      internalID: -8686416924942630046
       vertices: []
       indices: 
       edges: []
@@ -186,7 +223,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 92ecb51da065a14f0800000000000000
-      internalID: -857278174598541783
+      internalID: 3459001350035684634
       vertices: []
       indices: 
       edges: []
@@ -207,7 +244,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 4f87d62e9f41b15c0800000000000000
-      internalID: -4243775160388323084
+      internalID: 2841809698980629969
       vertices: []
       indices: 
       edges: []
@@ -228,7 +265,7 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: bf10b86429834ec10800000000000000
-      internalID: 2081851128651907579
+      internalID: 4923647069829535151
       vertices: []
       indices: 
       edges: []
@@ -243,9 +280,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      Player Walk Sprites_0: 1336343089615764964
+      Player Walk Sprites_1: -8686416924942630046
+      Player Walk Sprites_2: 3459001350035684634
+      Player Walk Sprites_3: 2841809698980629969
+      Player Walk Sprites_4: 4923647069829535151
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
